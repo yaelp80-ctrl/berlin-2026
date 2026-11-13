@@ -43,6 +43,8 @@ const REWARDS = ["s1", "santa", "lights", "tree", "scarf", "snowman", "gifts", "
 /* ---------- מצב (משותף, נשמר גם בשרת) ---------- */
 const blank = () => ({ queue: [], done: [], score: 0, streak: 0, best: 0, names: {}, wear: {}, hidden: [], seen: 0 });
 let S = Object.assign(blank(), window.APP.getDoc("game") || {});
+const FV = window.FACTS_VERSION || 1;
+if (S.fv !== FV) { S.queue = []; S.done = []; S.score = 0; S.streak = 0; S.fv = FV; }
 let saveT;
 const save = () => { clearTimeout(saveT); saveT = setTimeout(() => window.APP.setDoc("game", S), 400); };
 function fillQueue() {
@@ -104,7 +106,7 @@ function terrariumSVG() {
     ${snakes.map(snakeSVG).join("")}
     ${snakes.map(k => S.names[k] ? `<text class="sname" x="${SNAKES[k].x}" y="${SNAKES[k].y + 34 * SNAKES[k].scale + 8}" text-anchor="middle">${esc(S.names[k])}</text>` : "").join("")}
     ${show("snowmachine") || show("globe") ? `<g class="tsnow">${Array.from({ length: 22 }, (_, i) => `<circle cx="${12 + (i * 47) % 336}" cy="${-10 - (i * 23) % 120}" r="${1.5 + (i % 3)}" fill="#fff" style="animation-delay:${(i * .37) % 4}s;animation-duration:${4 + (i % 4)}s"/>`).join("")}</g>` : ""}
-    ${!snakes.length ? `<g class="egg" transform="translate(180 190)"><ellipse rx="22" ry="28" fill="#F6E3C0" stroke="#D9B98A" stroke-width="2"/><circle cx="-6" cy="-6" r="4" fill="#E9CFA0"/><circle cx="8" cy="6" r="5" fill="#E9CFA0"/></g>` : ""}
+    ${!snakes.length ? `<g transform="translate(180 194)"><g class="egg"><ellipse rx="22" ry="28" fill="#F6E3C0" stroke="#D9B98A" stroke-width="2"/><circle cx="-6" cy="-6" r="4" fill="#E9CFA0"/><circle cx="8" cy="6" r="5" fill="#E9CFA0"/></g></g>` : ""}
     <path d="M14 18 Q20 120 14 250" stroke="#fff" stroke-width="3" opacity=".25" fill="none"/>
   </svg>`;
 }
@@ -120,7 +122,7 @@ function header() {
 }
 function playView() {
   if (!S.queue.length) return `<div class="card soon">${window.ART.snake}<h2>סיימת את כל העובדות! 🎉</h2><div class="muted">${S.score} נקודות · רצף שיא ${S.best}</div></div>`;
-  const id = S.queue[0], f = F[id];
+  const id = phase === "ask" ? S.queue[0] : last.id, f = F[id];
   if (phase === "ask") return `<div class="card qcard" id="qcard"><div class="qtag">עובדה #${id + 1}${S.done.includes(id) ? "" : ""}</div>
       <div class="qtext">${esc(f[0])}</div>
       <div class="qbtns"><button class="qb bluff" data-ans="0">🤥 בלוף</button><button class="qb truth" data-ans="1">✅ אמת</button></div>
@@ -240,6 +242,6 @@ document.addEventListener("click", e => {
 render();
 window.GAME = {
   render,
-  onRemote() { const r = window.APP.getDoc("game"); if (r) { S = Object.assign(blank(), r); fillQueue(); if (phase === "ask") render(); } }
+  onRemote() { const r = window.APP.getDoc("game"); if (r && r.fv === FV) { S = Object.assign(blank(), r); fillQueue(); if (phase === "ask") render(); } }
 };
 })();
