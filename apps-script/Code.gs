@@ -6,8 +6,20 @@
 
 const SHEET = 'sync';
 
+/** מוצא את הגיליון – גם אם הסקריפט נוצר מחוץ לגיליון (אז הוא יוצר אחד ושומר אותו) */
+function spreadsheet_() {
+  const active = SpreadsheetApp.getActiveSpreadsheet();
+  if (active) return active;
+  const props = PropertiesService.getScriptProperties();
+  const id = props.getProperty('SHEET_ID');
+  if (id) return SpreadsheetApp.openById(id);
+  const ss = SpreadsheetApp.create('ברלין 2026 – סנכרון');
+  props.setProperty('SHEET_ID', ss.getId());
+  return ss;
+}
+
 function sheet_() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = spreadsheet_();
   let sh = ss.getSheetByName(SHEET);
   if (!sh) {
     sh = ss.insertSheet(SHEET);
