@@ -23,6 +23,7 @@ $("#me").onclick = askUser;
 /* ---------- מצב משותף (יסונכרן בשלב 2) ---------- */
 // shared.items[id] = { s: "done" | "skip" | null, day: index | null(=רשימת שווה לראות) | undefined(=מקורי), t }
 let shared = LS.get("berlin.shared", { items: {} });
+shared.docs = shared.docs || {};
 const saveShared = () => LS.set("berlin.shared", shared);
 let pending = LS.get("berlin.pending", {});
 const setItem = (id, patch) => {
@@ -38,13 +39,17 @@ async function sync() {
   syncing = true; netState();
   try {
     const sent = { ...pending }, changes = {};
-    Object.keys(sent).forEach(id => { const st = shared.items[id]; if (st) changes["item:" + id] = { v: { s: st.s ?? null, day: st.day ?? null }, t: st.t }; });
+    Object.keys(sent).forEach(id => {
+      if (id.startsWith("doc:")) { const d = shared.docs[id.slice(4)]; if (d) changes[id] = { v: d.v, t: d.t }; return; }
+      const st = shared.items[id]; if (st) changes["item:" + id] = { v: { s: st.s ?? null, day: st.day ?? null }, t: st.t }; });
     const r = Object.keys(changes).length
       ? await fetch(window.SYNC_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ by: user, changes }) })
       : await fetch(window.SYNC_URL + "?action=state");
     const j = await r.json(); if (!j.ok) throw 0;
-    let changed = false;
+    let changed = false, docChanged = false;
     Object.entries(j.data).forEach(([k, row]) => {
+      if (k.startsWith("doc:")) { const key = k.slice(4), local = shared.docs[key];
+        if (!local || row.t > local.t) { shared.docs[key] = { v: row.v, t: row.t }; changed = true; docChanged = true; } return; }
       if (!k.startsWith("item:")) return;
       const id = k.slice(5), local = shared.items[id];
       if (!local || row.t > local.t) {
@@ -54,7 +59,7 @@ async function sync() {
     });
     Object.keys(sent).forEach(id => { if (pending[id] === sent[id]) delete pending[id]; });
     LS.set("berlin.pending", pending); lastSync = Date.now(); LS.set("berlin.lastSync", lastSync);
-    if (changed) { saveShared(); if (!$("#sheet").classList.contains("on")) renderTrip(); window.XMASVIEW && window.XMASVIEW.render(); }
+    if (changed) { saveShared(); if (!$("#sheet").classList.contains("on")) renderTrip(); window.XMASVIEW && window.XMASVIEW.render(); if (docChanged) window.GAME && window.GAME.onRemote(); }
   } catch (e) {} finally { syncing = false; netState(); }
 }
 
@@ -269,7 +274,7 @@ function renderPack(kind) {
 
 function renderSoon() {
   window.XMASVIEW && window.XMASVIEW.render();
-  $("#v-game").innerHTML = `<div class="card soon">${ART.snake}<h2>אמת או בלוף</h2><div class="muted">500 עובדות על ברלין, וטרריום עם נחש שמחכה לבוא לעולם 🥚<br>בבנייה – מגיע בשלב הבא</div></div>`;
+  window.GAME && window.GAME.render();
 }
 
 /* ---------- חלון תחתון וטוסט ---------- */
@@ -338,7 +343,9 @@ function renderAll() {
   renderTrip(); if (user) { renderPack("suitcase"); renderPack("backpack"); } renderSoon();
 }
 
-window.APP = { sheet, closeSheet, toast: m => toast(m), getItem: id => shared.items[id], setItem };
+const getDoc = k => shared.docs[k]?.v;
+const setDoc = (k, v) => { shared.docs[k] = { v, t: Date.now() }; saveShared(); pending["doc:" + k] = shared.docs[k].t; LS.set("berlin.pending", pending); syncSoon(); };
+window.APP = { sheet, closeSheet, toast: m => toast(m), getItem: id => shared.items[id], setItem, getDoc, setDoc };
 if (!user) askUser();
 renderAll(); setSky(); draw(); net();
 setInterval(() => { if ($("#v-trip").classList.contains("on") && !$("#sheet").classList.contains("on")) renderTrip(); }, 60000);

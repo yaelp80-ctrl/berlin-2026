@@ -169,6 +169,52 @@ nav button.on span{transform:translateY(-3px) scale(1.12);filter:drop-shadow(0 0
 .mk.open .mkbody{display:block;animation:fade .3s}
 .mkbody p{margin:8px 0}
 .review{background:rgba(255,255,255,.07);border-radius:12px;padding:8px 10px;margin:10px 0;font-size:13.5px;color:var(--muted)}
+.gtabs{display:flex;gap:8px;justify-content:center}
+.gstats{display:flex;justify-content:space-around;margin:12px 0 4px;text-align:center}
+.gstats b{display:block;font-family:var(--head);font-size:24px;color:var(--gold)}
+.gstats span{font-size:12px;color:var(--muted)}
+.qcard{text-align:center;transition:transform .25s;touch-action:pan-y}
+.qcard.right{border-color:#46B174;background:rgba(30,110,70,.45)}
+.qcard.wrong{border-color:#E24C4B;background:rgba(120,30,40,.4)}
+.qtag{font-size:12px;color:var(--muted)}
+.qtext{font-size:21px;line-height:1.45;margin:14px 4px 18px;font-family:var(--head)}
+.qtext.small{font-size:16px;color:var(--muted);margin:6px 0}
+.qbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qb{border:0;border-radius:18px;padding:16px 8px;font:inherit;font-size:20px;font-family:var(--head);color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+.qb:active{transform:translateY(3px);box-shadow:none}
+.qb.truth{background:#2E9B62}.qb.bluff{background:#D9534F}
+.qres{font-family:var(--head);font-size:26px;margin-bottom:6px}
+.qans{font-family:var(--head);font-size:19px;margin:8px 0}
+.qexp{font-size:16px;line-height:1.5;margin-bottom:8px}
+.terra{width:100%;height:auto;display:block}
+.terra.globe rect:first-of-type{rx:170}
+.snake{cursor:pointer}
+.idle{animation:bob 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes bob{50%{transform:translateY(-3px) rotate(-1.5deg)}}
+.tongue{animation:flick 2.6s infinite}
+@keyframes flick{0%,80%,100%{opacity:0}84%,92%{opacity:1}}
+.mv{transition:transform 1s ease-in-out}
+.snake.wiggle .mv{animation:wig .45s}
+@keyframes wig{25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+.kissL .mv,.kissR .mv{animation:kiss 3s ease-in-out forwards}
+.kissL .mv{--kx:57px}.kissR .mv{--kx:47px}
+@keyframes kiss{0%{transform:none}35%,75%{transform:translateX(var(--kx))}100%{transform:none}}
+.heart{animation:floatup 2.2s ease-out forwards;opacity:0}
+@keyframes floatup{0%{opacity:0;transform:translateY(0)}20%{opacity:1}100%{opacity:0;transform:translateY(-110px)}}
+.bulb{animation:tw 1.6s ease-in-out infinite alternate}
+@keyframes tw{to{opacity:.35}}
+.tsnow circle{animation:tfall 5s linear infinite}
+@keyframes tfall{to{transform:translateY(290px)}}
+.egg{animation:wob 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:bottom center}
+@keyframes wob{0%,70%,100%{transform:rotate(0)}76%{transform:rotate(-8deg)}84%{transform:rotate(8deg)}92%{transform:rotate(-4deg)}}
+.sname{font-size:12px;fill:#1B2440;font-family:var(--head);paint-order:stroke;stroke:#EAF4FF;stroke-width:3px}
+.deco{pointer-events:none}
+.reward{position:fixed;inset:0;z-index:60;background:rgba(3,12,35,.82);display:grid;place-items:center;animation:fade .3s}
+.rbox{text-align:center;padding:24px;max-width:320px}
+.gift,.egg-big{font-size:110px;animation:shake .5s ease-in-out infinite}
+@keyframes shake{25%{transform:rotate(-10deg) scale(1.05)}75%{transform:rotate(10deg) scale(1.05)}}
+.gift-open{font-size:110px;animation:pop .6s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(0) rotate(-30deg)}}
 @media (prefers-reduced-motion:reduce){#sky{display:none}*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -220,5 +266,7 @@ nav button.on span{transform:translateY(-3px) scale(1.12);filter:drop-shadow(0 0
 <script src="xmas.js"></script>
 <script src="tickets.js"></script>
 <script src="app.js"></script>
+<script src="facts.js"></script>
+<script src="game.js"></script>
 </body>
 </html>
