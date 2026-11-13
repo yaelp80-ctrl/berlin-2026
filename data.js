@@ -49,14 +49,14 @@ window.TRIP = {
         { id: "d3-esg", title: "East Side Gallery", icon: "🎨", slot: "בוקר", maps: "East Side Gallery Berlin" },
         { id: "d3-dark", title: "מוזיאון Dark Matter", icon: "🌌",
           notes: ["21 דק' נסיעה", "פתוח 12:00–23:00 (סגור בשני ושלישי)", "יש שם גם משטח החלקה עם אורות!"],
-          maps: "Dark Matter Berlin Lichtenberg" },
+          maps: "Dark Matter Köpenicker Chaussee 46 Berlin" },
         { id: "d3-maclarens", title: "MacLaren's Pub – הפאב של HIMYM", icon: "🍻", slot: "אחה\"צ",
-          notes: ["להזמין מקום!", "פתוח מ-18:00, סגור בשני", "Boxhagener Str. 16, פרידריכסהיין"], maps: "MacLaren's Pub Boxhagener Straße 16 Berlin",
+          notes: ["להזמין מקום!", "פתוח מ-18:00, סגור בשני", "כ-20 דק' נסיעה מ-Dark Matter (ליד Ostkreuz)"], maps: "MacLaren's Pub Boxhagener Straße 16 Berlin",
           book: "https://www.maclarens.de" },
         { id: "d3-pride", title: "שוק חג המולד הלהט\"בי Regenbogen", icon: "🏳️‍🌈",
-          notes: ["4 דק' מהפאב"], maps: "Regenbogen Weihnachtsmarkt Berlin" },
-        { id: "d3-books", title: "חנות הספרים Prinz Eisenherz", icon: "📚", notes: ["פתוחה עד 20:00"], maps: "Prinz Eisenherz Buchladen Berlin" },
-        { id: "d3-cafe", title: "בית הקפה רומיאו ורומיאו", icon: "☕", notes: ["פתוח עד 20:00"], maps: "Romeo und Romeo Café Berlin" }
+          notes: ["כ-35 דק' נסיעה מהפאב", "בנולנדורפפלאץ, מתחת לרכבת העילית (Christmas Avenue)"], maps: "Christmas Avenue Nollendorfplatz Berlin" },
+        { id: "d3-books", title: "חנות הספרים Prinz Eisenherz", icon: "📚", notes: ["פתוחה עד 20:00", "ליד השוק"], maps: "Prinz Eisenherz Buchladen Berlin" },
+        { id: "d3-cafe", title: "בית הקפה רומיאו ורומיאו", icon: "☕", notes: ["פתוח עד 20:00", "ליד השוק"], maps: "Romeo und Romeo Café Berlin" }
       ]
     },
     {
