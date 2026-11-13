@@ -76,9 +76,10 @@ window.TRIP = {
           notes: ["רבע שעה מהביוספרה", "חלונות ראווה של בוטיקים וגלריות"], maps: "Holländisches Viertel Potsdam" },
         { id: "d4-sanssouci", title: "ארמון סנסוסי והגנים", icon: "🏰",
           notes: ["20 דק' הליכה מהרובע", "לראות באור יום"], maps: "Schloss Sanssouci Potsdam" },
-        { id: "d4-blue", title: "שוק \"הזוהר הכחול\" Blauer Lichterglanz", icon: "💙", slot: "מ-16:00",
-          notes: ["במדרחוב"], maps: "Blauer Lichterglanz Potsdam Brandenburger Straße" },
-        { id: "d4-dutchmarket", title: "שוק חג המולד ברובע ההולנדי", icon: "🎄", maps: "Holländisches Viertel Potsdam Weihnachtsmarkt" },
+        { id: "d4-blue", title: "שוק \"הזוהר הכחול\" – היום Potsdamer Weihnachtszauber", icon: "💙", slot: "מ-16:00",
+          notes: ["במדרחוב Brandenburger Straße", "יש משטח החלקה וגלגל ענק!", "פתוח בשבת עד 22:00"], maps: "Potsdamer Weihnachtszauber Brandenburger Straße Potsdam" },
+        { id: "d4-dutchmarket", title: "שוק חג המולד ברובע ההולנדי", icon: "🎄",
+          notes: ["⚠️ שוק סינטרקלאס מתקיים השנה רק ב-12–13.12, אחרי הטיול"], maps: "Holländisches Viertel Potsdam" },
         { id: "d4-back", title: "חזרה למלון בברלין", icon: "🚆", notes: ["שעה נסיעה"] }
       ]
     },

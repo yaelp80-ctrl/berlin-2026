@@ -54,7 +54,7 @@ async function sync() {
     });
     Object.keys(sent).forEach(id => { if (pending[id] === sent[id]) delete pending[id]; });
     LS.set("berlin.pending", pending); lastSync = Date.now(); LS.set("berlin.lastSync", lastSync);
-    if (changed) { saveShared(); if (!$("#sheet").classList.contains("on")) renderTrip(); }
+    if (changed) { saveShared(); if (!$("#sheet").classList.contains("on")) renderTrip(); window.XMASVIEW && window.XMASVIEW.render(); }
   } catch (e) {} finally { syncing = false; netState(); }
 }
 
@@ -268,7 +268,7 @@ function renderPack(kind) {
 }
 
 function renderSoon() {
-  $("#v-xmas").innerHTML = `<div class="card soon">${ART.tree}<h2>שווקי חג המולד</h2><div class="muted">15 השווקים הכי שווים בברלין ועוד שניים בפוטסדאם, עם השוק הלהט"בי בראש 🏳️‍🌈<br>בבנייה – מגיע בשלב הבא</div></div>`;
+  window.XMASVIEW && window.XMASVIEW.render();
   $("#v-game").innerHTML = `<div class="card soon">${ART.snake}<h2>אמת או בלוף</h2><div class="muted">500 עובדות על ברלין, וטרריום עם נחש שמחכה לבוא לעולם 🥚<br>בבנייה – מגיע בשלב הבא</div></div>`;
 }
 
@@ -338,7 +338,7 @@ function renderAll() {
   renderTrip(); if (user) { renderPack("suitcase"); renderPack("backpack"); } renderSoon();
 }
 
-window.APP = { sheet, closeSheet, toast: m => toast(m) };
+window.APP = { sheet, closeSheet, toast: m => toast(m), getItem: id => shared.items[id], setItem };
 if (!user) askUser();
 renderAll(); setSky(); draw(); net();
 setInterval(() => { if ($("#v-trip").classList.contains("on") && !$("#sheet").classList.contains("on")) renderTrip(); }, 60000);
