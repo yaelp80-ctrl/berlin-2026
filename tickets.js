@@ -110,8 +110,8 @@ function statusLine(f, st) {
 async function flightSheet(which) {
   const f = T.flights[which], has = !!(await DB.get(f.ticket));
   window.APP.sheet(`<h2>✈️ ${f.code} · ${f.airline}</h2><div class="muted">${f.date.split("-").reverse().slice(0, 2).map(Number).join(".")}</div>
-    <div class="flight"><div><b>${f.dep}</b>${esc(f.from)}</div><div style="font-size:26px">✈︎</div><div><b>${f.arr}</b>${esc(f.to)}</div></div>
-    <dl class="kv"><dt>מזוודות</dt><dd>${esc(f.bags)}</dd><dt>מושבים</dt><dd>${esc(f.seats)}</dd>
+    <div class="flight"><div><b>${f.dep}</b>${esc(f.from)}</div><div style="font-size:26px;display:inline-block;transform:scaleX(-1)">✈︎</div><div><b>${f.arr}</b>${esc(f.to)}</div></div>
+    <dl class="kv"><dt>מזוודות</dt><dd>${esc(f.bags)}</dd>
       <dt>מספר הזמנה</dt><dd><input id="bk" class="inp" inputmode="numeric" placeholder="להקליד (נשמר רק בטלפון)" value="${esc(bookingGet(f.code))}"></dd>
       <dt>סטטוס</dt><dd id="fst">${statusLine(f, readStatus(f.code)) || `<span class="muted">בודק…</span>`}</dd></dl>
     <div class="acts" style="margin-top:14px">
