@@ -1,12 +1,21 @@
 // עובד גם בלי קליטה: שומר את האפליקציה בטלפון
-const VERSION = "berlin-v6";
+const VERSION = "berlin-v7";
 const SHELL = [
-  "./", "./index.html", "./app.js", "./data.js", "./config.js", "./art.js", "./manifest.json",
+  "./", "./index.html", "./app.js", "./data.js", "./config.js", "./tickets.js", "./art.js", "./manifest.json",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/favicon.png", "./icons/header.png"
 ];
 
+const EXTRA = [
+  "./vendor/pdf.min.js",
+  "./vendor/pdf.worker.min.js"
+];
+
 self.addEventListener("install", e => {
-  e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(VERSION).then(async c => {
+    await c.addAll(SHELL);
+    // קורא ה-PDF לכרטיסים – שיעבוד גם בלי קליטה (לא חובה)
+    await Promise.all(EXTRA.map(u => c.add(u).catch(() => {})));
+  }).then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", e => {

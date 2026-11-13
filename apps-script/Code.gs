@@ -77,23 +77,44 @@ function doPost(e) {
 }
 
 /** סטטוס טיסה מלוח הטיסות של רשות שדות התעופה (data.gov.il) */
+const FLIGHTS_RESOURCE = 'e83f763b-b7d7-479e-b172-ae981ddc6de5';
+
+function flightsResource_() {
+  const props = PropertiesService.getScriptProperties();
+  const saved = props.getProperty('FLIGHTS_RESOURCE');
+  if (saved) return saved;
+  try { // בדיקה שהמשאב הקבוע קיים, אחרת חיפוש
+    const t = JSON.parse(UrlFetchApp.fetch('https://data.gov.il/api/3/action/datastore_search?limit=1&resource_id=' + FLIGHTS_RESOURCE, { muteHttpExceptions: true }).getContentText());
+    if (t.success) { props.setProperty('FLIGHTS_RESOURCE', FLIGHTS_RESOURCE); return FLIGHTS_RESOURCE; }
+  } catch (e) {}
+  const s = JSON.parse(UrlFetchApp.fetch('https://data.gov.il/api/3/action/package_search?q=flydata', { muteHttpExceptions: true }).getContentText());
+  for (const pkg of (s.result || {}).results || []) {
+    for (const r of pkg.resources || []) if (r.datastore_active) { props.setProperty('FLIGHTS_RESOURCE', r.id); return r.id; }
+  }
+  return FLIGHTS_RESOURCE;
+}
+
 function flight_(code) {
-  if (!code) return { ok: false };
-  const m = String(code).match(/^([A-Z0-9]{2})(\d+)$/);
+  const m = String(code || '').toUpperCase().match(/^([A-Z0-9]{2})(\d+)$/);
   if (!m) return { ok: false };
   const cache = CacheService.getScriptCache();
   const hit = cache.get('f:' + code);
   if (hit) return JSON.parse(hit);
   try {
-    const url = 'https://data.gov.il/api/3/action/datastore_search?resource_id=e83f763b-b7d7-479e-b172-ae981ddc6de5&limit=20&q=' +
-      encodeURIComponent(m[1] + ' ' + m[2]);
-    const res = JSON.parse(UrlFetchApp.fetch(url, { muteHttpExceptions: true }).getContentText());
-    const recs = ((res.result || {}).records || []).filter(r => r.CHOPER === m[1] && String(r.CHFLTN) === m[2]);
-    const out = { ok: true, records: recs.map(r => ({
-      scheduled: r.CHSTOL, estimated: r.CHPTOL, terminal: r.CHTERM, checkin: r.CHCINT,
-      status: r.CHRMINH || r.CHRMINE, statusEn: r.CHRMINE, direction: r.CHAORD
+    const url = 'https://data.gov.il/api/3/action/datastore_search?limit=20&resource_id=' + flightsResource_() +
+      '&filters=' + encodeURIComponent(JSON.stringify({ CHOPER: m[1], CHFLTN: m[2] }));
+    let res = JSON.parse(UrlFetchApp.fetch(url, { muteHttpExceptions: true }).getContentText());
+    let recs = (res.result || {}).records || [];
+    if (!recs.length) { // מספר טיסה לפעמים נשמר כמספר ולא כטקסט
+      const url2 = 'https://data.gov.il/api/3/action/datastore_search?limit=50&resource_id=' + flightsResource_() + '&q=' + encodeURIComponent(m[2]);
+      res = JSON.parse(UrlFetchApp.fetch(url2, { muteHttpExceptions: true }).getContentText());
+      recs = ((res.result || {}).records || []).filter(r => r.CHOPER === m[1] && String(r.CHFLTN).replace(/^0+/, '') === m[2]);
+    }
+    const out = { ok: true, at: Date.now(), records: recs.map(r => ({
+      scheduled: r.CHSTOL, estimated: r.CHPTOL, terminal: r.CHTERM, counter: r.CHCINT, zone: r.CHCKZN,
+      status: r.CHRMINH, statusEn: r.CHRMINE, direction: r.CHAORD
     })) };
-    cache.put('f:' + code, JSON.stringify(out), 600);
+    cache.put('f:' + code, JSON.stringify(out), 300);
     return out;
   } catch (err) {
     return { ok: false, error: String(err) };

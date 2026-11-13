@@ -7,11 +7,18 @@ window.TRIP = {
     { label: "מפת חג המולד", url: "https://maps.app.goo.gl/cYkxga89CEkDdjvY9", icon: "🎄" },
     { label: "מפת ההחלקות", url: "https://maps.app.goo.gl/D88Gh1F2RjTbVpYa7", icon: "⛸️" }
   ],
+  tickets: {
+    flightOut: { title: "טיסה הלוך 6H255", icon: "✈️", flight: "out", note: "אין קובץ כרטיס – אפשר להעלות כרטיס עלייה למטוס אם יהיה" },
+    garden: { title: "Christmas Garden", icon: "✨", note: "הכרטיס של נועם · יעל נכנסת חינם כמלווה" },
+    show: { title: "Blinded by Delight", icon: "🎭", note: "2 כרטיסים בקובץ אחד" },
+    graffiti: { title: "סדנת גרפיטי", icon: "🖌️", note: "אין כרטיס – האישור במייל. המדריך: Sylvain", whatsapp: "491776277221" },
+    flightBack: { title: "טיסה חזור BZ271", icon: "✈️", flight: "back", note: "כרטיס לכל אחד מכם" }
+  },
   flights: {
     out: { code: "6H255", airline: "ישראייר", date: "2026-12-02", dep: "12:05", arr: "15:30",
-           from: "נתב\"ג · טרמינל 3", to: "ברלין BER", bags: "מזוודה 23 ק\"ג + תיק גב לכל אחד", seats: "עוד לא שובצו" },
+           from: "נתב\"ג · טרמינל 3", to: "ברלין BER", ticket: "flightOut", dir: "D", bags: "מזוודה 23 ק\"ג + תיק גב לכל אחד", seats: "עוד לא שובצו" },
     back: { code: "BZ271", airline: "Blue Bird", date: "2026-12-09", dep: "14:50", arr: "20:10",
-            from: "ברלין BER · טרמינל 1", to: "נתב\"ג", bags: "מזוודה 20 ק\"ג לכל אחד", seats: "יעל 11A (חלון) · נועם 11B" }
+            from: "ברלין BER · טרמינל 1", to: "נתב\"ג", ticket: "flightBack", dir: "A", bags: "מזוודה 20 ק\"ג לכל אחד", seats: "יעל 11A (חלון) · נועם 11B" }
   },
   days: [
     {
@@ -19,7 +26,7 @@ window.TRIP = {
       transportNote: "Berlin WelcomeCard ABC ל-6 ימים – קונים היום",
       items: [
         { id: "d1-flight", title: "טיסה הלוך 6H255", time: "12:05", hard: true, icon: "✈️",
-          notes: ["ישראייר, טרמינל 3 – לבדוק לפני", "נחיתה 15:30"], flight: "out" },
+          notes: ["ישראייר, טרמינל 3 – לבדוק לפני", "נחיתה 15:30"], flight: "out", ticket: "flightOut" },
         { id: "d1-hotel", title: "צ'ק-אין במלון Dorint", icon: "🏨", maps: "Dorint Kurfürstendamm Berlin Augsburger Str. 41" },
         { id: "d1-super", title: "סופר – אוכל לכמה ימים", icon: "🛒",
           notes: ["פירות, ירקות, יוגורטים, גרנולה, חלב וקורנפלקס"], maps: "Supermarkt near Augsburger Str. 41 Berlin" },

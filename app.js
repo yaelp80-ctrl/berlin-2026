@@ -171,8 +171,7 @@ function itemHTML(it, opts = {}) {
   const m = mapsLink(it);
   const acts = [
     m && `<a class="btn" href="${m}" target="_blank" rel="noopener">📍 ניווט</a>`,
-    it.flight && `<button class="btn gold" data-flight="${it.flight}">✈️ פרטי טיסה</button>`,
-    it.ticket && `<button class="btn gold" data-ticket="${it.ticket}">🎟️ כרטיס</button>`,
+    it.ticket && `<button class="btn gold" data-tk="${it.ticket}">${it.flight ? "✈️ טיסה וכרטיס" : "🎟️ כרטיס"}</button>`,
     it.book && `<a class="btn gold" href="${it.book}" target="_blank" rel="noopener">${it.bookLabel || "🗓️ להזמנת מקום"}</a>`,
     it.call && `<a class="btn" href="tel:${it.call}">📞 התקשרות</a>`,
     it.whatsapp && `<a class="btn wa" href="https://wa.me/${it.whatsapp}" target="_blank" rel="noopener">💬 Sylvain</a>`,
@@ -208,6 +207,7 @@ function heroHTML() {
   return `<div class="card"><div class="hero"><div>${count}</div>
     <div class="wx">${c ? `<div class="e">${e}</div><div class="t">${Math.round(c.temperature_2m)}°</div><div class="muted">${txt} בברלין</div>` : `<div class="e">❄️</div><div class="muted">ברלין</div>`}</div></div>
     <div class="sunrow"><span>🌅 זריחה ${sun.rise}</span><span>🌇 שקיעה ${sun.set}</span>${wx ? `<span>עודכן ${ago(wx.at)}</span>` : ""}</div></div>
+    <div id="flightbox"></div>
     <div class="maps">${T.maps.map(m => `<a class="chip" href="${m.url}" target="_blank" rel="noopener">${m.icon} ${m.label}</a>`).join("")}</div>`;
 }
 
@@ -232,6 +232,7 @@ function renderTrip() {
     <h3>⭐ מקומות ששווה לראות</h3>
     <div class="card">${worth.map(it => itemHTML(it, { worth: true })).join("") || `<div class="empty">הרשימה ריקה</div>`}</div>`;
   const sel = $(".dchip.sel"); sel && sel.scrollIntoView({ inline: "center", block: "nearest" });
+  window.TICKETS && window.TICKETS.heroFlights();
 }
 
 /* ---------- רשימות אריזה (אישיות) ---------- */
@@ -272,7 +273,7 @@ function renderSoon() {
 }
 
 /* ---------- חלון תחתון וטוסט ---------- */
-function sheet(html) { $("#sheet").innerHTML = html; $("#sheet").classList.add("on"); $("#veil").classList.add("on"); }
+function sheet(html) { $("#sheet").onclick = null; $("#sheet").innerHTML = html; $("#sheet").classList.add("on"); $("#veil").classList.add("on"); }
 function closeSheet() { $("#sheet").classList.remove("on"); $("#veil").classList.remove("on"); }
 $("#veil").onclick = closeSheet;
 let toastT;
@@ -312,13 +313,6 @@ $("#v-trip").addEventListener("click", e => {
     $("#sheet").onclick = ev => { const b = ev.target.closest("[data-to]"); if (!b) return;
       const to = +b.dataset.to; setItem(it.id, { s: null, day: to === it.home ? undefined : to }); closeSheet(); selDay = to; renderTrip();
       toast(`הועבר ל${T.days[to].name} ${fmtDate(T.days[to].date)}`); };
-  } else if (ds.flight) {
-    const f = T.flights[ds.flight];
-    sheet(`<h2>✈️ ${f.code} · ${f.airline}</h2><div class="muted">${fmtDate(f.date)}</div>
-      <div class="flight"><div><b>${f.dep}</b>${esc(f.from)}</div><div style="font-size:26px">✈︎</div><div><b>${f.arr}</b>${esc(f.to)}</div></div>
-      <dl class="kv"><dt>מזוודות</dt><dd>${esc(f.bags)}</dd><dt>מושבים</dt><dd>${esc(f.seats)}</dd><dt>סטטוס</dt><dd class="muted">יתעדכן אוטומטית 24 שעות לפני הטיסה (בשלב הבא)</dd></dl>`);
-  } else if (ds.ticket) {
-    toast("הכרטיסים נשמרים בטלפון – מתווספים בשלב הבא 🎟️");
   }
 });
 
@@ -344,6 +338,7 @@ function renderAll() {
   renderTrip(); if (user) { renderPack("suitcase"); renderPack("backpack"); } renderSoon();
 }
 
+window.APP = { sheet, closeSheet, toast: m => toast(m) };
 if (!user) askUser();
 renderAll(); setSky(); draw(); net();
 setInterval(() => { if ($("#v-trip").classList.contains("on") && !$("#sheet").classList.contains("on")) renderTrip(); }, 60000);
