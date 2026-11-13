@@ -34,7 +34,7 @@ window.TRIP = {
       items: [
         { id: "d2-zoo", title: "גן החיות של ברלין", icon: "🐧", slot: "בוקר",
           notes: ["7 דק' הליכה מהמלון", "פתוח מ-9:00", "להזמין מראש באתר", "לברר זמני האכלות לפני"],
-          maps: "Zoologischer Garten Berlin" },
+          maps: "Zoologischer Garten Berlin", book: "https://www.zoo-berlin.de", bookLabel: "🎟️ לקנות כרטיס" },
         { id: "d2-lunch", title: "ארוחת צהריים", icon: "🍽️" },
         { id: "d2-garden", title: "Christmas Garden – הגן הבוטני", time: "16:20", hard: true, icon: "✨",
           notes: ["כניסה בין 16:20 ל-16:40", "40 דק' נסיעה – לצאת ב-15:40", "יש כרטיס לנועם · יעל נכנסת חינם כמלווה"],
@@ -51,7 +51,8 @@ window.TRIP = {
           notes: ["21 דק' נסיעה", "פתוח 12:00–23:00 (סגור בשני ושלישי)", "יש שם גם משטח החלקה עם אורות!"],
           maps: "Dark Matter Berlin Lichtenberg" },
         { id: "d3-maclarens", title: "MacLaren's Pub – הפאב של HIMYM", icon: "🍻", slot: "אחה\"צ",
-          notes: ["להזמין מקום!", "פתוח מ-18:00, סגור בשני"], maps: "MacLaren's Pub Berlin" },
+          notes: ["להזמין מקום!", "פתוח מ-18:00, סגור בשני", "Boxhagener Str. 16, פרידריכסהיין"], maps: "MacLaren's Pub Boxhagener Straße 16 Berlin",
+          book: "https://www.maclarens.de" },
         { id: "d3-pride", title: "שוק חג המולד הלהט\"בי Regenbogen", icon: "🏳️‍🌈",
           notes: ["4 דק' מהפאב"], maps: "Regenbogen Weihnachtsmarkt Berlin" },
         { id: "d3-books", title: "חנות הספרים Prinz Eisenherz", icon: "📚", notes: ["פתוחה עד 20:00"], maps: "Prinz Eisenherz Buchladen Berlin" },
@@ -81,7 +82,8 @@ window.TRIP = {
         { id: "d5-museum", title: "מוזיאון הטבע Museum für Naturkunde", time: "11:00", hard: true, icon: "🦕",
           notes: ["חצי שעה מהמלון", "כדאי שעתיים", "פתוח 10:00–18:00, סגור בשני"], maps: "Museum für Naturkunde Berlin" },
         { id: "d5-cowei", title: "מסעדת Cowei – אוכל יפני", time: "13:30", hard: true, icon: "🍜",
-          notes: ["להזמין מקום!", "5 דק' מהתיאטרון"], maps: "Cowei Restaurant Berlin" },
+          notes: ["להזמין מקום!", "ליד Hackescher Markt", "פתוח 12:00–22:00"], maps: "Cowei James-Simon-Park 152 Berlin",
+          book: "https://www.cowei-berlin.de", call: "+493060051647" },
         { id: "d5-show", title: "Blinded by Delight – Friedrichstadt-Palast", time: "15:30", hard: true, icon: "🎭",
           notes: ["להגיע ב-15:15", "25 דק' נסיעה", "שולם מראש – 2 כרטיסים"], maps: "Friedrichstadt-Palast Berlin", ticket: "show" }
       ]
@@ -104,10 +106,10 @@ window.TRIP = {
       transportNote: "כרטיס רכבת בין-עירוני הלוך-חזור, RE2 – קונים מראש ב-DB Navigator",
       tips: ["אסור להכניס אוכל מבחוץ – להכין כריך לרכבת", "לא לשכוח בגדי ים!"],
       items: [
-        { id: "d7-train", title: "רכבת RE2 לפארק", icon: "🚆", notes: ["כרטיס מראש באפליקציית DB Navigator"] },
+        { id: "d7-train", title: "רכבת RE2 לפארק", icon: "🚆", notes: ["כרטיס מראש באפליקציית DB Navigator"], book: "https://www.bahn.de", bookLabel: "🎟️ DB / bahn.de" },
         { id: "d7-park", title: "Tropical Islands", icon: "🌴",
           notes: ["פתוח 8:00–23:30", "לקנות באתר כרטיס Reduce – מלווה חינם", "יש צמיד פטור מתור", "השכרת מגבות במקום"],
-          maps: "Tropical Islands Krausnick" },
+          maps: "Tropical Islands Krausnick", book: "https://www.tropical-islands.de", bookLabel: "🎟️ לקנות כרטיס" },
         { id: "d7-lunch", title: "ארוחת צהריים במסעדה בפארק", icon: "🍽️" }
       ]
     },

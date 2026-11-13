@@ -141,6 +141,8 @@ function itemHTML(it, opts = {}) {
     m && `<a class="btn" href="${m}" target="_blank" rel="noopener">📍 ניווט</a>`,
     it.flight && `<button class="btn gold" data-flight="${it.flight}">✈️ פרטי טיסה</button>`,
     it.ticket && `<button class="btn gold" data-ticket="${it.ticket}">🎟️ כרטיס</button>`,
+    it.book && `<a class="btn gold" href="${it.book}" target="_blank" rel="noopener">${it.bookLabel || "🗓️ להזמנת מקום"}</a>`,
+    it.call && `<a class="btn" href="tel:${it.call}">📞 התקשרות</a>`,
     it.whatsapp && `<a class="btn wa" href="https://wa.me/${it.whatsapp}" target="_blank" rel="noopener">💬 Sylvain</a>`,
     `<button class="btn" data-move="${it.id}">⇄ ${opts.worth ? "להעביר ליום" : "יום אחר"}</button>`
   ].filter(Boolean).join("");
