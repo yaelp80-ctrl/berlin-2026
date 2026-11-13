@@ -213,7 +213,6 @@ function renderPack(kind) {
   $("#v-" + kind).innerHTML = `<div class="card"><div class="hd"><div><h2>${isS ? "המזוודה" : "תיק הגב"} של ${userName(user)}</h2>
       <div class="muted">${on} מתוך ${all.length} ארוזים</div></div>${ART[isS ? "suitcase" : "backpack"]}</div>
     <div class="prog"><i style="width:${all.length ? on / all.length * 100 : 0}%"></i></div>
-    ${isS ? `<div class="banner">⚖️ הלוך: עד 23 ק"ג · <b>חזור: עד 20 ק"ג בלבד</b></div>` : ""}
     ${p.map((g, gi) => `<div class="grp"><h4>${esc(g.g)}</h4>${g.items.map((x, xi) =>
       `<label class="pk ${x.on ? "on" : ""}"><input type="checkbox" data-pk="${gi}.${xi}" ${x.on ? "checked" : ""}><span>${esc(x.t)}</span><button class="del" data-del="${gi}.${xi}" aria-label="מחיקה">✕</button></label>`).join("")}</div>`).join("")}
     <div class="add"><input id="add-${kind}" placeholder="להוסיף פריט…"><button class="btn gold" data-add="${kind}">הוספה</button></div>

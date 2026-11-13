@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#061A4A"/><stop offset="1" stop-color="#0E4A8C"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9A5C36"/><stop offset="1" stop-color="#7A4426"/>
+    </linearGradient>
+    <radialGradient id="shop" cx=".5" cy=".4" r=".7">
+      <stop offset="0" stop-color="#FFE7A3"/><stop offset="1" stop-color="#F6A93B"/>
+    </radialGradient>
+    <radialGradient id="bulb"><stop offset="0" stop-color="#FFF6CF"/><stop offset=".45" stop-color="#FFD36E"/><stop offset="1" stop-color="#FFD36E" stop-opacity="0"/></radialGradient>
+    <g id="flake" stroke="#EAF4FF" stroke-width="5" stroke-linecap="round" fill="none">
+      <path d="M0 -26V26M-22.5 -13L22.5 13M-22.5 13L22.5 -13"/>
+      <path d="M0 -26l-7 -7M0 -26l7 -7M0 26l-7 7M0 26l7 7M-22.5 -13l-9.5 2.5M-22.5 -13l-2.5 -9.5M22.5 13l9.5 -2.5M22.5 13l2.5 9.5M-22.5 13l-2.5 9.5M-22.5 13l-9.5 -2.5M22.5 -13l2.5 -9.5M22.5 -13l9.5 2.5"/>
+    </g>
+    <g id="tree">
+      <path d="M0 -70L34 -18H18L44 22H-44L-18 -18H-34Z" fill="#2E8B57"/>
+      <path d="M0 -70L12 -52H-12Z" fill="#EAF4FF"/>
+      <path d="M-34 -18Q0 -8 34 -18" stroke="#EAF4FF" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <rect x="-7" y="22" width="14" height="14" fill="#6B3E26"/>
+    </g>
+  </defs>
+
+  <rect width="512" height="512" fill="url(#sky)"/>
+
+  <!-- שלג ברקע -->
+  <g fill="#EAF4FF">
+    <circle cx="40" cy="190" r="5" opacity=".7"/><circle cx="470" cy="70" r="6" opacity=".7"/>
+    <circle cx="200" cy="120" r="4" opacity=".6"/><circle cx="300" cy="40" r="4" opacity=".6"/>
+    <circle cx="455" cy="300" r="4" opacity=".6"/><circle cx="60" cy="300" r="3" opacity=".6"/>
+  </g>
+  <use href="#flake" transform="translate(92 92) scale(1.25)"/>
+  <use href="#flake" transform="translate(196 52) scale(.8)" opacity=".85"/>
+  <use href="#flake" transform="translate(320 96) scale(1)"/>
+  <use href="#flake" transform="translate(462 210) scale(.75)" opacity=".85"/>
+
+  <!-- מגדל הטלוויזיה -->
+  <g transform="translate(420 0)">
+    <rect x="-6" y="18" width="12" height="96" fill="#EAF4FF"/>
+    <g fill="#E24C4B"><rect x="-6" y="26" width="12" height="12"/><rect x="-6" y="50" width="12" height="12"/><rect x="-6" y="74" width="12" height="12"/></g>
+    <rect x="-14" y="110" width="28" height="160" rx="10" fill="#C9D6E6"/>
+    <circle cx="0" cy="140" r="38" fill="#D7E2EF"/>
+    <path d="M-38 140a38 38 0 0 0 76 0" fill="#B6C5D8"/>
+    <rect x="-38" y="134" width="76" height="10" fill="#7C8EA8"/>
+    <g fill="#FFD36E"><circle cx="-24" cy="139" r="3"/><circle cx="-8" cy="139" r="3"/><circle cx="8" cy="139" r="3"/><circle cx="24" cy="139" r="3"/></g>
+  </g>
+
+  <!-- עצים -->
+  <use href="#tree" transform="translate(56 400) scale(1.05)"/>
+  <use href="#tree" transform="translate(458 400) scale(1.05)"/>
+
+  <!-- הדוכן -->
+  <g>
+    <rect x="96" y="222" width="320" height="230" fill="url(#wood)"/>
+    <g stroke="#6B3E26" stroke-width="3" opacity=".5">
+      <path d="M136 222V452M176 222V452M216 222V452M256 222V452M296 222V452M336 222V452M376 222V452"/>
+    </g>
+    <!-- ארובה -->
+    <rect x="128" y="150" width="40" height="70" fill="#8A5233"/>
+    <rect x="120" y="140" width="56" height="18" rx="9" fill="#EAF4FF"/>
+    <path d="M96 240L256 142L416 240V230H96Z" fill="#8F5432"/>
+    <!-- גג -->
+    <path d="M70 248L256 128L442 248" stroke="#EAF4FF" stroke-width="34" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M96 236L256 140L416 236" stroke="#8A5233" stroke-width="10" fill="none" stroke-linejoin="round"/>
+    <!-- נורות -->
+    <path d="M100 262Q178 210 256 166Q334 210 412 262" stroke="#4A2A18" stroke-width="3" fill="none"/>
+    <g>
+      <circle cx="112" cy="256" r="16" fill="url(#bulb)"/><circle cx="144" cy="236" r="16" fill="url(#bulb)"/>
+      <circle cx="176" cy="214" r="16" fill="url(#bulb)"/><circle cx="208" cy="194" r="16" fill="url(#bulb)"/>
+      <circle cx="240" cy="176" r="16" fill="url(#bulb)"/><circle cx="272" cy="176" r="16" fill="url(#bulb)"/>
+      <circle cx="304" cy="194" r="16" fill="url(#bulb)"/><circle cx="336" cy="214" r="16" fill="url(#bulb)"/>
+      <circle cx="368" cy="236" r="16" fill="url(#bulb)"/><circle cx="400" cy="256" r="16" fill="url(#bulb)"/>
+    </g>
+    <!-- שלט -->
+    <rect x="172" y="236" width="168" height="54" rx="12" fill="#F3D9AE" stroke="#7A4426" stroke-width="5"/>
+    <text x="256" y="276" text-anchor="middle" font-family="Rubik, Arial Rounded MT Bold, Arial, sans-serif" font-weight="700" font-size="36" fill="#6B3E26" letter-spacing="2">BERLIN</text>
+    <!-- חלון הדוכן -->
+    <rect x="122" y="330" width="268" height="96" rx="6" fill="url(#shop)"/>
+    <g fill="#FFF3C4" opacity=".8"><circle cx="160" cy="352" r="3"/><circle cx="206" cy="344" r="2.5"/><circle cx="300" cy="350" r="3"/><circle cx="350" cy="342" r="2.5"/><circle cx="250" cy="360" r="2"/></g>
+    <!-- מתנות -->
+    <rect x="140" y="378" width="34" height="36" rx="3" fill="#E24C4B"/><rect x="154" y="378" width="6" height="36" fill="#FFD36E"/>
+    <rect x="180" y="390" width="24" height="24" rx="3" fill="#C23A3A"/>
+    <rect x="320" y="388" width="50" height="26" rx="5" fill="#9B3B2E"/><rect x="320" y="388" width="50" height="7" rx="3" fill="#B84A3A"/>
+    <!-- סוכך מפוספס -->
+    <g>
+      <rect x="108" y="306" width="296" height="22" fill="#E24C4B"/>
+      <g fill="#FFF1DA">
+        <rect x="145" y="306" width="37" height="22"/><rect x="219" y="306" width="37" height="22"/><rect x="293" y="306" width="37" height="22"/><rect x="367" y="306" width="37" height="22"/>
+      </g>
+      <g fill="#E24C4B">
+        <circle cx="126.5" cy="328" r="18.5"/><circle cx="200.5" cy="328" r="18.5"/><circle cx="274.5" cy="328" r="18.5"/><circle cx="348.5" cy="328" r="18.5"/>
+      </g>
+      <g fill="#FFF1DA">
+        <circle cx="163.5" cy="328" r="18.5"/><circle cx="237.5" cy="328" r="18.5"/><circle cx="311.5" cy="328" r="18.5"/><circle cx="385.5" cy="328" r="18.5"/>
+      </g>
+    </g>
+    <!-- דלפק -->
+    <rect x="110" y="420" width="292" height="16" rx="5" fill="#B9774A"/>
+  </g>
+
+  <!-- קרקע מושלגת -->
+  <path d="M0 448Q128 418 256 440T512 436V512H0Z" fill="#EAF4FF"/>
+  <path d="M0 470Q140 452 280 468T512 462" stroke="#CFE2F6" stroke-width="6" fill="none"/>
+</svg>

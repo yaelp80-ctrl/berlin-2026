@@ -1,8 +1,8 @@
 // עובד גם בלי קליטה: שומר את האפליקציה בטלפון
-const VERSION = "berlin-v1";
+const VERSION = "berlin-v2";
 const SHELL = [
   "./", "./index.html", "./app.js", "./data.js", "./art.js", "./manifest.json",
-  "./icons/icon-192.png", "./icons/icon-512.png", "./icons/favicon.png", "./icons/original.png"
+  "./icons/icon-192.png", "./icons/icon-512.png", "./icons/favicon.png", "./icons/header.png"
 ];
 
 self.addEventListener("install", e => {

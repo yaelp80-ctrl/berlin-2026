@@ -11,7 +11,7 @@ window.TRIP = {
     out: { code: "6H255", airline: "ישראייר", date: "2026-12-02", dep: "12:05", arr: "15:30",
            from: "נתב\"ג · טרמינל 3", to: "ברלין BER", bags: "מזוודה 23 ק\"ג + תיק גב לכל אחד", seats: "עוד לא שובצו" },
     back: { code: "BZ271", airline: "Blue Bird", date: "2026-12-09", dep: "14:50", arr: "20:10",
-            from: "ברלין BER · טרמינל 1", to: "נתב\"ג", bags: "מזוודה 20 ק\"ג לכל אחד ⚠️", seats: "יעל 11A (חלון) · נועם 11B" }
+            from: "ברלין BER · טרמינל 1", to: "נתב\"ג", bags: "מזוודה 20 ק\"ג לכל אחד", seats: "יעל 11A (חלון) · נועם 11B" }
   },
   days: [
     {
@@ -54,7 +54,7 @@ window.TRIP = {
           notes: ["להזמין מקום!", "פתוח מ-18:00, סגור בשני"], maps: "MacLaren's Pub Berlin" },
         { id: "d3-pride", title: "שוק חג המולד הלהט\"בי Regenbogen", icon: "🏳️‍🌈",
           notes: ["4 דק' מהפאב"], maps: "Regenbogen Weihnachtsmarkt Berlin" },
-        { id: "d3-books", title: "חנות הספרים", icon: "📚", notes: ["פתוחה עד 20:00"] },
+        { id: "d3-books", title: "חנות הספרים Prinz Eisenherz", icon: "📚", notes: ["פתוחה עד 20:00"], maps: "Prinz Eisenherz Buchladen Berlin" },
         { id: "d3-cafe", title: "בית הקפה רומיאו ורומיאו", icon: "☕", notes: ["פתוח עד 20:00"], maps: "Romeo und Romeo Café Berlin" }
       ]
     },
@@ -114,7 +114,6 @@ window.TRIP = {
     {
       date: "2026-12-09", name: "יום רביעי", title: "חוזרים הביתה", art: "suitcase", transport: "ABC",
       transportNote: "כרטיס ABC בודד לשדה התעופה",
-      tips: ["מזוודה בחזור: 20 ק\"ג בלבד!"],
       items: [
         { id: "d8-checkout", title: "צ'ק-אאוט מהמלון", icon: "🧳" },
         { id: "d8-train", title: "יוצאים לשדה ברכבת", time: "10:50", hard: true, icon: "🚆",
