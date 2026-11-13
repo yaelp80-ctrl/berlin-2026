@@ -24,7 +24,39 @@ $("#me").onclick = askUser;
 // shared.items[id] = { s: "done" | "skip" | null, day: index | null(=רשימת שווה לראות) | undefined(=מקורי), t }
 let shared = LS.get("berlin.shared", { items: {} });
 const saveShared = () => LS.set("berlin.shared", shared);
-const setItem = (id, patch) => { shared.items[id] = { ...(shared.items[id] || {}), ...patch, t: Date.now() }; saveShared(); };
+let pending = LS.get("berlin.pending", {});
+const setItem = (id, patch) => {
+  shared.items[id] = { ...(shared.items[id] || {}), ...patch, t: Date.now() }; saveShared();
+  pending[id] = shared.items[id].t; LS.set("berlin.pending", pending); syncSoon();
+};
+
+/* ---------- סנכרון בין הטלפונים ---------- */
+let syncTimer, syncing = false, lastSync = LS.get("berlin.lastSync", 0);
+const syncSoon = () => { clearTimeout(syncTimer); syncTimer = setTimeout(sync, 1200); };
+async function sync() {
+  if (!window.SYNC_URL || !navigator.onLine || syncing) return;
+  syncing = true; netState();
+  try {
+    const sent = { ...pending }, changes = {};
+    Object.keys(sent).forEach(id => { const st = shared.items[id]; if (st) changes["item:" + id] = { v: { s: st.s ?? null, day: st.day ?? null }, t: st.t }; });
+    const r = Object.keys(changes).length
+      ? await fetch(window.SYNC_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ by: user, changes }) })
+      : await fetch(window.SYNC_URL + "?action=state");
+    const j = await r.json(); if (!j.ok) throw 0;
+    let changed = false;
+    Object.entries(j.data).forEach(([k, row]) => {
+      if (!k.startsWith("item:")) return;
+      const id = k.slice(5), local = shared.items[id];
+      if (!local || row.t > local.t) {
+        shared.items[id] = { s: row.v?.s ?? null, t: row.t }; if (row.v?.day != null) shared.items[id].day = row.v.day;
+        changed = true;
+      }
+    });
+    Object.keys(sent).forEach(id => { if (pending[id] === sent[id]) delete pending[id]; });
+    LS.set("berlin.pending", pending); lastSync = Date.now(); LS.set("berlin.lastSync", lastSync);
+    if (changed) { saveShared(); if (!$("#sheet").classList.contains("on")) renderTrip(); }
+  } catch (e) {} finally { syncing = false; netState(); }
+}
 
 const allItems = [];
 T.days.forEach((d, i) => d.items.forEach(it => allItems.push({ ...it, home: i })));
@@ -298,7 +330,13 @@ document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
 });
 
 /* ---------- רשת ---------- */
-function net() { const on = navigator.onLine; $("#net .dot").classList.toggle("off", !on); $("#net span").textContent = on ? "מחובר" : "בלי קליטה"; if (on) loadWeather(); }
+function netState() {
+  const on = navigator.onLine, waiting = Object.keys(pending).length;
+  $("#net .dot").classList.toggle("off", !on || (window.SYNC_URL && waiting > 0 && !syncing));
+  $("#net span").textContent = !on ? (waiting ? `בלי קליטה · ${waiting} ממתינים` : "בלי קליטה")
+    : syncing ? "מסתנכרן…" : !window.SYNC_URL ? "מחובר" : waiting ? "ממתין לסנכרון" : "מסונכרן";
+}
+function net() { netState(); if (navigator.onLine) { loadWeather(); sync(); } }
 addEventListener("online", net); addEventListener("offline", net);
 
 function renderAll() {
@@ -309,5 +347,7 @@ function renderAll() {
 if (!user) askUser();
 renderAll(); setSky(); draw(); net();
 setInterval(() => { if ($("#v-trip").classList.contains("on") && !$("#sheet").classList.contains("on")) renderTrip(); }, 60000);
+setInterval(() => { if (document.visibilityState === "visible") sync(); }, 30000);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") sync(); });
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
 })();
