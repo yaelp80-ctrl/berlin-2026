@@ -215,6 +215,8 @@ nav button.on span{transform:translateY(-3px) scale(1.12);filter:drop-shadow(0 0
 @keyframes shake{25%{transform:rotate(-10deg) scale(1.05)}75%{transform:rotate(10deg) scale(1.05)}}
 .gift-open{font-size:110px;animation:pop .6s cubic-bezier(.2,1.6,.4,1)}
 @keyframes pop{from{transform:scale(0) rotate(-30deg)}}
+body.guest #wallet{display:none}
+body.guest .item .check,body.guest .item .x,body.guest [data-move]{opacity:.35}
 @media (prefers-reduced-motion:reduce){#sky{display:none}*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -254,9 +256,10 @@ nav button.on span{transform:translateY(-3px) scale(1.12);filter:drop-shadow(0 0
 <div class="who" id="who">
   <img src="icons/header.png" alt="">
   <h2>מי משתמש בטלפון הזה?</h2>
-  <div class="muted">הסימונים בטיול משותפים לשניכם, והמזוודה ותיק הגב אישיים</div>
+  <div class="muted">הסימונים בטיול משותפים לשניכם, והמזוודה ותיק הגב אישיים.<br>אורח יכול לצפות ולשחק, בלי לשנות כלום.</div>
   <button class="btn gold" data-u="yael">יעל</button>
   <button class="btn gold" data-u="noam">נועם</button>
+  <button class="btn" data-u="guest" style="font-size:16px">👀 אורח</button>
 </div>
 
 <script src="config.js"></script>

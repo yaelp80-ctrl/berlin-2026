@@ -11,11 +11,14 @@ const BERLIN = { lat: 52.52, lng: 13.405 };
 
 /* ---------- משתמש ---------- */
 let user = LS.get("berlin.user", null);
-const userName = u => u === "noam" ? "נועם" : "יעל";
+const userName = u => u === "noam" ? "נועם" : u === "guest" ? "אורח" : "יעל";
+const isGuest = () => user === "guest";
+const guestToast = () => toast("👀 במצב אורח אפשר רק לצפות (ולשחק במשחק)");
 function askUser() {
   $("#who").classList.add("on");
   document.querySelectorAll("#who [data-u]").forEach(b => b.onclick = () => {
-    user = b.dataset.u; LS.set("berlin.user", user); $("#who").classList.remove("on"); renderAll();
+    user = b.dataset.u; LS.set("berlin.user", user); $("#who").classList.remove("on");
+    document.body.classList.toggle("guest", isGuest()); window.GAME && window.GAME.userChanged(); renderAll();
   });
 }
 $("#me").onclick = askUser;
@@ -27,6 +30,7 @@ shared.docs = shared.docs || {};
 const saveShared = () => LS.set("berlin.shared", shared);
 let pending = LS.get("berlin.pending", {});
 const setItem = (id, patch) => {
+  if (isGuest()) return guestToast();
   shared.items[id] = { ...(shared.items[id] || {}), ...patch, t: Date.now() }; saveShared();
   pending[id] = shared.items[id].t; LS.set("berlin.pending", pending); syncSoon();
 };
@@ -248,6 +252,12 @@ function getPack(kind) {
   return p;
 }
 function renderPack(kind) {
+  if (isGuest()) {
+    const isS = kind === "suitcase";
+    $("#v-" + kind).innerHTML = `<div class="card"><div class="hd"><div><h2>${isS ? "מה במזוודה" : "מה בתיק הגב"}</h2><div class="muted">👀 תצוגת אורח</div></div>${ART[isS ? "suitcase" : "backpack"]}</div>
+      ${T[kind].map(g => `<div class="grp"><h4>${esc(g.g)}</h4>${g.items.map(t => `<div class="pk"><span>${esc(t)}</span></div>`).join("")}</div>`).join("")}</div>`;
+    return;
+  }
   const p = getPack(kind), all = p.flatMap(g => g.items), on = all.filter(x => x.on).length;
   const isS = kind === "suitcase";
   $("#v-" + kind).innerHTML = `<div class="card"><div class="hd"><div><h2>${isS ? "המזוודה" : "תיק הגב"} של ${userName(user)}</h2>
@@ -302,7 +312,9 @@ function sparkle(el) {
 $("#v-trip").addEventListener("click", e => {
   const t = e.target.closest("button"); if (!t) return;
   const ds = t.dataset;
-  if (ds.day) { selDay = +ds.day; renderTrip(); }
+  if (ds.day) { selDay = +ds.day; renderTrip(); return; }
+  if (isGuest() && (ds.done || ds.skip || ds.move)) return guestToast();
+  if (false) {}
   else if (ds.done) {
     const cur = shared.items[ds.done]?.s === "done";
     setItem(ds.done, { s: cur ? null : "done" }); if (!cur) sparkle(t); setTimeout(renderTrip, cur ? 0 : 250);
@@ -339,13 +351,14 @@ function net() { netState(); if (navigator.onLine) { loadWeather(); sync(); } }
 addEventListener("online", net); addEventListener("offline", net);
 
 function renderAll() {
-  $("#me").textContent = user ? (user === "noam" ? "🐍 נועם" : "🌟 יעל") : "מי אני?";
+  $("#me").textContent = user ? (user === "noam" ? "🐍 נועם" : user === "guest" ? "👀 אורח" : "🌟 יעל") : "מי אני?";
+  document.body.classList.toggle("guest", isGuest());
   renderTrip(); if (user) { renderPack("suitcase"); renderPack("backpack"); } renderSoon();
 }
 
 const getDoc = k => shared.docs[k]?.v;
-const setDoc = (k, v) => { shared.docs[k] = { v, t: Date.now() }; saveShared(); pending["doc:" + k] = shared.docs[k].t; LS.set("berlin.pending", pending); syncSoon(); };
-window.APP = { sheet, closeSheet, toast: m => toast(m), getItem: id => shared.items[id], setItem, getDoc, setDoc };
+const setDoc = (k, v) => { if (isGuest()) return; shared.docs[k] = { v, t: Date.now() }; saveShared(); pending["doc:" + k] = shared.docs[k].t; LS.set("berlin.pending", pending); syncSoon(); };
+window.APP = { sheet, closeSheet, toast: m => toast(m), getItem: id => shared.items[id], setItem, getDoc, setDoc, isGuest, guestToast };
 if (!user) askUser();
 renderAll(); setSky(); draw(); net();
 setInterval(() => { if ($("#v-trip").classList.contains("on") && !$("#sheet").classList.contains("on")) renderTrip(); }, 60000);

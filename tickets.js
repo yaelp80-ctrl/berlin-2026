@@ -112,12 +112,12 @@ async function flightSheet(which) {
   window.APP.sheet(`<h2>✈️ ${f.code} · ${f.airline}</h2><div class="muted">${f.date.split("-").reverse().slice(0, 2).map(Number).join(".")}</div>
     <div class="flight"><div><b>${f.dep}</b>${esc(f.from)}</div><div style="font-size:26px;display:inline-block;transform:scaleX(-1)">✈︎</div><div><b>${f.arr}</b>${esc(f.to)}</div></div>
     <dl class="kv"><dt>מזוודות</dt><dd>${esc(f.bags)}</dd>
-      <dt>מספר הזמנה</dt><dd><input id="bk" class="inp" inputmode="numeric" placeholder="להקליד (נשמר רק בטלפון)" value="${esc(bookingGet(f.code))}"></dd>
+      ${window.APP.isGuest() ? "" : `<dt>מספר הזמנה</dt><dd><input id="bk" class="inp" inputmode="numeric" placeholder="להקליד (נשמר רק בטלפון)" value="${esc(bookingGet(f.code))}"></dd>`}
       <dt>סטטוס</dt><dd id="fst">${statusLine(f, readStatus(f.code)) || `<span class="muted">בודק…</span>`}</dd></dl>
     <div class="acts" style="margin-top:14px">
-      <button class="btn gold" data-tk="${f.ticket}">🎟️ ${has ? "כרטיס" : "להעלות כרטיס"}</button>
+      ${window.APP.isGuest() ? "" : `<button class="btn gold" data-tk="${f.ticket}">🎟️ ${has ? "כרטיס" : "להעלות כרטיס"}</button>`}
       <button class="btn" id="frefresh">🔄 לבדוק סטטוס</button></div>`);
-  $("#bk").oninput = e => bookingSet(f.code, e.target.value.trim());
+  $("#bk") && ($("#bk").oninput = e => bookingSet(f.code, e.target.value.trim()));
   const upd = async force => { const st = await fetchStatus(f, force); $("#fst") && ($("#fst").innerHTML = statusLine(f, st) || `<span class="muted">${window.SYNC_URL ? "אין נתון כרגע" : "לא מחובר לשרת"}</span>`); };
   $("#frefresh").onclick = () => upd(true); upd(false);
 }
@@ -137,6 +137,7 @@ async function wallet() {
 /* ---------- לחיצה על כפתור כרטיס ---------- */
 async function ticketTap(key) {
   const t = T.tickets[key];
+  if (window.APP.isGuest() && !t.flight) return window.APP.guestToast();
   if (t.flight) return flightSheet(t.flight);
   if (await DB.get(key)) return openViewer(key);
   if (key === "graffiti") return wallet();
@@ -147,7 +148,7 @@ async function ticketTap(key) {
 
 document.addEventListener("click", async e => {
   const b = e.target.closest("[data-tk],[data-up],[data-open],[data-rm],#wallet"); if (!b) return;
-  if (b.id === "wallet") return wallet();
+  if (b.id === "wallet") return window.APP.isGuest() ? window.APP.guestToast() : wallet();
   const d = b.dataset;
   if (d.tk) { e.stopPropagation(); return ticketTap(d.tk); }
   if (d.open) { window.APP.closeSheet(); return openViewer(d.open); }

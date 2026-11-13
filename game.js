@@ -42,11 +42,16 @@ const REWARDS = ["s1", "santa", "lights", "tree", "scarf", "snowman", "gifts", "
 
 /* ---------- מצב (משותף, נשמר גם בשרת) ---------- */
 const blank = () => ({ queue: [], done: [], score: 0, streak: 0, best: 0, names: {}, wear: {}, hidden: [], seen: 0 });
-let S = Object.assign(blank(), window.APP.getDoc("game") || {});
 const FV = window.FACTS_VERSION || 1;
-if (S.fv !== FV) { S.queue = []; S.done = []; S.score = 0; S.streak = 0; S.fv = FV; }
+function load() {
+  // אורח: משחק משלו, רק בזיכרון – מתאפס ביציאה
+  const st = Object.assign(blank(), window.APP.isGuest() ? {} : (window.APP.getDoc("game") || {}));
+  if (st.fv !== FV) { st.queue = []; st.done = []; st.score = 0; st.streak = 0; st.fv = FV; }
+  return st;
+}
+let S = load();
 let saveT;
-const save = () => { clearTimeout(saveT); saveT = setTimeout(() => window.APP.setDoc("game", S), 400); };
+const save = () => { if (window.APP.isGuest()) return; clearTimeout(saveT); saveT = setTimeout(() => window.APP.setDoc("game", S), 400); };
 function fillQueue() {
   const have = new Set([...S.queue, ...S.done]);
   const add = []; for (let i = 0; i < F.length; i++) if (!have.has(i)) add.push(i);
@@ -118,6 +123,7 @@ function header() {
     <button class="chip ${tab === "terra" ? "on" : ""}" data-gt="terra">🐍 הטרריום</button></div>
     <div class="gstats"><div><b>${d}</b><span>מתוך ${total}</span></div><div><b>${S.score}</b><span>נקודות</span></div><div><b>${S.streak}🔥</b><span>רצף</span></div></div>
     ${e < REWARDS.length ? `<div class="prog"><i style="width:${(10 - toNext) * 10}%"></i></div><div class="muted" style="margin-top:4px">🎁 עוד ${toNext} תשובות נכונות לפרס הבא</div>` : `<div class="muted">🏆 אספת את כל הפרסים!</div>`}
+    ${window.APP.isGuest() ? `<div class="muted" style="font-size:12px;margin-top:4px">👀 משחק אורח – ההתקדמות מתאפסת ביציאה</div>` : ""}
     ${total < 500 ? `<div class="muted" style="font-size:12px;margin-top:4px">עוד עובדות בדרך – בסוף יהיו 500</div>` : ""}</div>`;
 }
 function playView() {
@@ -242,6 +248,7 @@ document.addEventListener("click", e => {
 render();
 window.GAME = {
   render,
-  onRemote() { const r = window.APP.getDoc("game"); if (r && r.fv === FV) { S = Object.assign(blank(), r); fillQueue(); if (phase === "ask") render(); } }
+  userChanged() { S = load(); fillQueue(); phase = "ask"; tab = "play"; render(); },
+  onRemote() { if (window.APP.isGuest()) return; const r = window.APP.getDoc("game"); if (r && r.fv === FV) { S = Object.assign(blank(), r); fillQueue(); if (phase === "ask") render(); } }
 };
 })();
