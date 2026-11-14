@@ -66,13 +66,15 @@ const has = k => unlocked().includes(k);
 let tab = "play", phase = "ask", last = null;
 
 /* ---------- ציור נחש ---------- */
+const SLITHER = c => `<animate attributeName="d" dur="${2.6 + c.x % 3 * .4}s" repeatCount="indefinite" calcMode="spline" keySplines=".45 0 .55 1;.45 0 .55 1"
+  values="M-50 18 Q-30 -6 -8 14 T34 10;M-50 12 Q-30 26 -8 6 T34 10;M-50 18 Q-30 -6 -8 14 T34 10"/>`;
 function snakeSVG(id) {
   const c = SNAKES[id], wear = S.wear[id] || [];
   const W = k => wear.includes(k);
-  return `<g class="snake" data-snake="${id}" transform="translate(${c.x} ${c.y}) scale(${c.flip ? -c.scale : c.scale} ${c.scale})"><g class="mv"><g class="idle" style="animation-delay:-${(c.x % 7) / 2}s">
+  return `<g class="snake" data-snake="${id}" transform="translate(${c.x} ${c.y}) scale(${c.flip ? -c.scale : c.scale} ${c.scale})"><g class="mv"><g class="walk" style="animation-delay:-${(c.x % 9) / 2}s;animation-duration:${7 + c.x % 5}s"><g class="idle" style="animation-delay:-${(c.x % 7) / 2}s">
    <g class="sbody">
-    <path d="M-50 18 Q-30 -6 -8 14 T34 10" stroke="${c.color}" stroke-width="18" fill="none" stroke-linecap="round"/>
-    <path d="M-50 18 Q-30 -6 -8 14 T34 10" stroke="${c.belly}" stroke-width="4" stroke-dasharray="1 9" fill="none" stroke-linecap="round" opacity=".8"/>
+    <path d="M-50 18 Q-30 -6 -8 14 T34 10" stroke="${c.color}" stroke-width="18" fill="none" stroke-linecap="round">${SLITHER(c)}</path>
+    <path d="M-50 18 Q-30 -6 -8 14 T34 10" stroke="${c.belly}" stroke-width="4" stroke-dasharray="1 9" fill="none" stroke-linecap="round" opacity=".8">${SLITHER(c)}</path>
     ${W("scarf") ? `<path d="M28 4 q8 10 16 2" stroke="#E24C4B" stroke-width="7" fill="none" stroke-linecap="round"/><rect x="30" y="8" width="5" height="12" rx="2" fill="#E24C4B"/>` : ""}
     ${W("rainbow") ? `<g stroke-width="3" fill="none" stroke-linecap="round"><path d="M28 2 q8 10 16 2" stroke="#E40303"/><path d="M28 5 q8 10 16 2" stroke="#FF8C00"/><path d="M28 8 q8 10 16 2" stroke="#FFED00"/><path d="M28 11 q8 10 16 2" stroke="#008026"/><path d="M28 14 q8 10 16 2" stroke="#004DFF"/></g>` : ""}
     ${W("bell") ? `<circle cx="38" cy="14" r="4" fill="#FFD36E" stroke="#B8860B"/>` : ""}
@@ -80,9 +82,12 @@ function snakeSVG(id) {
    </g>
    <g class="shead" transform="translate(40 -4)">
     <ellipse cx="0" cy="0" rx="15" ry="12" fill="${c.color}"/>
-    <circle cx="-4" cy="-4" r="4" fill="#fff"/><circle cx="6" cy="-4" r="4" fill="#fff"/>
+    <g class="eyes"><circle cx="-4" cy="-4" r="4" fill="#fff"/><circle cx="6" cy="-4" r="4" fill="#fff"/>
     <circle class="pupil" cx="-3.5" cy="-3.5" r="2" fill="#1B2440"/><circle class="pupil" cx="6.5" cy="-3.5" r="2" fill="#1B2440"/>
-    <path d="M-2 5 q4 3 8 0" stroke="#1B2440" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+    <rect class="lid" x="-9" y="-9" width="20" height="0" fill="${c.color}"/></g>
+    <g class="happy"><path d="M-8 -3 q4 -5 8 0 M2 -3 q4 -5 8 0" stroke="#1B2440" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <path d="M-4 3 q6 8 12 0z" fill="#B5302F"/><circle cx="-9" cy="3" r="2.4" fill="#FF8FB1" opacity=".8"/><circle cx="12" cy="3" r="2.4" fill="#FF8FB1" opacity=".8"/></g>
+    <path class="smile" d="M-2 5 q4 3 8 0" stroke="#1B2440" stroke-width="1.4" fill="none" stroke-linecap="round"/>
     <path class="tongue" d="M14 3 h8 l3 -3 M22 3 l3 3" stroke="#E24C4B" stroke-width="1.8" fill="none" stroke-linecap="round"/>
     ${W("glasses") ? `<g stroke="#1B2440" stroke-width="1.5" fill="rgba(255,255,255,.2)"><circle cx="-4" cy="-4" r="5"/><circle cx="6" cy="-4" r="5"/><path d="M1 -4h0"/></g>` : ""}
     ${W("headband") ? `<rect x="-14" y="-11" width="28" height="5" rx="2" fill="#fff"/><circle cx="1" cy="-8.5" r="2" fill="#E24C4B"/><path d="M-14 -9 l-8 4 M-14 -8 l-7 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>` : ""}
@@ -91,7 +96,7 @@ function snakeSVG(id) {
     ${W("beanie") ? `<path d="M-13 -7 Q0 -26 13 -7z" fill="#1E5AA8"/><rect x="-14" y="-9" width="28" height="5" rx="2" fill="#EAF4FF"/><circle cx="0" cy="-20" r="4.5" fill="#EAF4FF"/>` : ""}
     ${W("santa") ? `<path d="M-13 -8 Q0 -12 13 -8 L4 -30 Z" fill="#E24C4B"/><rect x="-14" y="-11" width="28" height="5" rx="2.5" fill="#fff"/><circle cx="5" cy="-31" r="4" fill="#fff"/>` : ""}
     ${W("crown") ? `<path d="M-10 -9 l0 -12 l6 6 l4 -9 l4 9 l6 -6 l0 12 z" fill="#FFD36E" stroke="#B8860B"/>` : ""}
-   </g></g></g></g>`;
+   </g></g></g></g></g>`;
 }
 
 /* ---------- הטרריום ---------- */
@@ -142,11 +147,17 @@ function playView() {
 }
 function terraView() {
   const u = unlocked(), snakes = Object.keys(SNAKES).filter(k => u.includes(k));
-  const decos = u.filter(k => ACC[k] && !ACC[k].w);
+  const decos = u.filter(k => ACC[k] && !ACC[k].w), wears = u.filter(k => ACC[k] && ACC[k].w);
   const next = REWARDS[earned()];
+  const nm = k => esc(S.names[k] || SNAKES[k].label);
   return `<div class="card">${terrariumSVG()}
-    <div class="muted" style="text-align:center;font-size:13px;margin-top:6px">${snakes.length ? "לגעת בנחש כדי להלביש אותו 👆" + (u.includes("mistletoe") && snakes.includes("s2") ? " · לגעת בדבקון 💋" : "") : "🥚 הביצה תבקע אחרי 10 תשובות נכונות"}</div></div>
-    ${decos.length ? `<h3>✨ קישוטים</h3><div class="card"><div class="chips">${decos.map(k => `<button class="chip ${S.hidden.includes(k) ? "" : "on"}" data-deco="${k}">${ACC[k].e} ${esc(ACC[k].n)}</button>`).join("")}</div></div>` : ""}
+    <div class="muted" style="text-align:center;font-size:13px;margin-top:6px">${snakes.length ? "לגעת בנחש כדי לדגדג אותו 😆" + (u.includes("mistletoe") && snakes.includes("s2") ? " · לגעת בדבקון 💋" : "") : "🥚 הביצה תבקע אחרי 10 תשובות נכונות"}</div></div>
+    ${snakes.length ? `<div class="card"><h3 style="margin-top:0">👗 הארון והקישוטים</h3>
+      ${snakes.map(k => `<div class="wrow"><div class="wname">${nm(k)} <button class="mini" data-rename="${k}">✏️</button></div>
+        ${wears.length ? `<div class="chips">${wears.map(w => `<button class="chip ${(S.wear[k] || []).includes(w) ? "on" : ""}" data-wear="${w}" data-who="${k}">${ACC[w].e} ${esc(ACC[w].n)}</button>`).join("")}</div>`
+          : `<div class="muted" style="font-size:13px">עוד אין בגדים – הם מגיעים כפרסים 🎁</div>`}</div>`).join("")}
+      ${decos.length ? `<div class="wrow"><div class="wname">✨ קישוטים לטרריום</div><div class="chips">${decos.map(d => `<button class="chip ${S.hidden.includes(d) ? "" : "on"}" data-deco="${d}">${ACC[d].e} ${esc(ACC[d].n)}</button>`).join("")}</div></div>` : ""}
+    </div>` : ""}
     ${next ? `<div class="card" style="text-align:center"><div class="muted">הפרס הבא</div><div style="font-size:34px">🎁</div><div class="muted">${SNAKES[next] ? "מישהו חדש מגיע… 🥚" : "הפתעה!"}</div></div>` : ""}`;
 }
 function render() {
@@ -215,6 +226,21 @@ function wardrobe(id) {
     <div style="margin-top:14px"><button class="btn" data-rename="${id}">✏️ לשנות שם</button></div>`);
 }
 
+/* ---------- דגדוג ---------- */
+const LAUGHS = ["חי חי חי!", "חחח זה מדגדג!", "הי הי הי 😆", "די! חחח", "עוד! חי חי"];
+function tickle(el, id) {
+  if (el.classList.contains("tickle")) return;
+  el.classList.add("tickle");
+  if (navigator.vibrate) navigator.vibrate([20, 40, 20, 40, 20]);
+  const svg = document.querySelector(".terra"), c = SNAKES[id];
+  const headX = c.x + (c.flip ? -40 : 40) * c.scale, headY = c.y - 22 * c.scale;
+  const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  t.textContent = LAUGHS[Math.floor(Math.random() * LAUGHS.length)];
+  t.setAttribute("x", Math.max(40, Math.min(320, headX))); t.setAttribute("y", headY - 8); t.setAttribute("text-anchor", "middle");
+  t.setAttribute("class", "laugh"); t.setAttribute("direction", "rtl"); t.setAttribute("unicode-bidi", "plaintext"); svg.appendChild(t);
+  setTimeout(() => { el.classList.remove("tickle"); t.remove(); }, 1500);
+}
+
 /* ---------- נשיקה מתחת לדבקון ---------- */
 function kiss() {
   const a = document.querySelector('[data-snake="s1"]'), b = document.querySelector('[data-snake="s2"]');
@@ -240,9 +266,9 @@ document.addEventListener("click", e => {
   else if (d.next) { phase = "ask"; render(); scrollTo({ top: 0, behavior: "smooth" }); }
   else if (d.deco) { const k = d.deco; S.hidden = S.hidden.includes(k) ? S.hidden.filter(x => x !== k) : [...S.hidden, k]; save(); render(); }
   else if (d.kiss) kiss();
-  else if (d.snake) { t.classList.remove("wiggle"); void t.getBBox(); t.classList.add("wiggle"); setTimeout(() => wardrobe(d.snake), 450); }
-  else if (d.wear) { const who = d.who, cur = S.wear[who] || []; S.wear[who] = cur.includes(d.wear) ? cur.filter(x => x !== d.wear) : [...cur, d.wear]; save(); render(); wardrobe(who); }
-  else if (d.rename) { const n = prompt("שם חדש:", S.names[d.rename] || ""); if (n && n.trim()) { S.names[d.rename] = n.trim().slice(0, 14); save(); } window.APP.closeSheet(); render(); }
+  else if (d.snake) tickle(t, d.snake);
+  else if (d.wear) { const who = d.who, cur = S.wear[who] || []; S.wear[who] = cur.includes(d.wear) ? cur.filter(x => x !== d.wear) : [...cur, d.wear]; save(); render(); }
+  else if (d.rename) { const n = prompt("שם חדש:", S.names[d.rename] || ""); if (n && n.trim()) { S.names[d.rename] = n.trim().slice(0, 14); save(); } render(); }
 });
 
 render();

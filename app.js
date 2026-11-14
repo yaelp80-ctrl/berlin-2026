@@ -249,6 +249,14 @@ function packKey(kind) { return `berlin.pack.${user}.${kind}`; }
 function getPack(kind) {
   let p = LS.get(packKey(kind), null);
   if (!p) { p = T[kind].map(g => ({ g: g.g, items: g.items.map((t, i) => ({ id: g.g + i, t, on: false })) })); LS.set(packKey(kind), p); }
+  // פריטים חדשים שנוספו לרשימה אחרי שכבר נשמרה בטלפון
+  const added = LS.get("berlin.packAdded." + user + "." + kind, []);
+  [["suitcase", "אוכל", "ערכת תה"]].forEach(([k, g, t]) => {
+    if (k !== kind || added.includes(t)) return;
+    let grp = p.find(x => x.g === g); if (!grp) { grp = { g, items: [] }; p.push(grp); }
+    if (!grp.items.some(x => x.t === t)) grp.items.push({ id: "n-" + t, t, on: false });
+    added.push(t); LS.set("berlin.packAdded." + user + "." + kind, added); LS.set(packKey(kind), p);
+  });
   return p;
 }
 function renderPack(kind) {
@@ -359,7 +367,14 @@ function renderAll() {
 const getDoc = k => shared.docs[k]?.v;
 const setDoc = (k, v) => { if (isGuest()) return; shared.docs[k] = { v, t: Date.now() }; saveShared(); pending["doc:" + k] = shared.docs[k].t; LS.set("berlin.pending", pending); syncSoon(); };
 window.APP = { sheet, closeSheet, toast: m => toast(m), getItem: id => shared.items[id], setItem, getDoc, setDoc, isGuest, guestToast };
-if (!user) askUser();
+/* ---------- מסך פתיחה עם דגל ברלין ---------- */
+(function splash() {
+  const sp = $("#splash"); if (!sp) { if (!user) askUser(); return; }
+  const N = 24, W = 260, H = 156, img = "url(icons/berlin-flag.svg)";
+  $("#bflag").innerHTML = Array.from({ length: N }, (_, i) =>
+    `<i style="background-image:${img};background-size:${W}px ${H}px;background-position:${-i * W / N}px 0;animation-delay:${-i * 0.11}s"></i>`).join("");
+  $("#sp-go").onclick = () => { sp.classList.add("out"); setTimeout(() => sp.remove(), 550); if (!user) askUser(); };
+})();
 renderAll(); setSky(); draw(); net();
 setInterval(() => { if ($("#v-trip").classList.contains("on") && !$("#sheet").classList.contains("on")) renderTrip(); }, 60000);
 setInterval(() => { if (document.visibilityState === "visible") sync(); }, 30000);
