@@ -217,6 +217,18 @@ nav button.on span{transform:translateY(-3px) scale(1.12);filter:drop-shadow(0 0
 @keyframes pop{from{transform:scale(0) rotate(-30deg)}}
 body.guest #wallet{display:none}
 body.guest .item .check,body.guest .item .x,body.guest [data-move]{opacity:.35}
+nav button{font-size:11px}
+.tool h3{margin-top:4px}
+.cur{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center}
+.cur input{width:100%;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.08);color:var(--text);padding:12px;font:inherit;font-size:20px;text-align:center}
+.phg{margin:16px 0 2px;font-size:15px;color:var(--gold);font-weight:normal}
+.ph{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.ph b{font-family:var(--head);direction:ltr;display:block;text-align:right}
+.ph small{color:var(--muted)}
+.em{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.em .big{font-family:var(--head);font-size:26px;color:var(--gold);min-width:60px;text-align:center}
+.anthem{margin:4px 0 8px}
+.anthem summary{cursor:pointer;color:var(--gold);padding:6px 0}
 @media (prefers-reduced-motion:reduce){#sky{display:none}*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -237,6 +249,7 @@ body.guest .item .check,body.guest .item .x,body.guest [data-move]{opacity:.35}
   <section class="view" id="v-suitcase"></section>
   <section class="view" id="v-backpack"></section>
   <section class="view" id="v-xmas"></section>
+  <section class="view" id="v-tools"></section>
   <section class="view" id="v-game"></section>
 </main>
 
@@ -245,6 +258,7 @@ body.guest .item .check,body.guest .item .x,body.guest [data-move]{opacity:.35}
   <button data-v="suitcase"><span>🧳</span>מזוודה</button>
   <button data-v="backpack"><span>🎒</span>תיק גב</button>
   <button data-v="xmas"><span>🎄</span>חג המולד</button>
+  <button data-v="tools"><span>💡</span>שימושי</button>
   <button data-v="game"><span>🐍</span>אמת או בלוף</button>
 </nav>
 
@@ -271,5 +285,6 @@ body.guest .item .check,body.guest .item .x,body.guest [data-move]{opacity:.35}
 <script src="app.js"></script>
 <script src="facts.js"></script>
 <script src="game.js"></script>
+<script src="tools.js"></script>
 </body>
 </html>
