@@ -31,7 +31,7 @@ const GROUPS = [
   ["🍽️ במסעדה ובשוק", [
     ["כמה זה עולה?", "Wie viel kostet das?", "וִי פִיל קוֹסטֶט דַּאס?"], ["הייתי רוצה…", "Ich hätte gern…", "אִיך הֶטֶה גֶרן…"],
     ["אחד / שניים, בבקשה", "Eins / Zwei, bitte", "אַיינס / צְוַוי, בִּיטֶה"], ["מים, בבקשה", "Ein Wasser, bitte", "אַיין וַואסֶר, בִּיטֶה"],
-    ["בלי בשר, בבקשה", "Ohne Fleisch, bitte", "אוֹנֶה פְלַיישׁ, בִּיטֶה"], ["לקחת (טייק אוויי)", "Zum Mitnehmen", "צוּם מִיטנֵימֶן"],
+    ["בלי בשר, בבקשה", "Ohne Fleisch, bitte", "אוֹנֶה פְלַיישׁ, בִּיטֶה"], ["ללא גלוטן, בבקשה", "Glutenfrei, bitte", "גְלוּטֶנפרַיי, בִּיטֶה"], ["לקחת (טייק אוויי)", "Zum Mitnehmen", "צוּם מִיטנֵימֶן"],
     ["אפשר לשלם בכרטיס?", "Kann ich mit Karte zahlen?", "קַאן אִיך מִיט קַארטֶה צָאלֶן?"], ["החשבון, בבקשה", "Die Rechnung, bitte", "דִּי רֶכנוּנג, בִּיטֶה"],
     ["טעים מאוד!", "Sehr lecker!", "זֶר לֶקֶר!"]]],
   ["🚇 התמצאות ותחבורה", [
@@ -70,13 +70,13 @@ function render() {
 
   <div class="card tool"><h3>🎵 מוזיקה גרמנית</h3>
     <div class="em" style="border-top:0"><div class="big">🇩🇪</div><div style="flex:1"><b>ההמנון הגרמני</b><div class="muted" style="font-size:13px">הבית השלישי של "שיר הגרמנים" · מנגינה: יוזף היידן</div></div>
-      <a class="btn gold" target="_blank" rel="noopener" href="https://www.bundesregierung.de/breg-de/schwerpunkte/die-nationalhymne-der-bundesrepublik-deutschland-461412">▶️ להשמיע</a></div>
+      <a class="btn gold" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=Deutsche+Nationalhymne+Einigkeit+und+Recht+und+Freiheit">▶️ להשמיע</a></div>
     <details class="anthem"><summary>📜 המילים והתרגום</summary>
       ${ANTHEM.map(([de, he]) => `<div class="ph" style="grid-template-columns:1fr"><div><b>${esc(de)}</b><small>${esc(he)}</small></div></div>`).join("")}
       <button class="btn" data-anthem="1" style="margin-top:8px">🔊 להקריא את המילים</button></details>
     <div class="em"><div class="big">🎤</div><div style="flex:1"><b>אירוויזיון 2006: "No No Never"</b><div class="muted" style="font-size:13px">Texas Lightning · השיר שגרמניה שלחה לאירוויזיון באתונה</div></div>
       <a class="btn gold" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=Texas+Lightning+No+No+Never+Eurovision+2006">▶️ להשמיע</a></div>
-    <div class="muted" style="font-size:12px;margin-top:6px">ההמנון נפתח באתר ממשלת גרמניה, והשיר ביוטיוב – צריך קליטה.</div></div>
+    <div class="muted" style="font-size:12px;margin-top:6px">שניהם נפתחים ביוטיוב – צריך קליטה.</div></div>
 
   <div class="card tool"><h3>🗣️ ביטויים בגרמנית</h3><div class="muted" style="font-size:13px">לוחצים על 🔊 כדי לשמוע איך אומרים</div>
     ${(() => { let i = 0; return GROUPS.map(g => `<h4 class="phg">${g[0]}</h4>` + g[1].map(p => `<div class="ph"><div><small>${esc(p[0])}</small><b>${esc(p[1])}</b><small>${esc(p[2])}</small></div>
