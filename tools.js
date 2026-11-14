@@ -15,7 +15,6 @@ async function loadRate() {
 
 const GROUPS = [
   ["💛 המשפטים שלנו", [
-    ["קוראים לי נועם", "Ich heiße Noam", "אִיך הַייסֶה נוֹ-עַם", "Ich heiße No. Am."],
     ["שם הבמה שלי הוא Kay", "Mein Künstlername ist Kay", "מַיין קִינסטלֶרנָאמֶה אִיסט קֵיי"],
     ["אני אוהב בעלי חיים, יש לי בבית שני כלבים ושני נחשים", "Ich liebe Tiere. Ich habe zu Hause zwei Hunde und zwei Schlangen.", "אִיך לִיבֶּה טִירֶה. אִיך הַאבֶּה צוּ הַאוּזֶה צְוַוי הוּנדֶה אוּנט צְוַוי שְׁלַאנגֶן"],
     ["נא לפנות אליי בלשון זכר", "Meine Pronomen sind er/ihm", "מַיינֶה פּרוֹנוֹמֶן זִינט אֶר/אִים"],
@@ -96,7 +95,7 @@ function render() {
   const e = $("#eur"), s = $("#ils");
   e.oninput = () => { const x = parseFloat(e.value); s.value = isNaN(x) ? "" : (x * rate.v).toFixed(2); };
   s.oninput = () => { const x = parseFloat(s.value); e.value = isNaN(x) ? "" : (x / rate.v).toFixed(2); };
-  v.querySelectorAll("[data-say]").forEach(b => b.onclick = () => { const p = PHRASES[+b.dataset.say]; speak(p[3] || p[1]); });
+  v.querySelectorAll("[data-say]").forEach(b => b.onclick = () => { const p = PHRASES[+b.dataset.say]; speak(p[1]); });
   const an = v.querySelector("[data-anthem]"); if (an) an.onclick = () => speak(ANTHEM.map(x => x[0]).join(" "));
 }
 render(); loadRate();

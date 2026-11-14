@@ -71,7 +71,7 @@ const SLITHER = c => `<animate attributeName="d" dur="${2.6 + c.x % 3 * .4}s" re
 function snakeSVG(id) {
   const c = SNAKES[id], wear = S.wear[id] || [];
   const W = k => wear.includes(k);
-  return `<g class="snake" data-snake="${id}" transform="translate(${c.x} ${c.y}) scale(${c.flip ? -c.scale : c.scale} ${c.scale})"><g class="mv"><g class="walk" style="animation-delay:-${(c.x % 9) / 2}s;animation-duration:${7 + c.x % 5}s"><g class="idle" style="animation-delay:-${(c.x % 7) / 2}s">
+  return `<g class="snake" data-snake="${id}" transform="translate(${ROAM[id] ? ROAM[id].x.toFixed(1) : c.x} ${c.y}) scale(${(ROAM[id] ? ROAM[id].dir : c.flip ? -1 : 1) * c.scale} ${c.scale})"><g class="mv"><g class="walk"><g class="idle" style="animation-delay:-${(c.x % 7) / 2}s">
    <g class="sbody">
     <path d="M-50 18 Q-30 -6 -8 14 T34 10" stroke="${c.color}" stroke-width="18" fill="none" stroke-linecap="round">${SLITHER(c)}</path>
     <path d="M-50 18 Q-30 -6 -8 14 T34 10" stroke="${c.belly}" stroke-width="4" stroke-dasharray="1 9" fill="none" stroke-linecap="round" opacity=".8">${SLITHER(c)}</path>
@@ -114,7 +114,7 @@ function terrariumSVG() {
     ${show("mistletoe") ? `<g class="mistle" data-kiss="1"><line x1="180" y1="12" x2="180" y2="62" stroke="#B5302F" stroke-width="2"/><path d="M180 62 q-16 -4 -20 8 q14 2 20 -8 q16 -4 20 8 q-14 2 -20 -8" fill="#2E8B57"/><circle cx="176" cy="70" r="3" fill="#fff"/><circle cx="184" cy="70" r="3" fill="#fff"/><path d="M174 58 q6 -6 12 0" stroke="#E24C4B" stroke-width="4" fill="none"/></g>` : ""}
     ${decor.map(k => `<text class="deco" x="${ACC[k].x}" y="${ACC[k].y + ACC[k].s}" font-size="${ACC[k].s}">${ACC[k].e}</text>`).join("")}
     ${snakes.map(snakeSVG).join("")}
-    ${snakes.map(k => S.names[k] ? `<text class="sname" x="${SNAKES[k].x}" y="${SNAKES[k].y + 34 * SNAKES[k].scale + 8}" text-anchor="middle">${esc(S.names[k])}</text>` : "").join("")}
+    ${snakes.map(k => S.names[k] ? `<text class="sname" data-name="${k}" x="${SNAKES[k].x}" y="${SNAKES[k].y + 34 * SNAKES[k].scale + 8}" text-anchor="middle">${esc(S.names[k])}</text>` : "").join("")}
     ${show("snowmachine") || show("globe") ? `<g class="tsnow">${Array.from({ length: 22 }, (_, i) => `<circle cx="${12 + (i * 47) % 336}" cy="${-10 - (i * 23) % 120}" r="${1.5 + (i % 3)}" fill="#fff" style="animation-delay:${(i * .37) % 4}s;animation-duration:${4 + (i % 4)}s"/>`).join("")}</g>` : ""}
     ${!snakes.length ? `<g transform="translate(180 194)"><g class="egg"><ellipse rx="22" ry="28" fill="#F6E3C0" stroke="#D9B98A" stroke-width="2"/><circle cx="-6" cy="-6" r="4" fill="#E9CFA0"/><circle cx="8" cy="6" r="5" fill="#E9CFA0"/></g></g>` : ""}
     <path d="M14 18 Q20 120 14 250" stroke="#fff" stroke-width="3" opacity=".25" fill="none"/>
@@ -226,6 +226,34 @@ function wardrobe(id) {
     <div style="margin-top:14px"><button class="btn" data-rename="${id}">✏️ לשנות שם</button></div>`);
 }
 
+/* ---------- שיטוט בטרריום ---------- */
+const ROAM = {}; let roamFreeze = 0, roamT = 0;
+Object.entries(SNAKES).forEach(([k, c], i) => ROAM[k] = { x: c.x, dir: c.flip ? -1 : 1, v: (c.scale < 1 ? 26 : 18) + i * 3, wait: 0 });
+function placeSnakes() {
+  document.querySelectorAll(".terra [data-snake]").forEach(el => {
+    const k = el.dataset.snake, c = SNAKES[k], r = ROAM[k];
+    el.setAttribute("transform", `translate(${r.x.toFixed(1)} ${c.y}) scale(${r.dir * c.scale} ${c.scale})`);
+    const n = document.querySelector(`.terra [data-name="${k}"]`); if (n) n.setAttribute("x", r.x.toFixed(1));
+  });
+}
+function roamStep(ts) {
+  const dt = Math.min(.05, roamT ? (ts - roamT) / 1000 : 0); roamT = ts;
+  if (Date.now() > roamFreeze && document.querySelector(".terra [data-snake]")) {
+    document.querySelectorAll(".terra [data-snake]").forEach(el => {
+      const k = el.dataset.snake, c = SNAKES[k], r = ROAM[k];
+      if (el.classList.contains("tickle")) return;
+      if (r.wait > 0) { r.wait -= dt; return; }
+      const min = 14 + 58 * c.scale, max = 346 - 58 * c.scale;
+      r.x += r.dir * r.v * dt;
+      if (r.x <= min || r.x >= max) { r.x = Math.max(min, Math.min(max, r.x)); r.dir *= -1; r.wait = .4 + Math.random() * .8; }
+      else if (Math.random() < dt * .12) { r.wait = .6 + Math.random() * 1.6; if (Math.random() < .4) r.dir *= -1; }
+    });
+    placeSnakes();
+  }
+  requestAnimationFrame(roamStep);
+}
+requestAnimationFrame(roamStep);
+
 /* ---------- דגדוג ---------- */
 const LAUGHS = ["חי חי חי!", "חחח זה מדגדג!", "הי הי הי 😆", "די! חחח", "עוד! חי חי"];
 function tickle(el, id) {
@@ -233,7 +261,7 @@ function tickle(el, id) {
   el.classList.add("tickle");
   if (navigator.vibrate) navigator.vibrate([20, 40, 20, 40, 20]);
   const svg = document.querySelector(".terra"), c = SNAKES[id];
-  const headX = c.x + (c.flip ? -40 : 40) * c.scale, headY = c.y - 22 * c.scale;
+  const r = ROAM[id] || { x: c.x, dir: c.flip ? -1 : 1 }, headX = r.x + r.dir * 40 * c.scale, headY = c.y - 22 * c.scale;
   const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
   t.textContent = LAUGHS[Math.floor(Math.random() * LAUGHS.length)];
   t.setAttribute("x", Math.max(40, Math.min(320, headX))); t.setAttribute("y", headY - 8); t.setAttribute("text-anchor", "middle");
@@ -245,6 +273,8 @@ function tickle(el, id) {
 function kiss() {
   const a = document.querySelector('[data-snake="s1"]'), b = document.querySelector('[data-snake="s2"]');
   if (!a || !b) return window.APP.toast("צריך שניים בשביל נשיקה 😉");
+  ROAM.s1 = { x: SNAKES.s1.x, dir: 1, v: ROAM.s1.v, wait: 0 }; ROAM.s2 = { x: SNAKES.s2.x, dir: -1, v: ROAM.s2.v, wait: 0 };
+  roamFreeze = Date.now() + 3300; placeSnakes();
   a.classList.add("kissL"); b.classList.add("kissR");
   const svg = document.querySelector(".terra");
   for (let i = 0; i < 9; i++) {

@@ -370,7 +370,7 @@ window.APP = { sheet, closeSheet, toast: m => toast(m), getItem: id => shared.it
 /* ---------- מסך פתיחה עם דגל ברלין ---------- */
 (function splash() {
   const sp = $("#splash"); if (!sp) { if (!user) askUser(); return; }
-  const N = 24, W = 260, H = 156, img = "url(icons/berlin-flag.svg)";
+  const N = 24, W = 260, H = 156, img = "url(icons/germany-flag.svg)";
   $("#bflag").innerHTML = Array.from({ length: N }, (_, i) =>
     `<i style="background-image:${img};background-size:${W}px ${H}px;background-position:${-i * W / N}px 0;animation-delay:${-i * 0.11}s"></i>`).join("");
   $("#sp-go").onclick = () => { sp.classList.add("out"); setTimeout(() => sp.remove(), 550); if (!user) askUser(); };
