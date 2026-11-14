@@ -97,7 +97,12 @@ async function fetchStatus(f, force) {
 const hhmm = s => s ? String(s).slice(11, 16) : "";
 function statusLine(f, st) {
   if (!st) return "";
-  if (!st.rec) return `<span class="muted">הטיסה עוד לא מופיעה בלוח של נתב"ג (בדרך כלל מופיעה יום לפני)</span>`;
+  if (!st.rec) {
+    const dt = flightDateTime(f), from = new Date(dt - 3 * 864e5), d = x => `${x.getDate()}.${x.getMonth() + 1}`;
+    return Date.now() < from
+      ? `<span class="muted">לוח נתב"ג מציג רק כ-3 ימים קדימה, אז ${f.code} של ${d(dt)} עוד לא שם. טיסות לברלין שרואים בלוח עכשיו הן של ימים אחרים (למשל 6H251, 6H253, BZ272). הסטטוס יופיע כאן בערך מ-${d(from)}.</span>`
+      : `<span class="muted">${f.code} עוד לא מופיעה בלוח של נתב"ג – כדאי לבדוק שוב בעוד כמה שעות</span>`;
+  }
   const r = st.rec, late = r.estimated && r.scheduled && (new Date(r.estimated) - new Date(r.scheduled)) / 60000;
   const label = r.status || r.statusEn || "";
   const delay = late > 10 ? `<b style="color:#FF9A8B">עיכוב של ${Math.round(late)} דק'</b>` : `<b style="color:#7EE2A8">בזמן ✓</b>`;
