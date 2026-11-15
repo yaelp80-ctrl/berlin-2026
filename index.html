@@ -6,6 +6,17 @@
 <meta name="theme-color" content="#071E4E">
 <title>ברלין 2026</title>
 <link rel="manifest" href="manifest.json">
+<script>
+/* מצב הדגמה (?demo): הכול נשמר רק בזיכרון – לא נוגע בנתונים האמיתיים ונמחק ביציאה */
+if (/[?&]demo\b/.test(location.search)) {
+  window.DEMO = true;
+  const m = {};
+  const mem = { getItem: k => (k in m ? m[k] : null), setItem: (k, v) => { m[k] = String(v); }, removeItem: k => { delete m[k]; },
+    clear: () => Object.keys(m).forEach(k => delete m[k]), key: i => Object.keys(m)[i] ?? null, get length() { return Object.keys(m).length; } };
+  Object.defineProperty(window, "localStorage", { value: mem, configurable: true });
+  document.querySelector('link[rel="manifest"]').href = "manifest-demo.json";
+}
+</script>
 <link rel="icon" href="icons/favicon.png">
 <link rel="apple-touch-icon" href="icons/apple-touch.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -250,6 +261,7 @@ nav button{font-size:11px}
 .wrow:first-of-type{border-top:0}
 .wname{font-family:var(--head);margin-bottom:6px}
 .mini{border:0;background:none;font-size:14px;opacity:.7}
+.demobar{position:sticky;top:0;z-index:50;background:#FFD36E;color:#1B2440;text-align:center;font-size:13px;font-weight:700;padding:5px 8px}
 @media (prefers-reduced-motion:reduce){#sky{display:none}*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -304,6 +316,7 @@ nav button{font-size:11px}
 </div>
 
 <script src="config.js"></script>
+<script>if (window.DEMO) document.addEventListener("DOMContentLoaded", () => { const b = document.createElement("div"); b.className = "demobar"; b.textContent = "✨ מצב הדגמה – אפשר לשחק עם הכול, שום דבר לא נשמר"; document.body.prepend(b); });</script>
 <script src="data.js"></script>
 <script src="art.js"></script>
 <script src="xmas-data.js"></script>

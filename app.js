@@ -46,7 +46,7 @@ async function sync() {
     Object.keys(sent).forEach(id => {
       if (id.startsWith("doc:")) { const d = shared.docs[id.slice(4)]; if (d) changes[id] = { v: d.v, t: d.t }; return; }
       const st = shared.items[id]; if (st) changes["item:" + id] = { v: { s: st.s ?? null, day: st.day ?? null }, t: st.t }; });
-    const r = Object.keys(changes).length
+    const r = Object.keys(changes).length && !window.DEMO
       ? await fetch(window.SYNC_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ by: user, changes }) })
       : await fetch(window.SYNC_URL + "?action=state");
     const j = await r.json(); if (!j.ok) throw 0;
@@ -352,7 +352,7 @@ document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
 function netState() {
   const on = navigator.onLine, waiting = Object.keys(pending).length;
   $("#net .dot").classList.toggle("off", !on || (window.SYNC_URL && waiting > 0 && !syncing));
-  $("#net span").textContent = !on ? (waiting ? `בלי קליטה · ${waiting} ממתינים` : "בלי קליטה")
+  $("#net span").textContent = window.DEMO ? "הדגמה" : !on ? (waiting ? `בלי קליטה · ${waiting} ממתינים` : "בלי קליטה")
     : syncing ? "מסתנכרן…" : !window.SYNC_URL ? "מחובר" : waiting ? "ממתין לסנכרון" : "מסונכרן";
 }
 function net() { netState(); if (navigator.onLine) { loadWeather(); sync(); } }

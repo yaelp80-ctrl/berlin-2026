@@ -6,6 +6,7 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;",
 
 /* ---------- אחסון קבצים במכשיר (IndexedDB) ---------- */
 const DB = (() => {
+  if (window.DEMO) { const m = new Map(); return { get: async k => m.get(k), put: async (k, v) => { m.set(k, v); }, del: async k => { m.delete(k); }, keys: async () => [...m.keys()] }; }
   let p;
   const open = () => p || (p = new Promise((res, rej) => {
     const r = indexedDB.open("berlin-tickets", 1);
