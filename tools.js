@@ -68,7 +68,14 @@ function onlineSpeak(t) {
   ttsAudio = new Audio("https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=de&ttsspeed=0.8&q=" + encodeURIComponent(t.slice(0, 190)));
   ttsAudio.play().catch(() => window.APP.toast("לא הצלחתי להשמיע 😕 כדאי לבדוק שהווליום של המדיה פתוח"));
 }
+const audioName = t => { let x = 5381; for (const c of t) x = (Math.imul(x, 33) ^ c.charCodeAt(0)) >>> 0; return "audio/" + x.toString(16).padStart(8, "0") + ".mp3"; };
+let clip = null;
 function speak(t) {
+  try { clip && clip.pause(); speechSynthesis && speechSynthesis.cancel(); } catch {}
+  clip = new Audio(audioName(t));
+  clip.play().catch(() => deviceSpeak(t)); // הקלטה שמורה באפליקציה – עובד גם בלי קליטה
+}
+function deviceSpeak(t) {
   if (!("speechSynthesis" in window)) return onlineSpeak(t);
   pickVoice();
   if (!deVoice) return onlineSpeak(t);

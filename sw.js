@@ -1,5 +1,5 @@
 // עובד גם בלי קליטה: שומר את האפליקציה בטלפון
-const VERSION = "berlin-v22";
+const VERSION = "berlin-v23";
 const SHELL = [
   "./", "./index.html", "./app.js", "./data.js", "./config.js", "./tickets.js", "./xmas.js", "./xmas-data.js", "./facts.js", "./game.js", "./tools.js", "./art.js", "./manifest.json",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/favicon.png", "./icons/germany-flag.svg", "./icons/header.png"
@@ -7,7 +7,9 @@ const SHELL = [
 
 const EXTRA = [
   "./vendor/pdf.min.js",
-  "./vendor/pdf.worker.min.js"
+  "./vendor/pdf.worker.min.js",
+  // הקראת הביטויים בגרמנית
+  "./audio/0748f7c4.mp3", "./audio/09dd2e4c.mp3", "./audio/0c9a308b.mp3", "./audio/0d483e83.mp3", "./audio/10aa4e5b.mp3", "./audio/10e7220a.mp3", "./audio/13350680.mp3", "./audio/1359938b.mp3", "./audio/14bd8e31.mp3", "./audio/1efd837e.mp3", "./audio/22c5a905.mp3", "./audio/25f71ff7.mp3", "./audio/2995c616.mp3", "./audio/2c6323b9.mp3", "./audio/39953aad.mp3", "./audio/3ae3d37a.mp3", "./audio/3dbf11ca.mp3", "./audio/3e1231d9.mp3", "./audio/637a0c86.mp3", "./audio/6403f413.mp3", "./audio/69b5ec7f.mp3", "./audio/6ca74be1.mp3", "./audio/744bd504.mp3", "./audio/7491fd74.mp3", "./audio/7d9e8dc0.mp3", "./audio/7f0a6c4c.mp3", "./audio/84da518b.mp3", "./audio/871a37f8.mp3", "./audio/8c2b31d5.mp3", "./audio/92b6c914.mp3", "./audio/94c2c41e.mp3", "./audio/989510b2.mp3", "./audio/9bb1eef0.mp3", "./audio/9cfac435.mp3", "./audio/a6725cb2.mp3", "./audio/ab119ede.mp3", "./audio/b02c6309.mp3", "./audio/b19b1efb.mp3", "./audio/b33d5b76.mp3", "./audio/b383fce1.mp3", "./audio/b5c8088a.mp3", "./audio/b91183ad.mp3", "./audio/bf7ccbb5.mp3", "./audio/c8ca61bf.mp3", "./audio/ca1e945a.mp3", "./audio/d1ac5b36.mp3", "./audio/d40106cf.mp3", "./audio/e129f298.mp3", "./audio/f2b2811c.mp3", "./audio/f4ce6434.mp3", "./audio/f5fcaf41.mp3"
 ];
 
 self.addEventListener("install", e => {
