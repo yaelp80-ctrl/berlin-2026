@@ -1,5 +1,5 @@
 // עובד גם בלי קליטה: שומר את האפליקציה בטלפון
-const VERSION = "berlin-v21";
+const VERSION = "berlin-v22";
 const SHELL = [
   "./", "./index.html", "./app.js", "./data.js", "./config.js", "./tickets.js", "./xmas.js", "./xmas-data.js", "./facts.js", "./game.js", "./tools.js", "./art.js", "./manifest.json",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/favicon.png", "./icons/germany-flag.svg", "./icons/header.png"
@@ -29,7 +29,7 @@ self.addEventListener("fetch", e => {
   const url = new URL(e.request.url);
   if (e.request.method !== "GET") return;
   // מזג אוויר וטיסות: תמיד מהרשת (האפליקציה שומרת את התשובה האחרונה בעצמה)
-  if (url.hostname.includes("open-meteo") || url.hostname.includes("frankfurter") || url.hostname.includes("script.google")) return;
+  if (url.hostname.includes("open-meteo") || url.hostname.includes("frankfurter") || url.hostname.includes("script.google") || url.hostname.includes("translate.google")) return;
   // קבצי האפליקציה: קודם מהרשת (כדי לקבל עדכונים מיד), ואם אין קליטה – מהטלפון
   e.respondWith((async () => {
     const cache = await caches.open(VERSION);
