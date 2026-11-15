@@ -1,5 +1,5 @@
 // עובד גם בלי קליטה: שומר את האפליקציה בטלפון
-const VERSION = "berlin-v25";
+const VERSION = "berlin-v26";
 const SHELL = [
   "./", "./index.html", "./app.js", "./data.js", "./config.js", "./tickets.js", "./xmas.js", "./xmas-data.js", "./facts.js", "./game.js", "./tools.js", "./art.js", "./manifest.json", "./manifest-demo.json",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/favicon.png", "./icons/germany-flag.svg", "./icons/header.png"

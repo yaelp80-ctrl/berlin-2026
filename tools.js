@@ -56,37 +56,31 @@ const ANTHEM = [
   ["Einigkeit und Recht und Freiheit", "אחדות, צדק וחירות"], ["sind des Glückes Unterpfand:", "הן הערובה לאושר:"],
   ["Blüh im Glanze dieses Glückes,", "פרחי בזוהר האושר הזה,"], ["blühe, deutsches Vaterland!", "פרחי, מולדת גרמנית!"]];
 
-/* הקראה: קול גרמני של הטלפון; אם אין – גיבוי מקוון */
-let deVoice = null, ttsAudio = null;
+/* הקראה: קודם הקול הגרמני של הטלפון (נשמע הכי טוב); אם אין – הקלטה ששמורה באפליקציה */
+let deVoice = null, clip = null;
 function pickVoice() {
   try { const vs = speechSynthesis.getVoices(); deVoice = vs.find(v => v.lang === "de-DE") || vs.find(v => /^de/i.test(v.lang)) || null; } catch {}
 }
 if ("speechSynthesis" in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
-function onlineSpeak(t) {
-  if (!navigator.onLine) { window.APP.toast("אין קול גרמני בטלפון ואין קליטה 😕"); return; }
-  try { ttsAudio && ttsAudio.pause(); } catch {}
-  ttsAudio = new Audio("https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=de&ttsspeed=0.8&q=" + encodeURIComponent(t.slice(0, 190)));
-  ttsAudio.play().catch(() => window.APP.toast("לא הצלחתי להשמיע 😕 כדאי לבדוק שהווליום של המדיה פתוח"));
-}
 const audioName = t => { let x = 5381; for (const c of t) x = (Math.imul(x, 33) ^ c.charCodeAt(0)) >>> 0; return "audio/" + x.toString(16).padStart(8, "0") + ".mp3"; };
-let clip = null;
-function speak(t) {
-  try { clip && clip.pause(); speechSynthesis && speechSynthesis.cancel(); } catch {}
+function playClip(t) {
+  try { clip && clip.pause(); } catch {}
   clip = new Audio(audioName(t));
-  clip.play().catch(() => deviceSpeak(t)); // הקלטה שמורה באפליקציה – עובד גם בלי קליטה
+  clip.play().catch(() => window.APP.toast("לא הצלחתי להשמיע 😕 כדאי לבדוק שהווליום של המדיה פתוח"));
 }
-function deviceSpeak(t) {
-  if (!("speechSynthesis" in window)) return onlineSpeak(t);
+function speak(t) {
+  try { clip && clip.pause(); } catch {}
+  if (!("speechSynthesis" in window)) return playClip(t);
   pickVoice();
-  if (!deVoice) return onlineSpeak(t);
+  if (!deVoice) return playClip(t);
   try {
     if (speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(t); u.lang = deVoice.lang; u.voice = deVoice; u.rate = .85;
     let started = false; u.onstart = () => started = true;
-    u.onerror = e => { if (!started && e.error !== "interrupted" && e.error !== "canceled") onlineSpeak(t); };
+    u.onerror = e => { if (!started && e.error !== "interrupted" && e.error !== "canceled") playClip(t); };
     speechSynthesis.resume();
-    setTimeout(() => { speechSynthesis.speak(u); setTimeout(() => { if (!started && !speechSynthesis.speaking) { speechSynthesis.cancel(); onlineSpeak(t); } }, 1500); }, 60);
-  } catch { onlineSpeak(t); }
+    setTimeout(() => { speechSynthesis.speak(u); setTimeout(() => { if (!started && !speechSynthesis.speaking) { speechSynthesis.cancel(); playClip(t); } }, 1500); }, 60);
+  } catch { playClip(t); }
 }
 
 function render() {
