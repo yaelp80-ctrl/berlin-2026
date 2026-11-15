@@ -10,7 +10,7 @@ const LS = {
 const BERLIN = { lat: 52.52, lng: 13.405 };
 
 /* ---------- משתמש ---------- */
-let user = LS.get("berlin.user", null);
+let user = window.DEMO ? "yael" : LS.get("berlin.user", null); // בהדגמה: כל ההרשאות של יעל, בלי שמירה
 const userName = u => u === "noam" ? "נועם" : u === "guest" ? "אורח" : "יעל";
 const isGuest = () => user === "guest";
 const guestToast = () => toast("👀 במצב אורח אפשר רק לצפות (ולשחק במשחק)");
@@ -21,7 +21,7 @@ function askUser() {
     document.body.classList.toggle("guest", isGuest()); window.GAME && window.GAME.userChanged(); renderAll();
   });
 }
-$("#me").onclick = askUser;
+$("#me").onclick = () => { if (!window.DEMO) askUser(); };
 
 /* ---------- מצב משותף (יסונכרן בשלב 2) ---------- */
 // shared.items[id] = { s: "done" | "skip" | null, day: index | null(=רשימת שווה לראות) | undefined(=מקורי), t }
@@ -352,14 +352,14 @@ document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
 function netState() {
   const on = navigator.onLine, waiting = Object.keys(pending).length;
   $("#net .dot").classList.toggle("off", !on || (window.SYNC_URL && waiting > 0 && !syncing));
-  $("#net span").textContent = window.DEMO ? "הדגמה" : !on ? (waiting ? `בלי קליטה · ${waiting} ממתינים` : "בלי קליטה")
+  $("#net span").textContent = window.DEMO ? (on ? "מחובר" : "בלי קליטה") : !on ? (waiting ? `בלי קליטה · ${waiting} ממתינים` : "בלי קליטה")
     : syncing ? "מסתנכרן…" : !window.SYNC_URL ? "מחובר" : waiting ? "ממתין לסנכרון" : "מסונכרן";
 }
 function net() { netState(); if (navigator.onLine) { loadWeather(); sync(); } }
 addEventListener("online", net); addEventListener("offline", net);
 
 function renderAll() {
-  $("#me").textContent = user ? (user === "noam" ? "🐍 נועם" : user === "guest" ? "👀 אורח" : "🌟 יעל") : "מי אני?";
+  $("#me").textContent = window.DEMO ? "👀 אורח" : user ? (user === "noam" ? "🐍 נועם" : user === "guest" ? "👀 אורח" : "🌟 יעל") : "מי אני?";
   document.body.classList.toggle("guest", isGuest());
   renderTrip(); if (user) { renderPack("suitcase"); renderPack("backpack"); } renderSoon();
 }
