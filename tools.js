@@ -167,6 +167,96 @@ function stopScan() {
 }
 document.addEventListener("visibilitychange", () => { if (document.hidden) stopScan(); });
 
+/* ---------- תרגומון: צילום → זיהוי טקסט בגרמנית → תרגום לעברית ---------- */
+const tr = { panel: null, stream: null, worker: null, cache: {} };
+async function deWorker() {
+  if (tr.worker) return tr.worker;
+  await loadScript("vendor/tess/tesseract.min.js");
+  const b = tessBase();
+  tr.worker = await Tesseract.createWorker("deu", 1, { workerPath: b + "worker.min.js", corePath: b, langPath: b, gzip: true });
+  await tr.worker.setParameters({ tessedit_pageseg_mode: "3", preserve_interword_spaces: "1" });
+  return tr.worker;
+}
+function trPanel(html) {
+  const v = $("#v-tools");
+  if (!tr.panel) { tr.panel = document.createElement("div"); tr.panel.className = "card tool scanp"; v.querySelector("#trslot").replaceWith(tr.panel); }
+  tr.panel.innerHTML = html;
+  const c = tr.panel.querySelector("[data-trclose]"); if (c) c.onclick = trClose;
+  const a = tr.panel.querySelector("[data-tragain]"); if (a) a.onclick = trOpenCam;
+  return tr.panel;
+}
+function trStopCam() { if (tr.stream) tr.stream.getTracks().forEach(t => t.stop()); tr.stream = null; }
+function trClose() {
+  trStopCam();
+  if (tr.panel) { const s = document.createElement("div"); s.id = "trslot"; tr.panel.replaceWith(s); tr.panel = null; }
+}
+async function trOpenCam() {
+  stopScan(); trStopCam();
+  const p = trPanel(`<div class="scanv tall"><video playsinline muted autoplay></video></div>
+    <div class="scst muted">מכוונים לטקסט ולוחצים לצלם</div>
+    <div class="acts" style="margin-top:8px;justify-content:center"><button class="btn gold" id="trshot" style="font-size:17px">📸 לתרגם</button><button class="btn" data-trclose="1">✕ לסגור</button></div>`);
+  p.scrollIntoView({ behavior: "smooth", block: "start" });
+  try { tr.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" }, width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false }); }
+  catch (e) { p.querySelector(".scst").textContent = "אין גישה למצלמה 😕 צריך לאשר לאפליקציה להשתמש במצלמה (או לבחור תמונה מהגלריה)"; return; }
+  const vid = p.querySelector("video"); vid.srcObject = tr.stream; await vid.play().catch(() => {});
+  deWorker().catch(() => {}); // מתחילים לטעון ברקע
+  p.querySelector("#trshot").onclick = () => {
+    if (!vid.videoWidth) return;
+    const cv = document.createElement("canvas"); cv.width = vid.videoWidth; cv.height = vid.videoHeight;
+    cv.getContext("2d").drawImage(vid, 0, 0); trStopCam(); trRun(cv);
+  };
+}
+function trFromFile(f) {
+  stopScan(); trStopCam();
+  const img = new Image(); img.onload = () => { const cv = document.createElement("canvas"); cv.width = img.naturalWidth; cv.height = img.naturalHeight; cv.getContext("2d").drawImage(img, 0, 0); URL.revokeObjectURL(img.src); trRun(cv); };
+  img.src = URL.createObjectURL(f);
+}
+async function translateLines(lines) {
+  const todo = lines.filter(l => !(l in tr.cache));
+  if (todo.length) {
+    try {
+      const r = await fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=de&tl=iw&dt=t&q=" + encodeURIComponent(todo.join("\n")));
+      const out = (await r.json())[0].map(x => x[0]).join("").split("\n");
+      if (out.length !== todo.length) throw 0;
+      todo.forEach((l, i) => tr.cache[l] = out[i].trim());
+    } catch {
+      await Promise.all(todo.map(async l => { try {
+        const r = await fetch("https://api.mymemory.translated.net/get?langpair=de|he&q=" + encodeURIComponent(l));
+        tr.cache[l] = (await r.json()).responseData.translatedText; } catch {} }));
+    }
+  }
+  return lines.map(l => tr.cache[l] || "");
+}
+async function trRun(cv) {
+  const shot = cv.toDataURL("image/jpeg", .6);
+  const p = trPanel(`<img class="trshot" src="${shot}"><div class="scst muted">🔎 קוראת את הטקסט… (בפעם הראשונה לוקח כמה שניות)</div>`);
+  // הקטנה + שחור-לבן לזיהוי טוב ומהיר
+  const sc = Math.min(1, 1800 / Math.max(cv.width, cv.height)), c2 = document.createElement("canvas");
+  c2.width = cv.width * sc; c2.height = cv.height * sc;
+  const g = c2.getContext("2d"); g.filter = "grayscale(1) contrast(1.4)"; g.drawImage(cv, 0, 0, c2.width, c2.height);
+  let rows = [];
+  try {
+    const w = await deWorker();
+    const { data } = await w.recognize(c2, {}, { blocks: true, text: false });
+    (data.blocks || []).forEach(bl => bl.paragraphs.forEach(pa => pa.lines.forEach(l => {
+      const t = l.text.replace(/\s+/g, " ").trim();
+      if (l.confidence < 50 || (t.match(/[A-Za-zÄÖÜäöüß]/g) || []).length < 3) return;
+      const m = t.match(/^(.*?)[\s.…_-]*((?:€\s*)?\d{1,3}(?:[.,]\d{2}|,-)\s*€?)$/);
+      rows.push(m && m[1].length > 2 ? { de: m[1].trim(), price: m[2] } : { de: t });
+    })));
+  } catch (e) { trPanel(`<div class="scst">לא הצלחתי לטעון את זיהוי הטקסט – צריך קליטה בפעם הראשונה 😕</div><div class="acts" style="justify-content:center"><button class="btn" data-trclose="1">✕ לסגור</button></div>`); return; }
+  const foot = `<div class="acts" style="margin-top:10px;justify-content:center"><button class="btn gold" data-tragain="1">📷 עוד צילום</button><button class="btn" data-trclose="1">✕ לסגור</button></div>`;
+  if (!rows.length) { trPanel(`<img class="trshot" src="${shot}"><div class="scst">לא מצאתי טקסט 🤔 כדאי להתקרב, ליישר את הטלפון ולוודא שיש מספיק אור</div>${foot}`); return; }
+  const list = he => rows.map((r, i) => {
+    const pr = r.price ? (() => { const v = parseFloat(r.price.replace(/[€\s]/g, "").replace(",-", "").replace(",", ".")); return `<span class="trp" dir="ltr">${esc(r.price.replace(/\s*€\s*/g, ""))} € ≈ ${(v * rate.v).toFixed(0)} ₪</span>`; })() : "";
+    return `<div class="trrow"><b>${esc(he ? he[i] || "…" : "…")}</b>${pr}<small dir="ltr">${esc(r.de)}</small></div>`; }).join("");
+  trPanel(`<img class="trshot" src="${shot}"><div class="scst muted">🌍 מתרגמת…</div><div class="trlist">${list(null)}</div>${foot}`);
+  if (!navigator.onLine) { tr.panel.querySelector(".scst").textContent = "📵 אין קליטה – זה הטקסט בגרמנית, התרגום יעבוד כשתהיה קליטה"; return; }
+  const he = await translateLines(rows.map(r => r.de));
+  trPanel(`<img class="trshot" src="${shot}"><div class="trlist">${list(he)}</div>${he.some(Boolean) ? "" : `<div class="scst">התרגום לא הצליח הפעם – לנסות שוב בעוד רגע</div>`}
+    <div class="muted" style="font-size:12px;text-align:center;margin-top:6px">תרגום אוטומטי – יכול להיות לא מדויק</div>${foot}`);
+}
+
 function render() {
   const v = $("#v-tools"); if (!v) return;
   const when = rate.at ? new Date(rate.at).toLocaleDateString("he-IL") : "";
@@ -177,6 +267,12 @@ function render() {
       <div><input id="ils" inputmode="decimal" placeholder="0"><div class="muted" style="text-align:center">שקל ₪</div></div></div>
     <div class="muted" style="margin-top:8px;font-size:13px">1 € = ${rate.v.toFixed(2)} ₪ ${rate.est ? "(הערכה – יתעדכן כשיש קליטה)" : `· שער רשמי מ-${when}`}</div></div>
   <div id="scanslot"></div>
+
+  <div class="card tool"><h3 class="curh">🌍 תרגומון <span class="muted" style="font-size:13px;font-weight:400">גרמנית ← עברית</span></h3>
+    <div class="muted" style="font-size:13px">מצלמים תפריט, שלט או אריזה – והתרגום מופיע שורה-שורה</div>
+    <div class="acts" style="margin-top:10px"><button class="btn gold" id="trcam">📷 לצלם ולתרגם</button>
+      <label class="btn" style="cursor:pointer">🖼️ מהגלריה<input type="file" accept="image/*" id="trfile" hidden></label></div></div>
+  <div id="trslot"></div>
 
   <div class="card tool"><h3>🎵 מוזיקה גרמנית</h3>
     <div class="em" style="border-top:0"><div class="big">🇩🇪</div><div style="flex:1"><b>ההמנון הגרמני</b><div class="muted" style="font-size:13px">הבית השלישי של "שיר הגרמנים" · מנגינה: יוזף היידן</div></div>
@@ -201,7 +297,10 @@ function render() {
     <div class="em"><div class="big">✉️</div><div style="flex:1">מוקד החירום של משרד החוץ<div class="muted" style="font-size:13px">911@mfa.gov.il</div></div><a class="btn" href="mailto:911@mfa.gov.il">✉️</a></div>
     <div class="muted" style="font-size:12px;margin-top:8px">כדאי לשמור גם את מספר החירום של ביטוח הנסיעות שלכם.</div></div>`;
   if (scan.panel) v.querySelector("#scanslot").replaceWith(scan.panel);
-  v.querySelector("#scanbtn").onclick = () => scan.panel ? stopScan() : startScan();
+  if (tr.panel) v.querySelector("#trslot").replaceWith(tr.panel);
+  v.querySelector("#trcam").onclick = () => trOpenCam();
+  v.querySelector("#trfile").onchange = e => { const f = e.target.files[0]; e.target.value = ""; if (f) trFromFile(f); };
+  v.querySelector("#scanbtn").onclick = () => scan.panel ? stopScan() : (trClose(), startScan());
   const e = $("#eur"), s = $("#ils");
   e.oninput = () => { const x = parseFloat(e.value); s.value = isNaN(x) ? "" : (x * rate.v).toFixed(2); };
   s.oninput = () => { const x = parseFloat(s.value); e.value = isNaN(x) ? "" : (x / rate.v).toFixed(2); };
