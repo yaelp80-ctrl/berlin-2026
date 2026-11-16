@@ -352,7 +352,7 @@ document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
 function netState() {
   const on = navigator.onLine, waiting = Object.keys(pending).length;
   $("#net .dot").classList.toggle("off", !on || (window.SYNC_URL && waiting > 0 && !syncing));
-  $("#net span").textContent = window.DEMO ? (on ? "מחובר" : "בלי קליטה") : !on ? (waiting ? `בלי קליטה · ${waiting} ממתינים` : "בלי קליטה")
+  $("#net").title = window.DEMO ? (on ? "מחובר" : "בלי קליטה") : !on ? (waiting ? `בלי קליטה · ${waiting} ממתינים` : "בלי קליטה")
     : syncing ? "מסתנכרן…" : !window.SYNC_URL ? "מחובר" : waiting ? "ממתין לסנכרון" : "מסונכרן";
 }
 function net() { netState(); if (navigator.onLine) { loadWeather(); sync(); } }
