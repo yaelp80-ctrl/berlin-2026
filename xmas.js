@@ -22,7 +22,7 @@ function card(m, rank) {
       <div style="flex:1;min-width:0"><div class="ttl"><b>${esc(m.name)}</b>${m.pride ? ` <span class="pflag">🏳️‍🌈</span>` : ""}</div>
         ${m.sub ? `<div class="muted" style="font-size:13px">${esc(m.sub)}</div>` : ""}
         <div class="tags">${m.tags.map(t => `<span class="tag">${TAG[t]}</span>`).join("")}${planTxt}</div></div>
-      <button class="check been-btn" data-been="${m.id}" aria-label="היינו">${been ? "✓" : ""}</button>
+      <button class="beenb ${been ? "on" : ""}" data-been="${m.id}"><span class="check">${been ? "✓" : ""}</span><small>${been ? "היינו!" : "היינו?"}</small></button>
     </div>
     <div class="mkbody">
       ${m.warn ? `<div class="banner">⚠️ ${esc(m.warn)}</div>` : ""}

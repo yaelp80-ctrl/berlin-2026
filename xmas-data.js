@@ -25,6 +25,13 @@ window.XMAS = {
       review: "מרכזי, תוסס ומלא חיים. צמוד לשוק של העירייה האדומה, אז קל לעשות את שניהם ביחד.",
       maps: "Weihnachtsmarkt Alexanderplatz Berlin", url: "https://www.visitberlin.de/de/weihnachtsmarkt-alexanderplatz-berlin" },
 
+    { id: "m-potsdamerplatz", name: "עולם החורף בפוטסדאמר פלאץ", sub: "Winterwelt Potsdamer Platz",
+      tags: ["sled", "ice", "stage"], dates: "המגלשה פתוחה כבר עכשיו ועד 31.12 · דוכני השוק 23.11–26.12", hours: "כל יום 11:00–22:00", fee: "כניסה חינם · המגלשה כ-2.5 € לגלישה",
+      travel: "כ-15 דק' מהמלון",
+      about: "הכוכב כאן הוא מגלשת שלג ענקית – 12 מטר גובה ו-70 מטר אורך – שגולשים בה על אבובים, מגיל 6 ומעלה. מסביב דוכנים עם מתנות בעבודת יד, שקדים קלויים, נקניקיות וגליווין, בקתות עץ אוסטריות, ובסופ\"ש מוזיקה חיה ודי-ג'יי. ממש ליד, תחת הכיפה של הסוני סנטר, יש משטח החלקה מקורה עם השכרת מחליקיים.",
+      review: "אהוב במיוחד על משפחות ונוער בגלל המגלשה, ונראה מדהים בערב עם האורות הסגולים. משטח ההחלקה מקורה, אז עובד גם ביום גשום.",
+      maps: "Winterwelt Potsdamer Platz Berlin", url: "https://www.berlin.de/en/christmas-markets/3249647-3230598-christmas-market-at-potsdamer-platz.en.html" },
+
     { id: "m-gendarmen", name: "ז'נדרמנמרקט", sub: "WeihnachtsZauber Gendarmenmarkt",
       tags: ["fee"], dates: "23.11–31.12", hours: "א׳–ה׳ 11:00–22:00 · ו׳–שבת 11:00–23:00", fee: "2 € (חינם בימי חול 11:00–14:00)",
       travel: "כ-20 דק' מהמלון",
@@ -38,13 +45,6 @@ window.XMAS = {
       about: "כ-100 דוכנים מול הארמון המואר, עם מופע אורות ולייזרים, שתי קרוסלות וגלגל ענק קטן.",
       review: "נחשב לאחד הרומנטיים והיפים בעיר, בזכות התפאורה של הארמון.",
       maps: "Weihnachtsmarkt Schloss Charlottenburg Berlin", url: "https://www.berlin.de/en/christmas-markets/3240314-3230598-christmas-market-charlottenburg-palace.en.html" },
-
-    { id: "m-potsdamerplatz", name: "עולם החורף בפוטסדאמר פלאץ", sub: "Winterwelt Potsdamer Platz",
-      tags: ["ice", "sled"], dates: "עד סוף דצמבר", hours: "כל יום 11:00–22:00", fee: "כניסה חינם · מגלשת השלג בתשלום קטן",
-      travel: "כ-15 דק' מהמלון",
-      about: "מגלשת שלג על אבובים לגילאי 6 ומעלה. ממש ליד, תחת הכיפה של הסוני סנטר, יש משטח החלקה מקורה של 600 מ\"ר עם השכרת מחליקיים.",
-      review: "אהוב במיוחד על משפחות בגלל המגלשה. משטח ההחלקה מקורה, אז עובד גם ביום גשום.",
-      maps: "Winterwelt Potsdamer Platz Berlin", url: "https://www.visitberlin.de/de/weihnachtsmarkt-potsdamer-platz-berlin" },
 
     { id: "m-raw", name: "השוק מימי הביניים ב-RAW", sub: "Mittelalterlicher Weihnachtsmarkt RAW",
       tags: ["rides", "wheel", "fee"], dates: "12.11–22.12", hours: "ב׳–ה׳ 15:00–22:00 · ו׳ 15:00–23:00 · שבת 12:00–23:00", fee: "3 € בימי חול, 4 € בסופ\"ש, חינם בשני",

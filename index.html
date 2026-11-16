@@ -174,8 +174,10 @@ nav button.on span{transform:translateY(-3px) scale(1.12);filter:drop-shadow(0 0
 .mkhead{display:flex;gap:10px;align-items:center}
 .rank{width:34px;height:34px;flex:none;border-radius:50%;display:grid;place-items:center;font-family:var(--head);font-size:16px;background:rgba(255,211,110,.18);color:var(--gold)}
 .pflag{font-size:15px}
-.mk .been-btn{flex:none}
-.mk.been .been-btn{background:var(--gold);border-color:var(--gold);color:#3A2A08}
+.beenb{flex:none;border:0;background:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;padding:0;font:inherit}
+.beenb small{font-size:11px}
+.beenb.on small{color:var(--gold);font-weight:700}
+.mk.been .beenb .check{background:var(--gold);border-color:var(--gold);color:#3A2A08}
 .mkbody{display:none;margin-top:10px;font-size:14.5px;line-height:1.5}
 .mk.open .mkbody{display:block;animation:fade .3s}
 .mkbody p{margin:8px 0}
