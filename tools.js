@@ -83,15 +83,92 @@ function speak(t) {
   } catch { playClip(t); }
 }
 
+/* ---------- סריקת מחיר במצלמה ---------- */
+const scan = { panel: null, stream: null, worker: null, busy: false, last: null };
+const tessBase = () => new URL("vendor/tess/", location.href).href;
+const loadScript = src => new Promise((res, rej) => { if (window.Tesseract) return res(); const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+async function ocrWorker() {
+  if (scan.worker) return scan.worker;
+  await loadScript("vendor/tess/tesseract.min.js");
+  const b = tessBase();
+  const w = await Tesseract.createWorker("eng", 1, { workerPath: b + "worker.min.js", corePath: b, langPath: b, gzip: true });
+  await w.setParameters({ tessedit_char_whitelist: "0123456789.,-€ ", tessedit_pageseg_mode: "6" });
+  return scan.worker = w;
+}
+function findPrice(txt) {
+  const c = [];
+  for (const m of txt.matchAll(/(€\s*)?(\d{1,3}(?:[.\s]\d{3})+|\d{1,4})(?:\s?([,.])\s?(\d{2}|-{1,2}))?(\s*€)?/g)) {
+    const int = m[2].replace(/[.\s]/g, ""), dec = m[4] && /\d/.test(m[4]) ? m[4] : "0";
+    const euro = !!(m[1] || m[5]), hasDec = !!m[3];
+    if (!euro && !hasDec) continue;
+    const v = parseFloat(int + "." + dec); if (!v || v > 20000) continue;
+    c.push({ v, score: (euro ? 2 : 0) + (hasDec ? 1 : 0) });
+  }
+  c.sort((a, b) => b.score - a.score);
+  return c.length ? c[0].v : null;
+}
+function setStatus(t) { const el = scan.panel && scan.panel.querySelector(".scst"); if (el) el.innerHTML = t; }
+async function startScan() {
+  const v = $("#v-tools");
+  scan.panel = document.createElement("div"); scan.panel.className = "card tool scanp";
+  scan.panel.innerHTML = `<div class="scanv"><video playsinline muted autoplay></video><div class="scanframe"></div></div>
+    <div class="scst muted">פותח מצלמה…</div>
+    <button class="btn" id="scanclose" style="margin-top:8px">✕ לסגור מצלמה</button>`;
+  v.querySelector("#scanslot").replaceWith(scan.panel);
+  scan.panel.querySelector("#scanclose").onclick = stopScan;
+  $("#scanbtn").textContent = "✕ לסגור סריקה";
+  try {
+    scan.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false });
+  } catch (e) { setStatus("אין גישה למצלמה 😕 צריך לאשר לאפליקציה להשתמש במצלמה"); return; }
+  const vid = scan.panel.querySelector("video"); vid.srcObject = scan.stream; await vid.play().catch(() => {});
+  setStatus("מכינה זיהוי מספרים… (בפעם הראשונה זה לוקח כמה שניות)");
+  try { await ocrWorker(); } catch (e) { setStatus("לא הצלחתי לטעון את זיהוי המספרים – צריך קליטה בפעם הראשונה"); return; }
+  setStatus("מכוונים את המחיר לתוך המסגרת 🎯");
+  loop();
+}
+async function loop() {
+  if (!scan.stream) return;
+  if (!$("#v-tools").offsetParent || document.hidden) return stopScan();
+  const vid = scan.panel.querySelector("video");
+  if (vid.videoWidth && !scan.busy) {
+    scan.busy = true;
+    try {
+      const W = vid.videoWidth, H = vid.videoHeight, bw = vid.clientWidth, bh = vid.clientHeight, k = Math.max(bw / W, bh / H);
+      const vw = bw / k, vh = bh / k, cw = vw * .8, ch = vh * .34, cx = (W - vw) / 2 + vw * .1, cy = (H - vh) / 2 + vh * .33;
+      const cv = document.createElement("canvas"), sc = Math.min(2.5, 1000 / cw); cv.width = cw * sc; cv.height = ch * sc;
+      const g = cv.getContext("2d", { willReadFrequently: true }); g.filter = "grayscale(1) contrast(1.6)"; g.drawImage(vid, cx, cy, cw, ch, 0, 0, cv.width, cv.height);
+      const { data } = await scan.worker.recognize(cv);
+      const p = findPrice(data.text || "");
+      if (p != null && p === scan.last) fill(p);
+      scan.last = p;
+    } catch (e) {}
+    scan.busy = false;
+  }
+  setTimeout(loop, 350);
+}
+function fill(p) {
+  const e = $("#eur"); if (!e) return;
+  if (parseFloat(e.value) !== +p.toFixed(2)) { e.value = p.toFixed(2); e.dispatchEvent(new Event("input")); if (navigator.vibrate) navigator.vibrate(30); }
+  setStatus(`✅ <span dir="ltr"><b>${p.toFixed(2).replace(".", ",")} €</b> = <b>${(p * rate.v).toFixed(2)} ₪</b></span>`);
+}
+function stopScan() {
+  if (scan.stream) scan.stream.getTracks().forEach(t => t.stop());
+  scan.stream = null; scan.last = null;
+  if (scan.panel) { const slot = document.createElement("div"); slot.id = "scanslot"; scan.panel.replaceWith(slot); scan.panel = null; }
+  const b = $("#scanbtn"); if (b) b.textContent = "📷 לסרוק מחיר";
+}
+document.addEventListener("visibilitychange", () => { if (document.hidden) stopScan(); });
+
 function render() {
   const v = $("#v-tools"); if (!v) return;
   const when = rate.at ? new Date(rate.at).toLocaleDateString("he-IL") : "";
   v.innerHTML = `
-  <div class="card tool"><h3>💶 ממיר מטבע</h3>
+  <div class="card tool"><h3 class="curh">💶 ממיר מטבע <button class="btn scanb" id="scanbtn">📷 לסרוק מחיר</button></h3>
     <div class="cur"><div><input id="eur" inputmode="decimal" placeholder="0"><div class="muted" style="text-align:center">יורו €</div></div>
       <div style="font-size:22px">⇄</div>
       <div><input id="ils" inputmode="decimal" placeholder="0"><div class="muted" style="text-align:center">שקל ₪</div></div></div>
     <div class="muted" style="margin-top:8px;font-size:13px">1 € = ${rate.v.toFixed(2)} ₪ ${rate.est ? "(הערכה – יתעדכן כשיש קליטה)" : `· שער רשמי מ-${when}`}</div></div>
+  <div id="scanslot"></div>
 
   <div class="card tool"><h3>🎵 מוזיקה גרמנית</h3>
     <div class="em" style="border-top:0"><div class="big">🇩🇪</div><div style="flex:1"><b>ההמנון הגרמני</b><div class="muted" style="font-size:13px">הבית השלישי של "שיר הגרמנים" · מנגינה: יוזף היידן</div></div>
@@ -115,6 +192,8 @@ function render() {
       <a class="btn" target="_blank" rel="noopener" href="https://new.embassies.gov.il/berlin">🔗</a></div>
     <div class="em"><div class="big">✉️</div><div style="flex:1">מוקד החירום של משרד החוץ<div class="muted" style="font-size:13px">911@mfa.gov.il</div></div><a class="btn" href="mailto:911@mfa.gov.il">✉️</a></div>
     <div class="muted" style="font-size:12px;margin-top:8px">כדאי לשמור גם את מספר החירום של ביטוח הנסיעות שלכם.</div></div>`;
+  if (scan.panel) v.querySelector("#scanslot").replaceWith(scan.panel);
+  v.querySelector("#scanbtn").onclick = () => scan.panel ? stopScan() : startScan();
   const e = $("#eur"), s = $("#ils");
   e.oninput = () => { const x = parseFloat(e.value); s.value = isNaN(x) ? "" : (x * rate.v).toFixed(2); };
   s.oninput = () => { const x = parseFloat(s.value); e.value = isNaN(x) ? "" : (x / rate.v).toFixed(2); };

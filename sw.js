@@ -1,5 +1,5 @@
 // עובד גם בלי קליטה: שומר את האפליקציה בטלפון
-const VERSION = "berlin-v26";
+const VERSION = "berlin-v28";
 const SHELL = [
   "./", "./index.html", "./app.js", "./data.js", "./config.js", "./tickets.js", "./xmas.js", "./xmas-data.js", "./facts.js", "./game.js", "./tools.js", "./art.js", "./manifest.json", "./manifest-demo.json",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/favicon.png", "./icons/germany-flag.svg", "./icons/header.png"
@@ -32,6 +32,11 @@ self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
   // מזג אוויר וטיסות: תמיד מהרשת (האפליקציה שומרת את התשובה האחרונה בעצמה)
   if (url.hostname.includes("open-meteo") || url.hostname.includes("frankfurter") || url.hostname.includes("script.google") || url.hostname.includes("translate.google")) return;
+  // זיהוי מספרים (קבצים גדולים שלא משתנים): מהטלפון אם כבר נשמרו
+  if (url.pathname.includes("/vendor/tess/")) {
+    e.respondWith(caches.open("berlin-tess-1").then(async c => (await c.match(e.request)) || fetch(e.request).then(r => { if (r.ok) c.put(e.request, r.clone()); return r; })));
+    return;
+  }
   // קבצי האפליקציה: קודם מהרשת (כדי לקבל עדכונים מיד), ואם אין קליטה – מהטלפון
   e.respondWith((async () => {
     const cache = await caches.open(VERSION);
