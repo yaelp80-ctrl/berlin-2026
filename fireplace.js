@@ -115,8 +115,11 @@
   <ellipse cx="180" cy="540" rx="170" ry="58" fill="#7a2f3a"/><ellipse cx="180" cy="540" rx="150" ry="46" fill="none" stroke="#e8c27a" stroke-width="3" stroke-dasharray="2 8"/>
   <ellipse cx="180" cy="540" rx="170" ry="58" fill="#ffb347" opacity=".12"/>
   <!-- הכלבים -->
-  ${dog(118, 528, 1, false, "#c8894f", "#7a4a26", "#f2dcc0", 0)}
-  ${dog(248, 538, .95, true, "#3a3434", "#1c1818", "#f4f0ea", 1.3)}
+  <ellipse cx="120" cy="551" rx="80" ry="10" fill="#000" opacity=".22"/>
+  <ellipse cx="243" cy="587" rx="86" ry="9" fill="#000" opacity=".22"/>
+  <g class="breathe"><image href="icons/dog-cream.png" x="36" y="484" width="168" height="67"/></g>
+  <g class="breathe" style="animation-delay:1.4s"><image href="icons/dog-gold.png" x="152" y="530" width="182" height="57"/></g>
+  <text class="zz" x="190" y="494">z</text><text class="zz" x="168" y="552" style="animation-delay:1.8s">z</text>
 </svg>`;
 
   /* ---------- גיצים עולים ---------- */
