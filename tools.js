@@ -92,19 +92,27 @@ async function ocrWorker() {
   await loadScript("vendor/tess/tesseract.min.js");
   const b = tessBase();
   const w = await Tesseract.createWorker("eng", 1, { workerPath: b + "worker.min.js", corePath: b, langPath: b, gzip: true });
-  await w.setParameters({ tessedit_char_whitelist: "0123456789.,-€ ", tessedit_pageseg_mode: "6" });
+  await w.setParameters({ tessedit_pageseg_mode: "11" });
   return scan.worker = w;
 }
-function findPrice(txt) {
-  const c = [];
-  for (const m of txt.matchAll(/(€\s*)?(\d{1,3}(?:[.\s]\d{3})+|\d{1,4})(?:\s?([,.])\s?(\d{2}|-{1,2}))?(\s*€)?/g)) {
-    const int = m[2].replace(/[.\s]/g, ""), dec = m[4] && /\d/.test(m[4]) ? m[4] : "0";
-    const euro = !!(m[1] || m[5]), hasDec = !!m[3];
-    const v = parseFloat(int + "." + dec); if (!v || v > 20000) continue;
-    c.push({ v, score: (euro ? 2 : 0) + (hasDec ? 1 : 0) });
+/* בוחרים את המחיר: מספר שעומד לבד (לא חלק מ-"1KG=2.03"), עדיף עם אגורות, והכי גדול בתווית */
+function priceOf(word) {
+  const w = word.replace(/^[€*]+|[€*:]+$/g, "");
+  let m = w.match(/^(\d{1,3}(?:\.\d{3})+),(\d{2})$/);
+  if (m) return { v: parseFloat(m[1].replace(/\./g, "") + "." + m[2]), tier: 2 };
+  m = w.match(/^(\d{1,4})(?:[.,](\d{2}|-{1,2}))?$/);
+  if (!m) return null;
+  const v = parseFloat(m[1] + "." + (m[2] && /\d/.test(m[2]) ? m[2] : "0"));
+  return v > 0 && v < 20000 ? { v, tier: m[2] ? 2 : 1 } : null;
+}
+function pickPrice(words) {
+  let best = null;
+  for (const wd of words) {
+    const p = priceOf(wd.text || ""); if (!p || wd.confidence < 40) continue;
+    const h = wd.bbox.y1 - wd.bbox.y0, sc = p.tier * 1000 + h;
+    if (!best || sc > best.sc) best = { v: p.v, sc };
   }
-  c.sort((a, b) => b.score - a.score);
-  return c.length ? c[0].v : null;
+  return best ? best.v : null;
 }
 function setStatus(t) { const el = scan.panel && scan.panel.querySelector(".scst"); if (el) el.innerHTML = t; }
 async function startScan() {
@@ -136,8 +144,9 @@ async function loop() {
       const vw = bw / k, vh = bh / k, cw = vw * .8, ch = vh * .34, cx = (W - vw) / 2 + vw * .1, cy = (H - vh) / 2 + vh * .33;
       const cv = document.createElement("canvas"), sc = Math.min(2.5, 1000 / cw); cv.width = cw * sc; cv.height = ch * sc;
       const g = cv.getContext("2d", { willReadFrequently: true }); g.filter = "grayscale(1) contrast(1.6)"; g.drawImage(vid, cx, cy, cw, ch, 0, 0, cv.width, cv.height);
-      const { data } = await scan.worker.recognize(cv);
-      const p = findPrice(data.text || "");
+      const { data } = await scan.worker.recognize(cv, {}, { blocks: true, text: false });
+      const words = []; (data.blocks || []).forEach(bl => bl.paragraphs.forEach(pa => pa.lines.forEach(l => words.push(...l.words))));
+      const p = pickPrice(words);
       if (p != null && p === scan.last) fill(p);
       scan.last = p;
     } catch (e) {}
