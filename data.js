@@ -39,10 +39,12 @@ window.TRIP = {
       date: "2026-12-03", name: "יום חמישי", title: "חיות ואורות", art: "penguin", transport: "AB",
       tips: ["מומלץ לבוקר שמשי"],
       items: [
-        { id: "d2-zoo", title: "גן החיות של ברלין", icon: "🐧", slot: "בוקר",
-          notes: ["7 דק' הליכה מהמלון", "פתוח מ-9:00", "להזמין מראש באתר", "לברר זמני האכלות לפני"],
+        { id: "d2-zoo", title: "גן החיות + האקווריום", icon: "🐧", slot: "בוקר",
+          notes: ["7 דק' הליכה מהמלון", "פתוח מ-9:00", "לקנות כרטיס משולב גן חיות + אקווריום", "🐍 באקווריום: קומת הזוחלים – נחשים, תנינים וצבים", "האקווריום פתוח עד 18:00 (כניסה אחרונה 17:00)", "לברר זמני האכלות לפני"],
           maps: "Zoologischer Garten Berlin", book: "https://www.zoo-berlin.de", bookLabel: "🎟️ לקנות כרטיס" },
         { id: "d2-lunch", title: "ארוחת צהריים", icon: "🍽️" },
+        { id: "d2-anime", title: "חנויות אנימה ב-Bikini Berlin", icon: "🎌",
+          notes: ["Kyun-Labo – מרצ'נדייז אנימה", "Figuya x Konsolenkost – אנימה, מנגה, פיגורות וגיימינג", "צמוד לגן החיות"], maps: "Bikini Berlin Budapester Straße 38" },
         { id: "d2-garden", title: "Christmas Garden – הגן הבוטני", time: "16:20", hard: true, icon: "✨",
           notes: ["כניסה בין 16:20 ל-16:40", "40 דק' נסיעה – לצאת ב-15:40", "יש כרטיס לנועם · יעל נכנסת חינם כמלווה"],
           maps: "Botanischer Garten Berlin Königin-Luise-Straße 6-8", ticket: "garden" },
@@ -55,8 +57,8 @@ window.TRIP = {
       items: [
         { id: "d3-esg", title: "East Side Gallery", icon: "🎨", slot: "בוקר", maps: "East Side Gallery Berlin" },
         { id: "d3-dark", title: "מוזיאון Dark Matter", icon: "🌌",
-          notes: ["21 דק' נסיעה", "פתוח 12:00–23:00 (סגור בשני ושלישי)", "יש שם גם משטח החלקה עם אורות!"],
-          maps: "Dark Matter Köpenicker Chaussee 46 Berlin" },
+          notes: ["21 דק' נסיעה", "פתוח 12:00–23:00 (סגור בשני ושלישי)", "⛸️ החלקה על הקרח ב-Winterlights – יער של 600 עצי אשוח תלויים הפוך", "לקנות כרטיס משולב: התערוכה + Winterlights + החלקה", "יש השכרת מחליקיים"],
+          maps: "Dark Matter Köpenicker Chaussee 46 Berlin", book: "https://www.darkmatter.berlin", bookLabel: "🎟️ לקנות כרטיס" },
         { id: "d3-maclarens", title: "MacLaren's Pub – הפאב של HIMYM", icon: "🍻", slot: "אחה\"צ",
           notes: ["להזמין מקום!", "פתוח מ-18:00, סגור בשני", "כ-20 דק' נסיעה מ-Dark Matter (ליד Ostkreuz)"], maps: "MacLaren's Pub Boxhagener Straße 16 Berlin",
           book: "https://www.maclarens.de" },
@@ -104,6 +106,8 @@ window.TRIP = {
           notes: ["40 דק' מהמלון", "המדריך: Sylvain – יהיה עם מכנסיים שחורים", "לכתוב לו בוואטסאפ כשמגיעים"],
           mapsUrl: "https://goo.gl/maps/WsqdzsNXC2xREccR7", whatsapp: "491776277221", ticket: "graffiti" },
         { id: "d6-neotokyo", title: "חנות Neo Tokyo", icon: "🎌", notes: ["19 דק' ברכבת"], maps: "Neo Tokyo Berlin" },
+        { id: "d6-modulor", title: "Modulor – חנות ענקית לחומרי ציור ויצירה", icon: "✏️",
+          notes: ["2 קומות של חומרי יצירה", "במוריצפלאץ, קרויצברג (U8)", "לבדוק שעות פתיחה לפני – במקורות יש שעות שונות"], maps: "Modulor Prinzenstraße 85 Berlin" },
         { id: "d6-schwarzenberg", title: "רחוב הגרפיטי Haus Schwarzenberg", icon: "🎨",
           notes: ["14 דק' נסיעה או הליכה", "יש שם בית קפה באווירת גרפיטי"], maps: "Haus Schwarzenberg Berlin" },
         { id: "d6-avocado", title: "אוכל: Avocado Club", icon: "🥑", notes: ["ממש ליד יש מסעדת סטייקים שווה!"], maps: "Avocado Club Berlin" }
@@ -140,6 +144,7 @@ window.TRIP = {
     { id: "x-kadewe", title: "KaDeWe", icon: "🛍️", notes: ["12 דק' הליכה מהמלון"], maps: "KaDeWe Berlin" },
     { id: "x-icebar", title: "Ice Bar", icon: "🧊", notes: ["6 דק' הליכה מ-Haus Schwarzenberg"], maps: "Icebar Berlin" },
     { id: "x-illusions", title: "מוזיאון האשליות", icon: "🌀", notes: ["ליד Haus Schwarzenberg"], maps: "Museum of Illusions Berlin" },
+    { id: "x-urbannation", title: "מוזיאון Urban Nation – אמנות רחוב", icon: "🎨", notes: ["כניסה חינם", "ה׳–א׳ 12:00–20:00 · ג׳–ד׳ 10:00–18:00 · סגור בשני", "ליד נולנדורפפלאץ והשוק הלהט\"בי", "גם הבניינים ברחוב מצוירים"], maps: "Urban Nation Museum Bülowstraße 7 Berlin" },
     { id: "x-computer", title: "מוזיאון משחקי המחשב", icon: "🕹️", notes: ["ליד Haus Schwarzenberg"], maps: "Computerspielemuseum Berlin" }
   ],
   suitcase: [
