@@ -13,32 +13,32 @@
     }
     return b;
   }
+  function tick(t, freq, len, vol) {
+    const src = ctx.createBufferSource(); src.buffer = crackle.buf;
+    const bp = ctx.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = freq; bp.Q.value = 1.2;
+    const g = ctx.createGain(); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.0001, t + len);
+    src.connect(bp).connect(g).connect(master); src.start(t, Math.random() * .4, len + .02);
+  }
   function crackle() {
     if (!ctx) return;
-    const t = ctx.currentTime, big = Math.random() < .12;
-    const src = ctx.createBufferSource(); src.buffer = crackle.buf;
-    const bp = ctx.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = big ? 900 + Math.random() * 800 : 1800 + Math.random() * 3000; bp.Q.value = .8;
-    const g = ctx.createGain(), len = big ? .06 : .008 + Math.random() * .025, vol = big ? .5 : .08 + Math.random() * .22;
-    g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.0001, t + len);
-    src.connect(bp).connect(g).connect(master);
-    src.start(t, Math.random() * .4, len + .02);
-    // פצפוץ מגיע לפעמים בצרורות קטנים
-    const next = Math.random() < .3 ? 30 + Math.random() * 60 : 120 + Math.random() * 380;
-    timer = setTimeout(crackle, next);
+    const t = ctx.currentTime, r = Math.random();
+    if (r < .1) { // פיצוץ קטן של עץ – פופ עמוק ואחריו כמה פצפוצים
+      tick(t, 500 + Math.random() * 400, .05, .55);
+      for (let i = 1; i < 4; i++) tick(t + i * (.02 + Math.random() * .05), 2000 + Math.random() * 2500, .012, .18);
+    } else if (r < .55) tick(t, 1500 + Math.random() * 3500, .006 + Math.random() * .014, .12 + Math.random() * .25); // פצפוץ חד
+    else tick(t, 900 + Math.random() * 1200, .015 + Math.random() * .02, .07 + Math.random() * .12); // פצפוץ רך
+    timer = setTimeout(crackle, Math.random() < .35 ? 25 + Math.random() * 70 : 90 + Math.random() * 420);
   }
   function soundOn() {
     try {
       ctx = new (window.AudioContext || window.webkitAudioContext)();
       master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
       master.gain.linearRampToValueAtTime(.9, ctx.currentTime + 1.2);
-      // רחש עמוק ורך של האש
+      // רחש אש חלש מאוד ברקע (בלי "רוח")
       const rumble = ctx.createBufferSource(); rumble.buffer = noiseBuffer(ctx, 4, true); rumble.loop = true;
-      const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 520;
-      const rg = ctx.createGain(); rg.gain.value = .35;
+      const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 180;
+      const rg = ctx.createGain(); rg.gain.value = .07;
       rumble.connect(lp).connect(rg).connect(master); rumble.start();
-      // "נשימה" איטית של הלהבות
-      const lfo = ctx.createOscillator(), lg = ctx.createGain(); lfo.frequency.value = .23; lg.gain.value = .12;
-      lfo.connect(lg).connect(rg.gain); lfo.start();
       crackle.buf = noiseBuffer(ctx, .5, false);
       crackle();
     } catch (e) {}
