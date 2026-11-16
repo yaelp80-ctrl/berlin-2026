@@ -100,7 +100,6 @@ function findPrice(txt) {
   for (const m of txt.matchAll(/(€\s*)?(\d{1,3}(?:[.\s]\d{3})+|\d{1,4})(?:\s?([,.])\s?(\d{2}|-{1,2}))?(\s*€)?/g)) {
     const int = m[2].replace(/[.\s]/g, ""), dec = m[4] && /\d/.test(m[4]) ? m[4] : "0";
     const euro = !!(m[1] || m[5]), hasDec = !!m[3];
-    if (!euro && !hasDec) continue;
     const v = parseFloat(int + "." + dec); if (!v || v > 20000) continue;
     c.push({ v, score: (euro ? 2 : 0) + (hasDec ? 1 : 0) });
   }
