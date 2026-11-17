@@ -344,6 +344,9 @@ nav button{font-size:11px}
 
 <script src="config.js"></script>
 <script src="data.js"></script>
+<script>(() => { const D = window.TRIP.days, a = new Date(D[0].date + "T12:00:00"), b = new Date(D[D.length - 1].date + "T12:00:00");
+  const el = document.querySelector(".sp-sub"); if (!el) return;
+  el.textContent = (a.getMonth() === b.getMonth() ? `${a.getDate()}–${b.getDate()}.${b.getMonth() + 1}` : `${a.getDate()}.${a.getMonth() + 1}–${b.getDate()}.${b.getMonth() + 1}`) + `.${b.getFullYear()} · 🎄`; })();</script>
 <script src="art.js"></script>
 <script src="xmas-data.js"></script>
 <script src="xmas.js"></script>
