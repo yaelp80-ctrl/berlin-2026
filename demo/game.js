@@ -15,7 +15,7 @@ const SNAKES = {
 const ACC = {
   // לובשים על הראש/צוואר
   santa: { n: "כובע סנטה", w: 1, e: "🎅" }, scarf: { n: "צעיף חורף", w: 1, e: "🧣" }, earmuffs: { n: "מחממי אוזניים", w: 1, e: "🎧" },
-  antlers: { n: "קרני אייל", w: 1, e: "🦌" }, bowtie: { n: "פפיון חגיגי", w: 1, e: "🎀" }, rainbow: { n: "צעיף קשת", w: 1, e: "🌈" },
+  antlers: { n: "קרני אייל", w: 1, e: "🦌" }, bowtie: { n: "פפיון חגיגי", w: 1, e: "🎀" }, rainbow: { n: "צעיף חג", w: 1, e: "🧣" },
   beanie: { n: "כובע צמר עם פונפון", w: 1, e: "🧶" }, headband: { n: "סרט ראש של לוחם אנימה", w: 1, e: "🥋" }, crown: { n: "כתר", w: 1, e: "👑" },
   bell: { n: "קולר פעמון", w: 1, e: "🔔" }, glasses: { n: "משקפיים עגולים", w: 1, e: "👓" },
   // קישוטים לטרריום
@@ -24,7 +24,7 @@ const ACC = {
   snowmachine: { n: "מכונת שלג – שלג בתוך הטרריום!", e: "❄️", x: 312, y: 40, s: 22 }, star: { n: "כוכב זהב", e: "🌟", x: 118, y: 38, s: 26 },
   mistletoe: { n: "דבקון – הענף שמתנשקים מתחתיו", e: "🌿", x: 0, y: 0 }, stocking: { n: "גרב חג", e: "🧦", x: 60, y: 60, s: 24 },
   candle: { n: "נר", e: "🕯️", x: 250, y: 214, s: 22 }, sled: { n: "מזחלת", e: "🛷", x: 210, y: 236, s: 28 }, bear: { n: "דוב ברלינאי", e: "🐻", x: 318, y: 208, s: 26 },
-  flag: { n: "דגל גאווה", e: "🏳️‍🌈", x: 22, y: 92, s: 24 }, ginger: { n: "בית ג'ינג'ר", e: "🏠", x: 96, y: 236, s: 26 },
+  flag: { n: "דגל גרמניה", e: "🇩🇪", x: 22, y: 92, s: 24 }, ginger: { n: "בית ג'ינג'ר", e: "🏠", x: 96, y: 236, s: 26 },
   graffiti: { n: "קיר גרפיטי ברקע", e: "🎨", x: 0, y: 0 }, palette: { n: "פלטת ציור", e: "🖌️", x: 270, y: 236, s: 22 }, skates: { n: "מחליקיים", e: "⛸️", x: 140, y: 242, s: 22 },
   pretzel: { n: "בייגלה", e: "🥨", x: 318, y: 236, s: 22 }, wurst: { n: "קארי-וורסט", e: "🌭", x: 40, y: 236, s: 22 }, gamepad: { n: "שלט משחק", e: "🎮", x: 236, y: 186, s: 22 },
   block: { n: "קוביית פיקסלים", e: "🟫", x: 8, y: 220, s: 26 }, tower: { n: "מגדל הטלוויזיה", e: "🗼", x: 310, y: 96, s: 34 },
@@ -76,7 +76,7 @@ function snakeSVG(id) {
     <path d="M-50 18 Q-30 -6 -8 14 T34 10" stroke="${c.color}" stroke-width="18" fill="none" stroke-linecap="round">${SLITHER(c)}</path>
     <path d="M-50 18 Q-30 -6 -8 14 T34 10" stroke="${c.belly}" stroke-width="4" stroke-dasharray="1 9" fill="none" stroke-linecap="round" opacity=".8">${SLITHER(c)}</path>
     ${W("scarf") ? `<path d="M28 4 q8 10 16 2" stroke="#E24C4B" stroke-width="7" fill="none" stroke-linecap="round"/><rect x="30" y="8" width="5" height="12" rx="2" fill="#E24C4B"/>` : ""}
-    ${W("rainbow") ? `<g stroke-width="3" fill="none" stroke-linecap="round"><path d="M28 2 q8 10 16 2" stroke="#E40303"/><path d="M28 5 q8 10 16 2" stroke="#FF8C00"/><path d="M28 8 q8 10 16 2" stroke="#FFED00"/><path d="M28 11 q8 10 16 2" stroke="#008026"/><path d="M28 14 q8 10 16 2" stroke="#004DFF"/></g>` : ""}
+    ${W("rainbow") ? `<g stroke-width="3" fill="none" stroke-linecap="round"><path d="M28 2 q8 10 16 2" stroke="#E24C4B"/><path d="M28 5 q8 10 16 2" stroke="#fff"/><path d="M28 8 q8 10 16 2" stroke="#2E8B57"/><path d="M28 11 q8 10 16 2" stroke="#fff"/><path d="M28 14 q8 10 16 2" stroke="#E24C4B"/></g>` : ""}
     ${W("bell") ? `<circle cx="38" cy="14" r="4" fill="#FFD36E" stroke="#B8860B"/>` : ""}
     ${W("bowtie") ? `<path d="M32 12 l-7 -5 v10z M32 12 l7 -5 v10z" fill="#E24C4B"/><circle cx="32" cy="12" r="2" fill="#B5302F"/>` : ""}
    </g>

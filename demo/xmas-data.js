@@ -3,14 +3,6 @@
 window.XMAS = {
   updated: "13.11.2026",
   markets: [
-    { id: "m-avenue", pride: true, name: "Christmas Avenue", he: "השוק הלהט\"בי בנולנדורפפלאץ",
-      tags: ["stage"], dates: "עד 23.12", hours: "ב׳–ה׳ 16:00–22:00 · ו׳–א׳ 15:00–22:00", fee: "חינם",
-      travel: "כ-10 דק' מהמלון", plan: 2,
-      about: "השוק של הקהילה הגאה, מתחת לרכבת העילית ולכן מוגן מגשם. במה עם מופעי דראג, בינגו דראג ומוזיקה בכל ערב.",
-      warn: "לפי המארגנים הכניסה מגיל 16 בלבד",
-      review: "מתואר כצבעוני, מזמין ושמח. בלוגרית אחת מספרת שנכנסה עם ילדיה הגדולים אחרי שהמאבטח הזהיר מתוכן למבוגרים.",
-      maps: "Christmas Avenue Nollendorfplatz Berlin", url: "https://www.berlin.de/en/christmas-markets/5948422-3230598-christmas-avenue.en.html" },
-
     { id: "m-rathaus", name: "השוק ליד העירייה האדומה", sub: "Rotes Rathaus",
       tags: ["ice", "rides", "wheel"], dates: "23.11–3.1", hours: "ב׳–ו׳ 12:00–22:00 · שבת–א׳ 11:00–22:00", fee: "חינם",
       travel: "כ-25 דק' מהמלון",
@@ -46,7 +38,7 @@ window.XMAS = {
       review: "נחשב לאחד הרומנטיים והיפים בעיר, בזכות התפאורה של הארמון.",
       maps: "Weihnachtsmarkt Schloss Charlottenburg Berlin", url: "https://www.berlin.de/en/christmas-markets/3240314-3230598-christmas-market-charlottenburg-palace.en.html" },
 
-    { id: "m-raw", name: "השוק מימי הביניים ב-RAW", sub: "Mittelalterlicher Weihnachtsmarkt RAW",
+    { id: "m-raw", plan: 2, name: "השוק מימי הביניים ב-RAW", sub: "Mittelalterlicher Weihnachtsmarkt RAW",
       tags: ["rides", "wheel", "fee"], dates: "12.11–22.12", hours: "ב׳–ה׳ 15:00–22:00 · ו׳ 15:00–23:00 · שבת 12:00–23:00", fee: "3 € בימי חול, 4 € בסופ\"ש, חינם בשני",
       travel: "כ-35 דק' מהמלון · ליד MacLaren's",
       about: "לפידים, נפחים ולהטוטנים. לילדים: גלגל ענק, קרוסלת עץ, קשתות, רובי קשת ויער טרולים.",

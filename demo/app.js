@@ -216,7 +216,7 @@ function heroHTML() {
     <div class="wx">${c ? `<div class="e">${e}</div><div class="t">${Math.round(c.temperature_2m)}°</div><div class="muted">${txt} בברלין</div>` : `<div class="e">❄️</div><div class="muted">ברלין</div>`}</div></div>
     <div class="sunrow"><span>🌅 זריחה ${sun.rise}</span><span>🌇 שקיעה ${sun.set}</span>${wx ? `<span>עודכן ${ago(wx.at)}</span>` : ""}</div></div>
     <div id="flightbox"></div>
-    <div class="maps">${T.maps.map(m => `<a class="chip" href="${m.url}" target="_blank" rel="noopener">${m.icon} ${m.label}</a>`).join("")}</div>`;
+`;
 }
 
 function renderTrip() {

@@ -2,19 +2,13 @@
 window.TRIP = {
   start: "2026-12-02T12:05:00+02:00",
   hotel: { name: "המלון", address: "Kurfürstendamm, Berlin" },
-  maps: [
-    { label: "המפה הכללית", url: "https://maps.app.goo.gl/wwiqPrzfR1BvZ9H99", icon: "🗺️" },
-    { label: "מפת חג המולד", url: "https://maps.app.goo.gl/cYkxga89CEkDdjvY9", icon: "🎄" },
-    { label: "מפת ההחלקות", url: "https://maps.app.goo.gl/D88Gh1F2RjTbVpYa7", icon: "⛸️" }
-  ],
+  maps: [],
   tickets: {
-    flightOut: { title: "טיסה הלוך 6H255", icon: "✈️", flight: "out", note: "אין קובץ כרטיס – אפשר להעלות כרטיס עלייה למטוס אם יהיה" },
-    flightBack: { title: "טיסה חזור BZ271", icon: "✈️", flight: "back", note: "כרטיס לכל אחד מכם" }
   },
   flights: {
-    out: { code: "6H255", airline: "ישראייר", date: "2026-12-02", dep: "12:05", arr: "15:30",
+    out: { code: "", airline: "", date: "2026-12-02", dep: "12:05", arr: "15:30",
            from: "נתב\"ג · טרמינל 3", to: "ברלין BER", ticket: "flightOut", dir: "D", bags: "מזוודה 23 ק\"ג + תיק גב לכל אחד", seats: "" },
-    back: { code: "BZ271", airline: "Blue Bird", date: "2026-12-09", dep: "14:50", arr: "20:10",
+    back: { code: "", airline: "", date: "2026-12-09", dep: "14:50", arr: "20:10",
             from: "ברלין BER · טרמינל 1", to: "נתב\"ג", ticket: "flightBack", dir: "A", bags: "מזוודה 20 ק\"ג לכל אחד", seats: "" }
   },
   days: [
@@ -22,8 +16,8 @@ window.TRIP = {
       date: "2026-12-02", name: "יום רביעי", title: "נוחתים בברלין!", art: "plane", transport: "ABC",
       transportNote: "Berlin WelcomeCard ABC ל-6 ימים – קונים היום",
       items: [
-        { id: "d1-flight", title: "טיסה הלוך 6H255", time: "12:05", hard: true, icon: "✈️",
-          notes: ["ישראייר, טרמינל 3 – לבדוק לפני", "נחיתה 15:30"], flight: "out", ticket: "flightOut" },
+        { id: "d1-flight", title: "טיסה לברלין", time: "12:05", hard: true, icon: "✈️",
+          },
         { id: "d1-hotel", title: "צ'ק-אין במלון", icon: "🏨", maps: "Kurfürstendamm Berlin" },
         { id: "d1-super", title: "סופר – אוכל לכמה ימים", icon: "🛒",
           notes: ["פירות, ירקות, יוגורטים, גרנולה, חלב וקורנפלקס"], maps: "Supermarkt near Augsburger Str. 41 Berlin" },
@@ -50,19 +44,19 @@ window.TRIP = {
       ]
     },
     {
-      date: "2026-12-04", name: "יום שישי", title: "גרפיטי, אורות וגאווה", art: "spray", transport: "AB",
+      date: "2026-12-04", name: "יום שישי", title: "גרפיטי, אורות ושוק אבירים", art: "spray", transport: "AB",
       items: [
         { id: "d3-esg", title: "East Side Gallery", icon: "🎨", slot: "בוקר", maps: "East Side Gallery Berlin" },
+        { id: "d3-oberbaum", title: "גשר אוברבאום", icon: "🌉", notes: ["צמוד ל-East Side Gallery", "הגשר הכי יפה בברלין, עם צריחים אדומים"], maps: "Oberbaumbrücke Berlin" },
         { id: "d3-dark", title: "מוזיאון Dark Matter", icon: "🌌",
           notes: ["21 דק' נסיעה", "פתוח 12:00–23:00 (סגור בשני ושלישי)", "⛸️ החלקה על הקרח ב-Winterlights – יער של 600 עצי אשוח תלויים הפוך", "לקנות כרטיס משולב: התערוכה + Winterlights + החלקה", "יש השכרת מחליקיים"],
           maps: "Dark Matter Köpenicker Chaussee 46 Berlin", book: "https://www.darkmatter.berlin", bookLabel: "🎟️ לקנות כרטיס" },
         { id: "d3-maclarens", title: "MacLaren's Pub – הפאב של HIMYM", icon: "🍻", slot: "אחה\"צ",
           notes: ["להזמין מקום!", "פתוח מ-18:00, סגור בשני", "כ-20 דק' נסיעה מ-Dark Matter (ליד Ostkreuz)"], maps: "MacLaren's Pub Boxhagener Straße 16 Berlin",
           book: "https://www.maclarens.de" },
-        { id: "d3-pride", title: "שוק חג המולד הלהט\"בי Regenbogen", icon: "🏳️‍🌈",
-          notes: ["כ-35 דק' נסיעה מהפאב", "בנולנדורפפלאץ, מתחת לרכבת העילית (Christmas Avenue)"], maps: "Christmas Avenue Nollendorfplatz Berlin" },
-        { id: "d3-books", title: "חנות הספרים Prinz Eisenherz", icon: "📚", notes: ["פתוחה עד 20:00", "ליד השוק"], maps: "Prinz Eisenherz Buchladen Berlin" },
-        { id: "d3-cafe", title: "בית הקפה רומיאו ורומיאו", icon: "☕", notes: ["פתוח עד 20:00", "ליד השוק"], maps: "Romeo und Romeo Café Berlin" }
+        { id: "d3-urbanspree", title: "Urban Spree – גלריה לאמנות רחוב", icon: "🖼️", notes: ["בתוך מתחם RAW, כ-10 דק' הליכה מהפאב", "גלריה וחנות לאמנות רחוב – לבדוק שעות פתיחה"], maps: "Urban Spree Revaler Straße 99 Berlin" },
+        { id: "d3-raw", title: "שוק חג המולד מימי הביניים ב-RAW", icon: "🏰", slot: "ערב",
+          notes: ["באותו מתחם, ליד הפאב", "לפידים, נפחים, גלגל ענק וקרוסלת עץ", "פתוח בשישי עד 23:00 · כניסה 3–4 €"], maps: "RAW Gelände Revaler Straße 99 Berlin" }
       ]
     },
     {
@@ -128,9 +122,8 @@ window.TRIP = {
         { id: "d8-checkout", title: "צ'ק-אאוט מהמלון", icon: "🧳" },
         { id: "d8-train", title: "יוצאים לשדה ברכבת", time: "10:50", hard: true, icon: "🚆",
           notes: ["שתי רכבות – שעה", "דרך Hauptbahnhof או Ostkreuz"] },
-        { id: "d8-airport", title: "מגיעים לשדה", time: "11:50", hard: true, icon: "🛫", maps: "BER Airport Terminal 1" },
-        { id: "d8-flight", title: "טיסה חזור BZ271", time: "14:50", hard: true, icon: "✈️",
-          notes: ["טרמינל 1", "נחיתה בנתב\"ג 20:10"], flight: "back", ticket: "flightBack" }
+        { id: "d8-airport", title: "מגיעים לשדה", time: "11:50", hard: true, icon: "🛫", maps: "BER Airport" },
+        { id: "d8-flight", title: "טיסה הביתה", time: "14:50", hard: true, icon: "✈️" }
       ]
     }
   ],
@@ -140,7 +133,7 @@ window.TRIP = {
     { id: "x-kadewe", title: "KaDeWe", icon: "🛍️", notes: ["12 דק' הליכה מהמלון"], maps: "KaDeWe Berlin" },
     { id: "x-icebar", title: "Ice Bar", icon: "🧊", notes: ["6 דק' הליכה מ-Haus Schwarzenberg"], maps: "Icebar Berlin" },
     { id: "x-illusions", title: "מוזיאון האשליות", icon: "🌀", notes: ["ליד Haus Schwarzenberg"], maps: "Museum of Illusions Berlin" },
-    { id: "x-urbannation", title: "מוזיאון Urban Nation – אמנות רחוב", icon: "🎨", notes: ["כניסה חינם", "ה׳–א׳ 12:00–20:00 · ג׳–ד׳ 10:00–18:00 · סגור בשני", "ליד נולנדורפפלאץ והשוק הלהט\"בי", "גם הבניינים ברחוב מצוירים"], maps: "Urban Nation Museum Bülowstraße 7 Berlin" },
+    { id: "x-urbannation", title: "מוזיאון Urban Nation – אמנות רחוב", icon: "🎨", notes: ["כניסה חינם", "ה׳–א׳ 12:00–20:00 · ג׳–ד׳ 10:00–18:00 · סגור בשני", "בשונברג, ליד תחנת Nollendorfplatz", "גם הבניינים ברחוב מצוירים"], maps: "Urban Nation Museum Bülowstraße 7 Berlin" },
     { id: "x-computer", title: "מוזיאון משחקי המחשב", icon: "🕹️", notes: ["ליד Haus Schwarzenberg"], maps: "Computerspielemuseum Berlin" }
   ],
   suitcase: [

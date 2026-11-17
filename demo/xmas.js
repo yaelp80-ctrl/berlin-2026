@@ -18,8 +18,8 @@ function card(m, rank) {
   const planTxt = m.plan != null ? `<span class="tag" style="background:#1D7A4E">🗓️ בתוכנית: ${T.days[m.plan].name} ${fmt(T.days[m.plan].date)}</span>` : "";
   return `<div class="mk ${been ? "been" : ""} ${isOpen ? "open" : ""}" data-mk="${m.id}">
     <div class="mkhead">
-      <div class="rank">${m.pride ? "🏳️‍🌈" : rank}</div>
-      <div style="flex:1;min-width:0"><div class="ttl"><b>${esc(m.name)}</b>${m.pride ? ` <span class="pflag">🏳️‍🌈</span>` : ""}</div>
+      <div class="rank">${rank}</div>
+      <div style="flex:1;min-width:0"><div class="ttl"><b>${esc(m.name)}</b></div>
         ${m.sub ? `<div class="muted" style="font-size:13px">${esc(m.sub)}</div>` : ""}
         <div class="tags">${m.tags.map(t => `<span class="tag">${TAG[t]}</span>`).join("")}${planTxt}</div></div>
       <button class="beenb ${been ? "on" : ""}" data-been="${m.id}"><span class="check">${been ? "✓" : ""}</span><small>${been ? "היינו!" : "היינו?"}</small></button>
@@ -42,7 +42,7 @@ function render() {
       <div class="muted">${X.markets.length} השווקים הכי שווים בברלין, מסודרים מהכי שווה, ועוד ${X.potsdam.length} בפוטסדאם</div>
       <div class="muted" style="margin-top:6px">🎄 היינו ב-${been} שווקים</div></div>${window.ART.tree}</div>
       <div class="chips">${FILTERS.map(([k, l]) => `<button class="chip ${filter === k ? "on" : ""}" data-f="${k}">${l}</button>`).join("")}</div></div>
-    ${list.map(m => card(m, X.markets.indexOf(m))).join("") || `<div class="empty">אין שווקים בסינון הזה</div>`}
+    ${list.map(m => card(m, X.markets.indexOf(m) + 1)).join("") || `<div class="empty">אין שווקים בסינון הזה</div>`}
     ${pots.length ? `<h3>🏰 פוטסדאם (${T.days[3].name.replace("יום ", "")} ${fmt(T.days[3].date)})</h3>${pots.map(m => card(m, "P")).join("")}
 ` : ""}
     <div class="muted" style="text-align:center;font-size:12px;padding:8px">מידע מ-berlin.de ו-visitBerlin · עודכן ${X.updated} · זמני נסיעה משוערים</div>`;
