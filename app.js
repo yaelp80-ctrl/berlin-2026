@@ -186,6 +186,7 @@ function placeSheet(id) {
     <dl class="kv pinfo"><dt>🕓 ימים ושעות</dt><dd>${esc(p.hours)}</dd><dt>📍 מרחק</dt><dd>${esc(p.dist)}</dd><dt>💶 כניסה</dt><dd>${esc(p.price)}</dd></dl>
     <div class="acts" style="margin-top:12px">${book ? `<a class="btn gold" href="${book}" target="_blank" rel="noopener">${p.bookLabel || it.bookLabel || "🗓️ להזמנת מקום"}</a>` : ""}${p.book2 ? `<a class="btn gold" href="${p.book2}" target="_blank" rel="noopener">${p.book2Label}</a>` : ""}
       ${m ? `<a class="btn" href="${m}" target="_blank" rel="noopener">📍 ניווט</a>` : ""}</div>
+    <button class="btn" data-close="1" style="width:100%;margin-top:12px;justify-content:center">✕ סגירה</button>
     <div class="muted" style="font-size:11px;margin-top:10px">שעות ומחירים נבדקו בנובמבר 2026 ויכולים להשתנות</div></div>`);
 }
 
@@ -311,8 +312,25 @@ function renderSoon() {
 }
 
 /* ---------- חלון תחתון וטוסט ---------- */
-function sheet(html) { $("#sheet").onclick = null; $("#sheet").innerHTML = html; $("#sheet").classList.add("on"); $("#veil").classList.add("on"); }
-function closeSheet() { $("#sheet").classList.remove("on"); $("#veil").classList.remove("on"); }
+function sheet(html) {
+  const sh = $("#sheet"); sh.onclick = null; sh.style.transform = "";
+  sh.innerHTML = `<div class="sheet-top"><span class="grab"></span><button class="sheet-x" aria-label="סגירה">✕</button></div>` + html;
+  sh.querySelector(".sheet-x").addEventListener("click", e => { e.stopPropagation(); closeSheet(); });
+  sh.scrollTop = 0; sh.classList.add("on"); $("#veil").classList.add("on");
+  // כפתור "חזור" של הטלפון סוגר את החלון
+  if (!(history.state && history.state.sheet)) history.pushState({ sheet: 1 }, "");
+}
+function closeSheet() { const sh = $("#sheet"); sh.classList.remove("on"); sh.style.transform = ""; $("#veil").classList.remove("on"); }
+window.addEventListener("popstate", () => { if ($("#sheet").classList.contains("on")) closeSheet(); });
+/* החלקה למטה סוגרת את החלון */
+(() => { const sh = $("#sheet"); let y0 = null, dy = 0;
+  sh.addEventListener("click", e => { if (e.target.closest("[data-close]")) closeSheet(); });
+  sh.addEventListener("touchstart", e => { y0 = sh.scrollTop <= 0 ? e.touches[0].clientY : null; dy = 0; }, { passive: true });
+  sh.addEventListener("touchmove", e => { if (y0 == null) return; dy = e.touches[0].clientY - y0;
+    if (dy > 0) { sh.style.transition = "none"; sh.style.transform = `translateY(${dy}px)`; } }, { passive: true });
+  sh.addEventListener("touchend", () => { if (y0 == null) return; sh.style.transition = "";
+    if (dy > 90) closeSheet(); else sh.style.transform = ""; y0 = null; });
+})();
 $("#veil").onclick = closeSheet;
 let toastT;
 function toast(msg, undo) {
