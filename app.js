@@ -184,7 +184,7 @@ function placeSheet(id) {
     ${p.hist ? `<div class="phist"><b>📜 למה זה חשוב</b>${esc(p.hist)}</div>` : ""}
     <h3 class="pinfo-h">ℹ️ מידע חשוב</h3>
     <dl class="kv pinfo"><dt>🕓 ימים ושעות</dt><dd>${esc(p.hours)}</dd><dt>📍 מרחק</dt><dd>${esc(p.dist)}</dd><dt>💶 כניסה</dt><dd>${esc(p.price)}</dd></dl>
-    <div class="acts" style="margin-top:12px">${book ? `<a class="btn gold" href="${book}" target="_blank" rel="noopener">${p.bookLabel || it.bookLabel || "🗓️ להזמנת מקום"}</a>` : ""}
+    <div class="acts" style="margin-top:12px">${book ? `<a class="btn gold" href="${book}" target="_blank" rel="noopener">${p.bookLabel || it.bookLabel || "🗓️ להזמנת מקום"}</a>` : ""}${p.book2 ? `<a class="btn gold" href="${p.book2}" target="_blank" rel="noopener">${p.book2Label}</a>` : ""}
       ${m ? `<a class="btn" href="${m}" target="_blank" rel="noopener">📍 ניווט</a>` : ""}</div>
     <div class="muted" style="font-size:11px;margin-top:10px">שעות ומחירים נבדקו בנובמבר 2026 ויכולים להשתנות</div></div>`);
 }
