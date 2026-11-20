@@ -289,6 +289,19 @@ nav button{font-size:11px}
 @keyframes wag{0%,60%,100%{transform:rotate(0)}68%{transform:rotate(14deg)}76%{transform:rotate(-6deg)}84%{transform:rotate(12deg)}92%{transform:rotate(0)}}
 .fp .zz{font:700 16px sans-serif;fill:#ffe2b8;opacity:0;animation:zz 3.6s ease-out infinite}
 @keyframes zz{0%{opacity:0;transform:translate(0,0)}30%{opacity:.9}100%{opacity:0;transform:translate(-8px,-26px)}}
+.ttl.has-place{cursor:pointer}
+.ttl .more{display:inline-block;margin-inline-start:6px;font-size:13px;color:var(--gold);opacity:.85}
+.place .place-art{width:100%;height:auto;border-radius:16px;display:block;margin-bottom:10px;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.place h2{margin:6px 0 4px}
+.pabout{font-size:16px;line-height:1.55;margin:6px 0 10px}
+.phist{background:rgba(255,211,110,.1);border:1px solid rgba(255,211,110,.35);border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.5}
+.phist b{display:block;color:var(--gold);margin-bottom:3px}
+.pinfo-h{margin:14px 0 4px;font-size:16px}
+.pa-bulb{animation:pabulb 1.6s ease-in-out infinite alternate}@keyframes pabulb{from{opacity:.45}to{opacity:1}}
+.pa-glow{animation:pabulb 2.2s ease-in-out infinite alternate}
+.pa-beam{animation:pabeam 3s ease-in-out infinite alternate}@keyframes pabeam{from{opacity:.15}to{opacity:.6}}
+.pa-spin{animation:paspin 20s linear infinite;transform-box:fill-box;transform-origin:center}@keyframes paspin{to{transform:rotate(360deg)}}
+.pa-snow circle{animation:pasnow 6s linear infinite}@keyframes pasnow{from{transform:translateY(-40px)}to{transform:translateY(60px)}}
 @media (prefers-reduced-motion:reduce){#sky{display:none}*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -349,6 +362,8 @@ nav button{font-size:11px}
 <script src="xmas-data.js"></script>
 <script src="xmas.js"></script>
 <script src="tickets.js"></script>
+<script src="places-art.js"></script>
+<script src="places.js"></script>
 <script src="app.js"></script>
 <script src="facts.js"></script>
 <script src="game.js"></script>

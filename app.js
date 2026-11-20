@@ -173,6 +173,22 @@ function draw() {
 }
 addEventListener("resize", seed);
 
+/* ---------- דף מקום ---------- */
+const PL = window.PLACES || {};
+function placeSheet(id) {
+  const it = byId[id], p = PL[id]; if (!it || !p) return;
+  const m = mapsLink(it), book = p.book || it.book;
+  sheet(`<div class="place">${window.PLACE_ART ? window.PLACE_ART(p.art, p.opts) : ""}
+    <h2>${it.icon || ""} ${esc(it.title.replace(/^אוכל: /, ""))}</h2>
+    <p class="pabout">${esc(p.about)}</p>
+    ${p.hist ? `<div class="phist"><b>📜 למה זה חשוב</b>${esc(p.hist)}</div>` : ""}
+    <h3 class="pinfo-h">ℹ️ מידע חשוב</h3>
+    <dl class="kv pinfo"><dt>🕓 ימים ושעות</dt><dd>${esc(p.hours)}</dd><dt>📍 מרחק</dt><dd>${esc(p.dist)}</dd><dt>💶 כניסה</dt><dd>${esc(p.price)}</dd></dl>
+    <div class="acts" style="margin-top:12px">${book ? `<a class="btn gold" href="${book}" target="_blank" rel="noopener">${p.bookLabel || it.bookLabel || "🗓️ להזמנת מקום"}</a>` : ""}
+      ${m ? `<a class="btn" href="${m}" target="_blank" rel="noopener">📍 ניווט</a>` : ""}</div>
+    <div class="muted" style="font-size:11px;margin-top:10px">שעות ומחירים נבדקו בנובמבר 2026 ויכולים להשתנות</div></div>`);
+}
+
 /* ---------- רכיבי ממשק ---------- */
 const mapsLink = it => it.mapsUrl || (it.maps ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(it.maps) : null);
 function itemHTML(it, opts = {}) {
@@ -181,7 +197,6 @@ function itemHTML(it, opts = {}) {
   const acts = [
     m && `<a class="btn" href="${m}" target="_blank" rel="noopener">📍 ניווט</a>`,
     it.ticket && `<button class="btn gold" data-tk="${it.ticket}">${it.flight ? "✈️ טיסה וכרטיס" : "🎟️ כרטיס"}</button>`,
-    it.book && `<a class="btn gold" href="${it.book}" target="_blank" rel="noopener">${it.bookLabel || "🗓️ להזמנת מקום"}</a>`,
     it.call && `<a class="btn" href="tel:${it.call}">📞 התקשרות</a>`,
     it.whatsapp && `<a class="btn wa" href="https://wa.me/${it.whatsapp}" target="_blank" rel="noopener">💬 Sylvain</a>`,
     `<button class="btn" data-move="${it.id}">⇄ ${opts.worth ? "להעביר ליום" : "יום אחר"}</button>`
@@ -193,7 +208,7 @@ function itemHTML(it, opts = {}) {
   return `<div class="item ${done ? "done" : ""}" data-id="${it.id}">
     ${opts.worth ? `<span class="check" style="border-style:dashed;color:var(--muted)">${it.icon || "⭐"}</span>` :
       `<button class="check" data-done="${it.id}" aria-label="ראינו">✓</button>`}
-    <div><div class="ttl">${time}<span class="ic">${it.icon || ""}</span>${esc(it.title)}</div>
+    <div><div class="ttl ${PL[it.id] ? "has-place" : ""}" ${PL[it.id] ? `data-place="${it.id}"` : ""}>${time}<span class="ic">${it.icon || ""}</span>${esc(it.title)}${PL[it.id] ? `<span class="more">ⓘ</span>` : ""}</div>
       ${origin}
       ${it.notes ? `<ul class="notes">${it.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
       <div class="acts">${acts}</div></div>
@@ -318,6 +333,8 @@ function sparkle(el) {
 
 /* ---------- אירועים בלשונית הטיול ---------- */
 $("#v-trip").addEventListener("click", e => {
+  const pl = e.target.closest("[data-place]");
+  if (pl && !e.target.closest("button,a")) return placeSheet(pl.dataset.place);
   const t = e.target.closest("button"); if (!t) return;
   const ds = t.dataset;
   if (ds.day) { selDay = +ds.day; renderTrip(); return; }
