@@ -57,7 +57,7 @@ async function sync() {
       if (!k.startsWith("item:")) return;
       const id = k.slice(5), local = shared.items[id];
       if (!local || row.t > local.t) {
-        shared.items[id] = { s: row.v?.s ?? null, t: row.t }; if (row.v?.day != null) shared.items[id].day = row.v.day;
+        shared.items[id] = { s: row.v?.s ?? null, t: row.t }; if (row.v?.day !== undefined) shared.items[id].day = row.v.day;
         changed = true;
       }
     });
@@ -228,8 +228,7 @@ function itemHTML(it, opts = {}) {
   const origin = opts.worth && it.home != null ? `<div class="from">במקור: ${T.days[it.home].name} ${fmtDate(T.days[it.home].date)}</div>` :
     !opts.worth && it.home !== opts.day ? `<div class="from">הועבר לכאן</div>` : "";
   return `<div class="item ${done ? "done" : ""}" data-id="${it.id}">
-    ${opts.worth ? `<span class="check" style="border-style:dashed;color:var(--muted)">${it.icon || "⭐"}</span>` :
-      `<button class="check" data-done="${it.id}" aria-label="ראינו">✓</button>`}
+    <button class="check" data-done="${it.id}" aria-label="ראינו">✓</button>
     <div><div class="ttl ${PL[it.id] ? "has-place" : ""}" ${PL[it.id] ? `data-place="${it.id}"` : ""}>${time}<span class="ic">${it.icon || ""}</span>${esc(it.title)}${PL[it.id] ? `<span class="more">ⓘ</span>` : ""}</div>
       ${origin}
       ${it.notes ? `<ul class="notes">${it.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
@@ -261,7 +260,9 @@ function renderTrip() {
   const di = dayIndexToday(), d = T.days[selDay];
   const items = itemsForDay(selDay), done = items.filter(it => shared.items[it.id]?.s === "done").length;
   const sm = daySummary(d.date), sun = sunTimes(d.date);
-  const worth = allItems.filter(it => !it.xmas && placeOf(it) === null);
+  // מה שסומן ✓ יורד לסוף הרשימה
+  const worth = allItems.filter(it => !it.xmas && placeOf(it) === null)
+    .sort((a, b) => (shared.items[a.id]?.s === "done") - (shared.items[b.id]?.s === "done"));
   $("#v-trip").innerHTML = heroHTML() + `
     <div class="days">${T.days.map((x, i) => `<button class="dchip ${i === selDay ? "sel" : ""} ${i === di ? "today" : ""}" data-day="${i}"><small>${x.name.replace("יום ", "")}</small><b>${fmtDate(x.date)}</b></button>`).join("")}</div>
     <div class="card">
@@ -384,8 +385,8 @@ $("#v-trip").addEventListener("click", e => {
   if (isGuest() && (ds.done || ds.skip || ds.move)) return guestToast();
   if (false) {}
   else if (ds.done) {
-    const cur = shared.items[ds.done]?.s === "done";
-    setItem(ds.done, { s: cur ? null : "done" }); if (!cur) sparkle(t); setTimeout(renderTrip, cur ? 0 : 250);
+    const cur = shared.items[ds.done]?.s === "done", inWorth = placeOf(byId[ds.done]) === null;
+    setItem(ds.done, inWorth ? { s: cur ? null : "done", day: null } : { s: cur ? null : "done" }); if (!cur) sparkle(t); setTimeout(renderTrip, cur ? 0 : 250);
   } else if (ds.skip && byId[ds.skip].xmas) {
     const id = ds.skip, prev = { ...(shared.items[id] || {}) };
     setItem(id, { day: null }); renderTrip(); window.XMASVIEW && window.XMASVIEW.render();
