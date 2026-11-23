@@ -75,6 +75,24 @@ if (window.XMAS) [...XMAS.markets, ...XMAS.potsdam].forEach(m => allItems.push({
   notes: [m.travel, m.hours].filter(Boolean), maps: m.maps }));
 const byId = Object.fromEntries(allItems.map(it => [it.id, it]));
 
+// ימים שבהם המקום סגור (0=ראשון … 6=שבת), או טווח תאריכים שרק בו הוא פתוח – לפי השעות שבדקנו
+const CLOSED = { "d2-anime": [0], "d3-dark": [1, 2], "d3-maclarens": [1], "d3-books": [0], "d4-sanssouci": [1], "d5-museum": [1], "d6-modulor": [0],
+  "x-kadewe": [0], "x-urbannation": [1], "x-lego": [0], "x-kpop": [0], "x-technik": [1],
+  "m-raw": [0], "m-gluehwald": [1, 2] };
+const ONLY = { "m-winterquartier": ["2026-12-05", "2026-12-06"], "m-rixdorf": ["2026-12-04", "2026-12-06"], "m-babelsberg": ["2026-12-04", "2026-12-06"] };
+const WD = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
+function closedOn(id, di) {
+  const date = T.days[di].date, o = ONLY[id];
+  if (o && (date < o[0] || date > o[1])) return true;
+  return (CLOSED[id] || []).includes(new Date(date + "T12:00").getDay());
+}
+function closedNote(id) {
+  const o = ONLY[id], c = CLOSED[id];
+  if (o) return `פתוח רק ${fmtDate(o[0])}–${fmtDate(o[1])}`;
+  if (c) return c.length >= 4 ? "פתוח רק " + WD.map((n, i) => c.includes(i) ? null : n).filter(Boolean).join(" ו") : "סגור ב" + c.map(i => WD[i]).join(" וב");
+  return "";
+}
+
 function placeOf(it) {
   const st = shared.items[it.id] || {};
   if (st.s === "skip") return null;
@@ -379,8 +397,11 @@ $("#v-trip").addEventListener("click", e => {
     toast(`"${byId[id].title}" עבר ל"שווה לראות"`, () => { shared.items[id] = prev; saveShared(); renderTrip(); });
   } else if (ds.move) {
     const it = byId[ds.move];
+    const note = closedNote(it.id);
     sheet(`<h2>${it.icon || ""} ${esc(it.title)}</h2><div class="muted">לאיזה יום להעביר?</div>
-      <div class="grid">${T.days.map((x, i) => `<button class="dchip ${placeOf(it) === i ? "sel" : ""}" data-to="${i}"><small>${x.name.replace("יום ", "")}</small><b>${fmtDate(x.date)}</b></button>`).join("")}</div>`);
+      ${note ? `<div class="banner" style="margin-top:8px">🚫 ${note}</div>` : ""}
+      <div class="grid">${T.days.map((x, i) => { const cl = closedOn(it.id, i) && placeOf(it) !== i;
+        return `<button class="dchip ${placeOf(it) === i ? "sel" : ""} ${cl ? "closed" : ""}" ${cl ? "disabled" : `data-to="${i}"`}><small>${x.name.replace("יום ", "")}</small><b>${fmtDate(x.date)}</b>${cl ? `<small class="cl">סגור</small>` : ""}</button>`; }).join("")}</div>`);
     $("#sheet").onclick = ev => { const b = ev.target.closest("[data-to]"); if (!b) return;
       const to = +b.dataset.to; setItem(it.id, it.xmas ? { day: to } : { s: null, day: to === it.home ? undefined : to }); window.XMASVIEW && window.XMASVIEW.render(); closeSheet(); selDay = to; renderTrip();
       toast(`הועבר ל${T.days[to].name} ${fmtDate(T.days[to].date)}`); };
