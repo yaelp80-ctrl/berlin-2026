@@ -252,7 +252,7 @@
     const S = [{ svg: SCENE, title: "חם ונעים 🔥", sp: [180, 400, 110, 200] }, { svg: DRAGON, title: "🐉 הדרקון מחמם!", sp: null }, { svg: CAMP, title: "🔥 מדורה ומרשמלו", sp: [180, 440, 70, 230] }][k];
     ov = document.createElement("div"); ov.className = "fp" + (k === 1 ? " dragon" : "");
     ov.innerHTML = `${S.svg}<canvas class="fp-sparks"></canvas>
-      <div class="fp-top"><button class="fp-btn" id="fp-snd">🔊</button><div class="fp-title">${S.title}</div><button class="fp-btn" id="fp-x">✕</button></div>`;
+      <div class="fp-top"><button class="fp-btn" id="fp-snd">🔊</button><div class="fp-title"></div><button class="fp-btn" id="fp-x">✕</button></div>`;
     sceneSp = S.sp; isDragon = k === 1;
     document.body.appendChild(ov);
     requestAnimationFrame(() => ov.classList.add("on"));
