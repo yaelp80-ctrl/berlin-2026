@@ -267,8 +267,12 @@ function getPack(kind) {
   if (!p) { p = T[kind].map(g => ({ g: g.g, items: g.items.map((t, i) => ({ id: g.g + i, t, on: false })) })); LS.set(packKey(kind), p); }
   // פריטים חדשים שנוספו לרשימה אחרי שכבר נשמרה בטלפון
   const added = LS.get("berlin.packAdded." + user + "." + kind, []);
-  [["suitcase", "אוכל", "ערכת תה"]].forEach(([k, g, t]) => {
-    if (k !== kind || added.includes(t)) return;
+  [["suitcase", "אוכל", "ערכת תה"],
+   ["backpack", "צילום ומחשב", "מצלמה", "yael"], ["backpack", "צילום ומחשב", "סוללות ומטען למצלמה", "yael"],
+   ["backpack", "צילום ומחשב", "מצלמת וידאו", "yael"], ["backpack", "צילום ומחשב", "לפטופ", "yael"],
+   ["backpack", "לפני שיוצאים", "להוריד שירים בספוטיפיי", "yael"], ["backpack", "לפני שיוצאים", "להוריד סרטים בנטפליקס", "yael"],
+   ["suitcase", "חורף", "מטריה", "yael"]].forEach(([k, g, t, only]) => {
+    if (k !== kind || added.includes(t) || (only && only !== user)) return;
     let grp = p.find(x => x.g === g); if (!grp) { grp = { g, items: [] }; p.push(grp); }
     if (!grp.items.some(x => x.t === t)) grp.items.push({ id: "n-" + t, t, on: false });
     added.push(t); LS.set("berlin.packAdded." + user + "." + kind, added); LS.set(packKey(kind), p);
