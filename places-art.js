@@ -242,6 +242,34 @@ const SCENES = {
     <g transform="translate(180 60)"><rect x="-26" y="0" width="52" height="16" fill="#3A2F2B"/>${glow(0, 60, 80, "#FFD36E", .35)}${em("🎨", 0, 70, 34)}${em("🤖", -32, 120, 26)}${em("👾", 34, 116, 22)}</g>
     <rect x="120" y="180" width="120" height="40" fill="#2E2522"/>${bulbs(40, 10, 9, 120, 240)}${person(170, 206, "#140E0C", 1)}${person(196, 208, "#140E0C", .85)}`],
 
+  lego: () => ["day", `${clouds(24, .6)}<g opacity=".6">${skyline(80, "#7B97BB", null, 26, 30)}</g>
+    <rect x="30" y="44" width="300" height="146" fill="#F4F4F4"/><rect x="30" y="44" width="300" height="34" fill="#E3000B"/>
+    <rect x="150" y="48" width="60" height="26" rx="4" fill="#FFD500" stroke="#000" stroke-width="2"/><text x="180" y="67" font-size="16" font-weight="900" fill="#E3000B" text-anchor="middle" stroke="#000" stroke-width=".6">LEGO</text>
+    ${Array.from({ length: 6 }, (_, r) => Array.from({ length: 11 }, (_, i) => { const c = ["#E3000B", "#FFD500", "#0055BF", "#00852B", "#FE8A18", "#A0A5A9"][(i * 3 + r * 5) % 6], x = 42 + i * 14 + (r % 2) * 7, y = 86 + r * 16; return `<rect x="${x}" y="${y}" width="13" height="14" fill="${c}"/><circle cx="${x + 4}" cy="${y + 4}" r="2" fill="#fff" opacity=".3"/><circle cx="${x + 9}" cy="${y + 4}" r="2" fill="#fff" opacity=".3"/>`; }).join("")).join("")}
+    <rect x="210" y="86" width="108" height="98" fill="#CFE8FA"/>${glow(264, 136, 70, "#fff", .4)}
+    ${[[236, "#0055BF"], [264, "#E3000B"], [292, "#00852B"]].map(([x, c], i) => `<g class="pa-bub" style="animation-delay:${i * .7}s" transform="translate(${x} 150)"><rect x="-8" y="-30" width="16" height="13" rx="3" fill="#FFD500"/><circle cx="-3" cy="-24" r="1.3" fill="#000"/><circle cx="3" cy="-24" r="1.3" fill="#000"/><path d="M-3 -20 q3 2 6 0" stroke="#000" stroke-width="1" fill="none"/><rect x="-6" y="-33" width="12" height="4" fill="#FFD500"/><path d="M-10 -16 h20 l2 16 h-24z" fill="${c}"/><rect x="-9" y="0" width="8" height="14" fill="#333"/><rect x="1" y="0" width="8" height="14" fill="#333"/></g>`).join("")}
+    <rect x="0" y="190" width="${W}" height="30" fill="#A8A8B4"/>${crowd(214, 5, 27, "#2A3550")}`],
+
+  kpop: () => ["night", `${stars(14)}<g opacity=".7">${skyline(80, "#2B2F48", "#FFD36E", 26, 30)}</g>
+    <rect x="30" y="44" width="300" height="146" fill="#2A1446"/><rect x="30" y="44" width="300" height="34" fill="#140A26"/>
+    <text x="180" y="68" font-size="19" font-weight="900" fill="#FF8FE0" text-anchor="middle" letter-spacing="3" class="pa-glow">SEOULSTATION</text>
+    <rect x="44" y="86" width="272" height="96" fill="#3B1D63"/>${glow(180, 134, 140, "#C77DFF", .5)}
+    ${[0, 1].map(r => `<rect x="50" y="${120 + r * 36}" width="260" height="3" fill="#8A6BBF"/>`).join("")}
+    ${Array.from({ length: 16 }, (_, i) => `<rect x="${56 + i * 16}" y="${96 + (i % 3)}" width="13" height="${22 - (i % 3)}" fill="${["#FF6B9A", "#6FD3FF", "#FFD36E", "#C77DFF", "#6BE09A", "#fff"][i % 6]}"/>`).join("")}
+    ${Array.from({ length: 7 }, (_, i) => `<g class="pa-tw" style="animation-delay:${i * .3}s"><rect x="${70 + i * 34}" y="134" width="4" height="20" fill="#ddd"/><circle cx="${72 + i * 34}" cy="130" r="8" fill="${["#FF8FE0", "#6FD3FF", "#B9FF66", "#FFD36E", "#C77DFF", "#FF6B6B", "#7CF0E0"][i]}"/></g>`).join("")}
+    ${em("💜", 70, 172, 18)}${em("🎤", 130, 172, 18)}${em("💿", 190, 172, 18)}${em("⭐", 250, 172, 18)}${em("🎧", 300, 172, 18)}
+    <rect x="0" y="190" width="${W}" height="30" fill="#2B2F48"/>${crowd(214, 5, 27, "#140A26")}`],
+
+  techmuseum: () => ["day", `${clouds(20, .8)}
+    <rect x="60" y="88" width="250" height="102" fill="#8FA3B8"/>    ${Array.from({ length: 9 }, (_, i) => `<rect x="${68 + i * 27}" y="100" width="22" height="78" fill="#BFD6EA" opacity=".85"/><line x1="${68 + i * 27}" y1="139" x2="${90 + i * 27}" y2="139" stroke="#6E8297" stroke-width="2"/>`).join("")}
+    <rect x="56" y="82" width="258" height="8" fill="#5E7185"/>
+    <g class="pa-fly"><g transform="translate(190 52)"><path d="M-70 0 Q0 -8 70 0 Q0 8 -70 0Z" fill="#E8ECF0"/><path d="M-6 -2 L-30 -34 L-18 -34 L14 -2Z" fill="#CFD6DE"/><path d="M-6 2 L-30 34 L-18 34 L14 2Z" fill="#B8C1CB"/>
+      <path d="M58 -1 L74 -14 L78 -14 L70 0Z" fill="#CFD6DE"/>${[-40, -20, 0, 20, 40].map(x => `<circle cx="${x}" cy="-1" r="2" fill="#5E7185"/>`).join("")}<circle cx="-22" cy="-20" r="4" fill="#555"/><circle cx="-22" cy="20" r="4" fill="#555"/></g></g>
+    <line x1="140" y1="56" x2="140" y2="82" stroke="#5E7185" stroke-width="2"/><line x1="240" y1="56" x2="240" y2="82" stroke="#5E7185" stroke-width="2"/>
+    <rect x="0" y="190" width="${W}" height="30" fill="#9AA0A8"/><path d="M0 200 H${W} M0 210 H${W}" stroke="#6E6E76" stroke-width="2"/>${Array.from({ length: 20 }, (_, i) => `<rect x="${i * 18}" y="198" width="6" height="14" fill="#7A5A3A"/>`).join("")}
+    <g transform="translate(10 160)"><rect x="0" y="8" width="70" height="26" rx="4" fill="#2B2B33"/><rect x="50" y="-8" width="22" height="20" fill="#3A3A44"/><rect x="10" y="-2" width="8" height="12" fill="#2B2B33"/><circle cx="16" cy="36" r="8" fill="#555"/><circle cx="54" cy="36" r="8" fill="#555"/><path class="pa-steam" d="M14 -4 q-6 -10 0 -20 q6 -10 0 -20" stroke="#fff" stroke-width="3" fill="none" opacity=".6"/></g>
+    ${em("⚙️", 330, 176, 26)}${person(160, 210, "#2A3550", 1)}${person(186, 212, "#2A3550", .8, "#E24C4B")}`],
+
   shop: () => ["day", `${clouds(24, .6)}<g opacity=".6">${skyline(80, "#7B97BB", null, 26, 30)}</g>
     <rect x="30" y="50" width="300" height="140" fill="#FFE6EF"/><rect x="30" y="50" width="300" height="30" fill="#C77DFF"/><text x="180" y="71" font-size="17" fill="#fff" text-anchor="middle" font-weight="800" letter-spacing="3">NEO TOKYO</text>
     ${["#FF6B9A", "#FFD36E", "#6FD3FF", "#6BE09A"].map((c, i) => `<path d="M${30 + i * 75} 80 h75 v14 q-37 10 -75 0z" fill="${c}"/>`).join("")}

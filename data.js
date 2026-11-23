@@ -145,7 +145,11 @@ window.TRIP = {
     { id: "x-icebar", title: "Ice Bar", icon: "🧊", notes: ["6 דק' הליכה מ-Haus Schwarzenberg"], maps: "Icebar Berlin" },
     { id: "x-illusions", title: "מוזיאון האשליות", icon: "🌀", notes: ["ליד Haus Schwarzenberg"], maps: "Museum of Illusions Berlin" },
     { id: "x-urbannation", title: "מוזיאון Urban Nation – אמנות רחוב", icon: "🎨", notes: ["כניסה חינם", "ה׳–א׳ 12:00–20:00 · ג׳–ד׳ 10:00–18:00 · סגור בשני", "ליד נולנדורפפלאץ והשוק הלהט\"בי", "גם הבניינים ברחוב מצוירים"], maps: "Urban Nation Museum Bülowstraße 7 Berlin" },
-    { id: "x-computer", title: "מוזיאון משחקי המחשב", icon: "🕹️", notes: ["ליד Haus Schwarzenberg"], maps: "Computerspielemuseum Berlin" }
+    { id: "x-computer", title: "מוזיאון משחקי המחשב", icon: "🕹️", notes: ["ליד Haus Schwarzenberg"], maps: "Computerspielemuseum Berlin" },
+    { id: "x-lego", title: "חנות LEGO", icon: "🧱", notes: ["כ-7 דק' הליכה מהמלון", "ב׳–שבת 10:00–20:00 · סגור בראשון", "2–3.12 בין 15:00 ל-17:00: בונים קופסת מתנה מלגו בחנות"], maps: "LEGO Store Berlin Tauentzienstraße 8" },
+    { id: "x-kpop", title: "Seoulstation – חנות קיי-פופ", icon: "💜", notes: ["ב׳–שבת 13:00–19:00 · סגור בראשון", "כ-15 דק' מהמלון באוטובוס M49 / X34", "באותו רחוב: J-Store – אנימה, מנגה וממתקים מיפן"], maps: "Seoulstation Berlin Kantstraße 103" },
+    { id: "x-technik", title: "מוזיאון הטכנולוגיה", icon: "✈️", notes: ["סגור בשני", "עד גיל 18 – חינם", "כ-20 דק' מהמלון ב-U1 / U3"], maps: "Deutsches Technikmuseum Trebbiner Straße 9 Berlin" },
+    { id: "x-sushi", title: "Secret Garden – סושי טבעוני", icon: "🍣", notes: ["10 דק' הליכה מחומת ברלין (איסט סייד גלרי)", "ליד שוק ימי הביניים ב-RAW"], maps: "Secret Garden Vegan Sushi Warschauer Straße 33 Berlin" }
   ],
   suitcase: [
     { g: "חשמל", items: ["מטענים", "מתאם חשמל"] },

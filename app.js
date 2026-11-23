@@ -70,6 +70,9 @@ async function sync() {
 const allItems = [];
 T.days.forEach((d, i) => d.items.forEach(it => allItems.push({ ...it, home: i })));
 T.extras.forEach(it => allItems.push({ ...it, home: null }));
+// שווקי חג המולד – אפשר לשבץ כל שוק ביום שרוצים (מהלשונית של חג המולד)
+if (window.XMAS) [...XMAS.markets, ...XMAS.potsdam].forEach(m => allItems.push({ id: m.id, title: "שוק: " + (m.he || m.name), icon: "🎄", xmas: true, home: null,
+  notes: [m.travel, m.hours].filter(Boolean), maps: m.maps }));
 const byId = Object.fromEntries(allItems.map(it => [it.id, it]));
 
 function placeOf(it) {
@@ -240,7 +243,7 @@ function renderTrip() {
   const di = dayIndexToday(), d = T.days[selDay];
   const items = itemsForDay(selDay), done = items.filter(it => shared.items[it.id]?.s === "done").length;
   const sm = daySummary(d.date), sun = sunTimes(d.date);
-  const worth = allItems.filter(it => placeOf(it) === null);
+  const worth = allItems.filter(it => !it.xmas && placeOf(it) === null);
   $("#v-trip").innerHTML = heroHTML() + `
     <div class="days">${T.days.map((x, i) => `<button class="dchip ${i === selDay ? "sel" : ""} ${i === di ? "today" : ""}" data-day="${i}"><small>${x.name.replace("יום ", "")}</small><b>${fmtDate(x.date)}</b></button>`).join("")}</div>
     <div class="card">
@@ -365,6 +368,10 @@ $("#v-trip").addEventListener("click", e => {
   else if (ds.done) {
     const cur = shared.items[ds.done]?.s === "done";
     setItem(ds.done, { s: cur ? null : "done" }); if (!cur) sparkle(t); setTimeout(renderTrip, cur ? 0 : 250);
+  } else if (ds.skip && byId[ds.skip].xmas) {
+    const id = ds.skip, prev = { ...(shared.items[id] || {}) };
+    setItem(id, { day: null }); renderTrip(); window.XMASVIEW && window.XMASVIEW.render();
+    toast(`"${byId[id].title}" הוסר מהיום`, () => { shared.items[id] = prev; saveShared(); renderTrip(); window.XMASVIEW && window.XMASVIEW.render(); });
   } else if (ds.skip) {
     const id = ds.skip, prev = { ...(shared.items[id] || {}) };
     t.closest(".item").classList.add("leaving");
@@ -375,7 +382,7 @@ $("#v-trip").addEventListener("click", e => {
     sheet(`<h2>${it.icon || ""} ${esc(it.title)}</h2><div class="muted">לאיזה יום להעביר?</div>
       <div class="grid">${T.days.map((x, i) => `<button class="dchip ${placeOf(it) === i ? "sel" : ""}" data-to="${i}"><small>${x.name.replace("יום ", "")}</small><b>${fmtDate(x.date)}</b></button>`).join("")}</div>`);
     $("#sheet").onclick = ev => { const b = ev.target.closest("[data-to]"); if (!b) return;
-      const to = +b.dataset.to; setItem(it.id, { s: null, day: to === it.home ? undefined : to }); closeSheet(); selDay = to; renderTrip();
+      const to = +b.dataset.to; setItem(it.id, it.xmas ? { day: to } : { s: null, day: to === it.home ? undefined : to }); window.XMASVIEW && window.XMASVIEW.render(); closeSheet(); selDay = to; renderTrip();
       toast(`הועבר ל${T.days[to].name} ${fmtDate(T.days[to].date)}`); };
   }
 });
@@ -405,7 +412,8 @@ function renderAll() {
 
 const getDoc = k => shared.docs[k]?.v;
 const setDoc = (k, v) => { if (isGuest()) return; shared.docs[k] = { v, t: Date.now() }; saveShared(); pending["doc:" + k] = shared.docs[k].t; LS.set("berlin.pending", pending); syncSoon(); };
-window.APP = { sheet, closeSheet, toast: m => toast(m), getItem: id => shared.items[id], setItem, getDoc, setDoc, isGuest, guestToast };
+window.APP = { schedule: id => { if (isGuest()) return guestToast(); const b = document.createElement("button"); b.dataset.move = id; document.querySelector("#v-trip").appendChild(b); b.click(); b.remove(); },
+  sheet, closeSheet, toast: m => toast(m), getItem: id => shared.items[id], setItem, getDoc, setDoc, isGuest, guestToast };
 /* ---------- מסך פתיחה עם דגל ברלין ---------- */
 (function splash() {
   const sp = $("#splash"); if (!sp) { if (!user) askUser(); return; }

@@ -11,11 +11,13 @@ const fmt = s => { const [, m, d] = s.split("-"); return `${+d}.${+m}`; };
 const near = m => /הליכה|10 דק|15 דק/.test(m.travel || "");
 const pass = m => filter === "all" || (filter === "ice" && m.tags.includes("ice")) ||
   (filter === "fun" && (m.tags.includes("rides") || m.tags.includes("wheel") || m.tags.includes("sled"))) ||
-  (filter === "near" && near(m)) || (filter === "plan" && m.plan != null);
+  (filter === "near" && near(m)) || (filter === "plan" && (m.plan != null || window.APP.getItem(m.id)?.day != null));
 
 function card(m, rank) {
   const been = window.APP.getItem(m.id)?.s === "done", isOpen = open === m.id;
-  const planTxt = m.plan != null ? `<span class="tag" style="background:#1D7A4E">🗓️ בתוכנית: ${T.days[m.plan].name} ${fmt(T.days[m.plan].date)}</span>` : "";
+  const myDay = window.APP.getItem(m.id)?.day;
+  const planTxt = (m.plan != null ? `<span class="tag" style="background:#1D7A4E">🗓️ בתוכנית: ${T.days[m.plan].name} ${fmt(T.days[m.plan].date)}</span>` : "") +
+    (myDay != null && myDay !== m.plan ? `<span class="tag" style="background:#1D7A4E">🗓️ שובץ: ${T.days[myDay].name} ${fmt(T.days[myDay].date)}</span>` : "");
   return `<div class="mk ${been ? "been" : ""} ${isOpen ? "open" : ""}" data-mk="${m.id}">
     <div class="mkhead">
       <div class="rank">${m.pride ? "🏳️‍🌈" : rank}</div>
@@ -31,7 +33,8 @@ function card(m, rank) {
         <dt>🎟️ כניסה</dt><dd>${esc(m.fee)}</dd>${m.travel ? `<dt>🚇 נסיעה</dt><dd>${esc(m.travel)}</dd>` : ""}</dl>
       <div class="review">💬 ${esc(m.review)}</div>
       <div class="acts"><a class="btn gold" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(m.maps)}">📍 ניווט</a>
-        <a class="btn" target="_blank" rel="noopener" href="${m.url}">🔗 פרטים</a></div>
+        <a class="btn" target="_blank" rel="noopener" href="${m.url}">🔗 פרטים</a>
+        <button class="btn" data-sched="${m.id}">🗓️ ${myDay != null ? "להעביר ליום אחר" : "לשבץ ביום"}</button></div>
     </div></div>`;
 }
 
@@ -54,6 +57,7 @@ document.addEventListener("click", e => {
   if (f) { filter = f.dataset.f; render(); return; }
   if (b) { const id = b.dataset.been, cur = window.APP.getItem(id)?.s === "done";
     window.APP.setItem(id, { s: cur ? null : "done" }); render(); return; }
+  const sc = e.target.closest("[data-sched]"); if (sc) { window.APP.schedule(sc.dataset.sched); return; }
   if (e.target.closest("a")) return;
   if (mk) { open = open === mk.dataset.mk ? null : mk.dataset.mk; render(); }
 });
