@@ -43,6 +43,18 @@
       crackle();
     } catch (e) {}
   }
+  function roar() { // נשיפת אש של דרקון
+    if (!ctx) return;
+    const t = ctx.currentTime, src = ctx.createBufferSource(); src.buffer = noiseBuffer(ctx, 1.6, false);
+    const bp = ctx.createBiquadFilter(); bp.type = "bandpass"; bp.Q.value = .7;
+    bp.frequency.setValueAtTime(250, t); bp.frequency.exponentialRampToValueAtTime(1400, t + .5); bp.frequency.exponentialRampToValueAtTime(500, t + 1.4);
+    const g = ctx.createGain(); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.9, t + .25); g.gain.exponentialRampToValueAtTime(.0001, t + 1.5);
+    const low = ctx.createOscillator(), lg = ctx.createGain(); low.type = "sawtooth"; low.frequency.setValueAtTime(70, t); low.frequency.linearRampToValueAtTime(45, t + 1);
+    const lf = ctx.createBiquadFilter(); lf.type = "lowpass"; lf.frequency.value = 220;
+    lg.gain.setValueAtTime(.0001, t); lg.gain.exponentialRampToValueAtTime(.25, t + .2); lg.gain.exponentialRampToValueAtTime(.0001, t + 1.2);
+    src.connect(bp).connect(g).connect(master); low.connect(lf).connect(lg).connect(master);
+    src.start(t); low.start(t); low.stop(t + 1.3);
+  }
   function soundOff() {
     clearTimeout(timer); timer = null;
     if (!ctx) return;
@@ -122,19 +134,107 @@
   <text class="zz" x="190" y="494">z</text><text class="zz" x="168" y="552" style="animation-delay:1.8s">z</text>
 </svg>`;
 
+  /* ---------- סצנה 2: דרקון שיורק אש למסך ---------- */
+  const DRAGON = `
+<svg viewBox="0 0 360 640" preserveAspectRatio="xMidYMid slice" class="fp-svg" direction="ltr">
+  <defs>
+    <linearGradient id="drsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0A0624"/><stop offset=".6" stop-color="#2A1446"/><stop offset="1" stop-color="#5A1E2E"/></linearGradient>
+    <radialGradient id="drfire"><stop offset="0" stop-color="#FFF7C2"/><stop offset=".25" stop-color="#FFD23F"/><stop offset=".55" stop-color="#FF7A1A"/><stop offset=".85" stop-color="#E2321B" stop-opacity=".8"/><stop offset="1" stop-color="#9A1A10" stop-opacity="0"/></radialGradient>
+    <radialGradient id="drflash" cx=".5" cy=".45" r=".7"><stop offset="0" stop-color="#FFE08A" stop-opacity=".9"/><stop offset=".5" stop-color="#FF7A1A" stop-opacity=".6"/><stop offset="1" stop-color="#B8250F" stop-opacity=".35"/></radialGradient>
+    <linearGradient id="drbody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4FC98A"/><stop offset="1" stop-color="#23895A"/></linearGradient>
+  </defs>
+  <rect width="360" height="640" fill="url(#drsky)"/>
+  ${Array.from({ length: 50 }, (_, i) => `<circle cx="${(i * 73) % 360}" cy="${(i * 41) % 300}" r="${i % 5 ? .8 : 1.6}" fill="#fff" opacity="${.3 + (i % 4) * .15}"/>`).join("")}
+  <circle cx="290" cy="90" r="30" fill="#FFF3D0" opacity=".9"/><circle cx="280" cy="84" r="6" fill="#EADFB8"/>
+  <path d="M0 470 L60 380 L110 430 L170 350 L240 440 L300 370 L360 430 V640 H0Z" fill="#2B1A3A"/>
+  <path d="M0 520 Q90 470 180 500 T360 490 V640 H0Z" fill="#3A2238"/>
+  <g transform="translate(180 330)">
+    <g class="dr-wing-l"><path d="M-60 40 Q-150 -40 -170 -120 Q-130 -90 -110 -100 Q-110 -60 -80 -70 Q-90 -30 -50 -10Z" fill="#7C4DCC"/><path d="M-60 40 L-170 -120 M-60 30 L-110 -100 M-55 15 L-80 -70" stroke="#5A2FA6" stroke-width="3"/></g>
+    <g class="dr-wing-r"><path d="M60 40 Q150 -40 170 -120 Q130 -90 110 -100 Q110 -60 80 -70 Q90 -30 50 -10Z" fill="#7C4DCC"/><path d="M60 40 L170 -120 M60 30 L110 -100 M55 15 L80 -70" stroke="#5A2FA6" stroke-width="3"/></g>
+    <g class="dr-breathe">
+      <path d="M-30 210 Q-60 260 -10 280" stroke="#23895A" stroke-width="18" fill="none" stroke-linecap="round"/>
+      <ellipse cx="0" cy="150" rx="70" ry="90" fill="url(#drbody)"/>
+      <ellipse cx="0" cy="165" rx="42" ry="66" fill="#F7E2A0"/>${Array.from({ length: 6 }, (_, i) => `<path d="M-34 ${118 + i * 18} Q0 ${126 + i * 18} 34 ${118 + i * 18}" stroke="#E2C478" stroke-width="2" fill="none"/>`).join("")}
+      <ellipse cx="-50" cy="236" rx="26" ry="16" fill="#23895A"/><ellipse cx="50" cy="236" rx="26" ry="16" fill="#23895A"/>
+      ${[-62, -50, -38, 38, 50, 62].map(x => `<circle cx="${x}" cy="248" r="5" fill="#F7E2A0"/>`).join("")}
+      <path d="M-56 120 q-24 20 -18 46" stroke="#2FA56A" stroke-width="16" fill="none" stroke-linecap="round"/><path d="M56 120 q24 20 18 46" stroke="#2FA56A" stroke-width="16" fill="none" stroke-linecap="round"/>
+      ${[-20, 0, 20].map((x, i) => `<path d="M${x - 8} ${60 - i % 2 * 4} l8 -16 l8 16z" fill="#FFB020"/>`).join("")}
+    </g>
+    <g class="dr-head">
+      <path d="M-40 -40 l-18 -48 l30 30z M40 -40 l18 -48 l-30 30z" fill="#F7E2A0"/>
+      <ellipse cx="0" cy="0" rx="74" ry="62" fill="url(#drbody)"/>
+      <path d="M-70 -6 l-22 -10 l18 22z M70 -6 l22 -10 l-18 22z" fill="#2FA56A"/>
+      <g class="dr-eye"><ellipse cx="-30" cy="-14" rx="17" ry="19" fill="#fff"/><ellipse cx="30" cy="-14" rx="17" ry="19" fill="#fff"/>
+        <ellipse cx="-27" cy="-10" rx="9" ry="12" fill="#2A1446"/><ellipse cx="27" cy="-10" rx="9" ry="12" fill="#2A1446"/><circle cx="-24" cy="-15" r="3.5" fill="#fff"/><circle cx="30" cy="-15" r="3.5" fill="#fff"/></g>
+      <path d="M-48 -36 q16 -10 32 -2 M48 -36 q-16 -10 -32 -2" stroke="#1C6B45" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="0" cy="28" rx="44" ry="30" fill="#5FD69A"/><ellipse cx="-12" cy="16" rx="5" ry="3.5" fill="#1C6B45"/><ellipse cx="12" cy="16" rx="5" ry="3.5" fill="#1C6B45"/>
+      <ellipse class="dr-mouth" cx="0" cy="40" rx="26" ry="12" fill="#5A1020"/>
+      <path d="M-14 31 l4 7 l4 -7 M6 31 l4 7 l4 -7" fill="#fff"/>
+      <ellipse cx="-50" cy="14" rx="9" ry="5" fill="#FF8FB1" opacity=".6"/><ellipse cx="50" cy="14" rx="9" ry="5" fill="#FF8FB1" opacity=".6"/>
+      <g class="dr-smoke">${[-12, 12].map(x => `<circle cx="${x}" cy="10" r="5" fill="#ccc" opacity=".5"/>`).join("")}</g>
+    </g>
+    <g class="dr-fire"><circle cx="0" cy="44" r="80" fill="url(#drfire)"/>
+      ${Array.from({ length: 14 }, (_, i) => { const a = i / 14 * Math.PI * 2, r = i % 2 ? 95 : 70; return `<path d="M0 44 Q${Math.cos(a - .3) * r * .6} ${44 + Math.sin(a - .3) * r * .6} ${Math.cos(a) * r} ${44 + Math.sin(a) * r} Q${Math.cos(a + .3) * r * .5} ${44 + Math.sin(a + .3) * r * .5} 0 44" fill="${["#E2321B", "#FF7A1A", "#FFB020"][i % 3]}" opacity=".9"/>`; }).join("")}
+      <circle cx="0" cy="44" r="34" fill="#FFD23F"/><circle cx="0" cy="44" r="18" fill="#FFF7C2"/></g>
+  </g>
+  <rect class="dr-flash" width="360" height="640" fill="url(#drflash)"/>
+</svg>`;
+
+  /* ---------- סצנה 3: מדורה ומרשמלו ---------- */
+  const CAMP = `
+<svg viewBox="0 0 360 640" preserveAspectRatio="xMidYMid slice" class="fp-svg" direction="ltr">
+  <defs>
+    <linearGradient id="cpsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#040A1E"/><stop offset=".7" stop-color="#0E2348"/><stop offset="1" stop-color="#1B2B3E"/></linearGradient>
+    <radialGradient id="cpglow"><stop offset="0" stop-color="#FFB347" stop-opacity=".75"/><stop offset=".5" stop-color="#FF7A1A" stop-opacity=".22"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <linearGradient id="cpskin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4C9A0"/><stop offset="1" stop-color="#D99E74"/></linearGradient>
+  </defs>
+  <rect width="360" height="640" fill="url(#cpsky)"/>
+  ${Array.from({ length: 70 }, (_, i) => `<circle class="cp-tw" style="animation-delay:-${i % 6}s" cx="${(i * 67) % 360}" cy="${(i * 37) % 330}" r="${i % 6 ? .8 : 1.6}" fill="#fff" opacity="${.3 + (i % 4) * .17}"/>`).join("")}
+  <path d="M0 200 Q120 170 240 200 T360 190" stroke="#ffffff" stroke-opacity=".06" stroke-width="40" fill="none"/>
+  <circle cx="70" cy="90" r="22" fill="#FFF6DA"/><circle cx="80" cy="84" r="20" fill="#06102A"/>
+  ${[[10, 360, 1.2], [70, 340, 1.5], [130, 370, 1], [250, 350, 1.4], [310, 335, 1.6], [350, 365, 1.1]].map(([x, y, s]) => `<g transform="translate(${x} ${y}) scale(${s})" fill="#071426"><path d="M0 -90 L26 0 H-26Z"/><path d="M0 -110 L20 -40 H-20Z"/><rect x="-3" y="0" width="6" height="14"/></g>`).join("")}
+  <path d="M0 400 Q180 370 360 400 V640 H0Z" fill="#14202C"/>
+  <ellipse cx="180" cy="470" rx="240" ry="150" fill="url(#cpglow)" class="glow"/>
+  <g transform="translate(180 470)">
+    ${Array.from({ length: 10 }, (_, i) => { const a = Math.PI + i / 9 * Math.PI; return `<ellipse cx="${Math.cos(a) * 70}" cy="${16 + Math.sin(a) * -14 + (i % 2) * 2}" rx="15" ry="9" fill="${i % 2 ? "#6E6A72" : "#5A5660"}"/>`; }).join("")}
+    <g stroke-linecap="round"><line x1="-50" y1="16" x2="22" y2="-30" stroke="#5A3218" stroke-width="13"/><line x1="50" y1="16" x2="-22" y2="-30" stroke="#6B3A1E" stroke-width="13"/><line x1="-46" y1="10" x2="46" y2="12" stroke="#7A4526" stroke-width="12"/></g>
+    <ellipse cx="0" cy="12" rx="40" ry="8" fill="#FF7A1A" opacity=".5" class="emberbed"/>
+    <g transform="translate(0 6)">
+      ${flame("f1", "M-46 0 Q-56 -50 -30 -90 Q-26 -50 -14 -42 Q-24 -84 0 -124 Q16 -74 18 -50 Q28 -74 36 -96 Q58 -50 46 0Z", "#E8501C", 0)}
+      ${flame("f2", "M-36 0 Q-40 -40 -20 -70 Q-16 -40 -6 -36 Q-10 -70 6 -98 Q20 -58 20 -38 Q30 -58 32 -70 Q44 -36 36 0Z", "#FF8A1F", .3)}
+      ${flame("f3", "M-24 0 Q-28 -30 -10 -54 Q-6 -32 2 -28 Q0 -54 12 -72 Q22 -38 24 0Z", "#FFC23A", .6)}
+      ${flame("f4", "M-12 0 Q-14 -18 -2 -34 Q2 -20 6 -18 Q8 -30 12 -38 Q18 -18 12 0Z", "#FFF1A8", .15)}
+    </g>
+  </g>
+  <g class="cp-stick">
+    <line x1="352" y1="610" x2="215" y2="415" stroke="#7A4A26" stroke-width="5" stroke-linecap="round"/>
+    <line x1="215" y1="415" x2="200" y2="396" stroke="#5A3218" stroke-width="3" stroke-linecap="round"/>
+    <g transform="translate(203 400) rotate(-55)">
+      <rect class="cp-mallow" x="-9" y="-11" width="18" height="22" rx="7"/>
+      <rect x="-9" y="-11" width="18" height="6" rx="3" fill="#fff" opacity=".35"/>
+      <g class="cp-burn"><path d="M-8 -10 Q-10 -26 0 -36 Q2 -24 6 -22 Q10 -30 12 -34 Q16 -20 8 -10Z" fill="#FF8A1F"/><path d="M-4 -10 Q-4 -20 2 -26 Q4 -18 6 -10Z" fill="#FFE27A"/></g>
+    </g>
+    <path d="M300 640 L290 560 Q300 540 330 538 L380 560 L380 640Z" fill="#B5302F"/>
+    <path d="M298 560 Q300 540 330 538 L338 560 Q318 562 298 560Z" fill="#8B1E2E"/>${Array.from({ length: 5 }, (_, i) => `<path d="M${296 + i * 9} 566 v40" stroke="#9A2626" stroke-width="2"/>`).join("")}
+    <path d="M310 548 Q300 520 318 506 Q336 500 344 512 L352 540 Q340 556 322 556Z" fill="url(#cpskin)"/>
+    <path d="M318 506 q-12 -4 -16 6 q2 8 12 6 M322 512 q-12 -2 -14 8 q4 7 12 4 M326 520 q-10 0 -10 9 q4 6 11 2" fill="url(#cpskin)" stroke="#C88A60" stroke-width="1.2"/>
+    <path d="M336 506 q10 -10 4 -18 q-8 -2 -12 8" fill="url(#cpskin)" stroke="#C88A60" stroke-width="1.2"/>
+  </g>
+</svg>`;
+
   /* ---------- גיצים עולים ---------- */
   let raf = null;
-  function sparks(cv) {
+  function sparks(cv, sx = 180, sy = 400, spread = 110, top = 200) {
     const g = cv.getContext("2d"), P = [];
     const fit = () => { cv.width = cv.clientWidth * devicePixelRatio; cv.height = cv.clientHeight * devicePixelRatio; };
     fit();
     const step = () => {
       const W = cv.width, H = cv.height, k = Math.max(W / 360, H / 640), ox = (W - 360 * k) / 2, oy = (H - 640 * k) / 2;
-      if (Math.random() < .35) P.push({ x: 180 + (Math.random() - .5) * 110, y: 400, vx: (Math.random() - .5) * .5, vy: -(.6 + Math.random() * 1.3), life: 1, r: .8 + Math.random() * 1.6 });
+      if (Math.random() < .35) P.push({ x: sx + (Math.random() - .5) * spread, y: sy, vx: (Math.random() - .5) * .5, vy: -(.6 + Math.random() * 1.3), life: 1, r: .8 + Math.random() * 1.6 });
       g.clearRect(0, 0, W, H);
       for (let i = P.length - 1; i >= 0; i--) {
         const p = P[i]; p.x += p.vx + Math.sin(p.y / 14) * .25; p.y += p.vy; p.life -= .011;
-        if (p.life <= 0 || p.y < 200) { P.splice(i, 1); continue; }
+        if (p.life <= 0 || p.y < top) { P.splice(i, 1); continue; }
         g.fillStyle = `rgba(255,${150 + 90 * p.life | 0},60,${p.life})`;
         g.beginPath(); g.arc(ox + p.x * k, oy + p.y * k, p.r * k * .9, 0, 7); g.fill();
       }
@@ -144,15 +244,20 @@
   }
 
   /* ---------- פתיחה וסגירה ---------- */
-  let ov = null, muted = false;
+  let ov = null, muted = false, lastScene = -1, sceneSp = null, isDragon = false, roarT = null;
   function open() {
     if (ov) return;
-    ov = document.createElement("div"); ov.className = "fp";
-    ov.innerHTML = `${SCENE}<canvas class="fp-sparks"></canvas>
-      <div class="fp-top"><button class="fp-btn" id="fp-snd">🔊</button><div class="fp-title">חם ונעים 🔥</div><button class="fp-btn" id="fp-x">✕</button></div>`;
+    // כל פעם אחת משלוש הסצנות, באקראי (ולא אותה פעמיים ברצף)
+    let k; do { k = Math.floor(Math.random() * 3); } while (k === lastScene); lastScene = k;
+    const S = [{ svg: SCENE, title: "חם ונעים 🔥", sp: [180, 400, 110, 200] }, { svg: DRAGON, title: "🐉 הדרקון מחמם!", sp: null }, { svg: CAMP, title: "🔥 מדורה ומרשמלו", sp: [180, 440, 70, 230] }][k];
+    ov = document.createElement("div"); ov.className = "fp" + (k === 1 ? " dragon" : "");
+    ov.innerHTML = `${S.svg}<canvas class="fp-sparks"></canvas>
+      <div class="fp-top"><button class="fp-btn" id="fp-snd">🔊</button><div class="fp-title">${S.title}</div><button class="fp-btn" id="fp-x">✕</button></div>`;
+    sceneSp = S.sp; isDragon = k === 1;
     document.body.appendChild(ov);
     requestAnimationFrame(() => ov.classList.add("on"));
-    sparks(ov.querySelector(".fp-sparks"));
+    if (sceneSp) sparks(ov.querySelector(".fp-sparks"), ...sceneSp);
+    if (isDragon) { const fire = () => { if (navigator.vibrate) navigator.vibrate([0, 120, 60, 200]); roar(); }; roarT = setTimeout(function loop() { fire(); roarT = setTimeout(loop, 4000); }, 1600); }
     if (!muted) soundOn();
     ov.querySelector("#fp-x").onclick = close;
     const sb = ov.querySelector("#fp-snd"); sb.textContent = muted ? "🔇" : "🔊";
@@ -161,7 +266,7 @@
   }
   function close() {
     if (!ov) return;
-    soundOff(); cancelAnimationFrame(raf);
+    soundOff(); cancelAnimationFrame(raf); clearTimeout(roarT);
     const o = ov; ov = null; o.classList.remove("on"); setTimeout(() => o.remove(), 400);
   }
   document.addEventListener("visibilitychange", () => { if (document.hidden) close(); });

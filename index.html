@@ -290,6 +290,32 @@ nav button{font-size:11px}
 @keyframes breathe{0%,100%{transform:scale(1,1)}50%{transform:scale(1.015,1.04)}}
 .fp .tail{transform-box:fill-box;transform-origin:0 100%;animation:wag 2.8s ease-in-out infinite}
 @keyframes wag{0%,60%,100%{transform:rotate(0)}68%{transform:rotate(14deg)}76%{transform:rotate(-6deg)}84%{transform:rotate(12deg)}92%{transform:rotate(0)}}
+.fp .dr-fire{transform-box:fill-box;transform-origin:center;animation:drfire 4s ease-out infinite}
+@keyframes drfire{0%,38%{transform:scale(0);opacity:0}44%{transform:scale(.6);opacity:1}70%{transform:scale(5.5);opacity:.95}84%{transform:scale(7.5);opacity:0}100%{transform:scale(0);opacity:0}}
+.fp .dr-flash{opacity:0;animation:drflash 4s ease-out infinite}
+@keyframes drflash{0%,52%{opacity:0}68%{opacity:.85}92%,100%{opacity:0}}
+.fp .dr-mouth{transform-box:fill-box;transform-origin:center;animation:drmouth 4s ease-in-out infinite}
+@keyframes drmouth{0%,30%{transform:scaleY(.35)}40%,72%{transform:scaleY(1.5) scaleX(1.15)}85%,100%{transform:scaleY(.35)}}
+.fp .dr-head{transform-box:fill-box;transform-origin:center bottom;animation:drhead 4s ease-in-out infinite}
+@keyframes drhead{0%,20%{transform:none}34%{transform:translateY(-8px) scale(1.04)}44%,70%{transform:translateY(6px) scale(1.06)}86%,100%{transform:none}}
+.fp .dr-breathe{transform-box:fill-box;transform-origin:center bottom;animation:drbreathe 4s ease-in-out infinite}
+@keyframes drbreathe{0%,20%{transform:none}36%{transform:scale(1.05,1.03)}50%,100%{transform:none}}
+.fp .dr-wing-l{transform-box:fill-box;transform-origin:100% 100%;animation:drwl 1.6s ease-in-out infinite alternate}
+.fp .dr-wing-r{transform-box:fill-box;transform-origin:0% 100%;animation:drwr 1.6s ease-in-out infinite alternate}
+@keyframes drwl{from{transform:rotate(6deg)}to{transform:rotate(-10deg)}}@keyframes drwr{from{transform:rotate(-6deg)}to{transform:rotate(10deg)}}
+.fp .dr-eye{transform-box:fill-box;transform-origin:center;animation:dreye 4s infinite}
+@keyframes dreye{0%,24%,30%,100%{transform:none}27%{transform:scaleY(.1)}}
+.fp .dr-smoke{animation:drsmoke 4s ease-out infinite}
+@keyframes drsmoke{0%,80%{opacity:0;transform:translateY(0)}88%{opacity:.8}100%{opacity:0;transform:translateY(-30px)}}
+.fp.dragon .fp-svg{animation:drshake 4s infinite}
+@keyframes drshake{0%,44%,72%,100%{transform:none}48%{transform:translate(-3px,2px)}52%{transform:translate(3px,-2px)}56%{transform:translate(-2px,-3px)}60%{transform:translate(3px,2px)}64%{transform:translate(-2px,1px)}}
+.fp .cp-tw{animation:cptw 3s ease-in-out infinite alternate}@keyframes cptw{from{opacity:.2}to{opacity:1}}
+.fp .cp-stick{transform-box:view-box;transform-origin:330px 540px;animation:cpstick 3.2s ease-in-out infinite alternate}
+@keyframes cpstick{from{transform:rotate(-2deg)}to{transform:rotate(2.5deg)}}
+.fp .cp-mallow{fill:#fff;animation:cpmallow 14s linear infinite}
+@keyframes cpmallow{0%{fill:#fff}30%{fill:#FFF3DA}50%{fill:#F2C46E}65%{fill:#C9813E}76%{fill:#7A4422}90%{fill:#3A2012}97%{fill:#3A2012}100%{fill:#fff}}
+.fp .cp-burn{opacity:0;transform-box:fill-box;transform-origin:center bottom;animation:cpburn 14s linear infinite}
+@keyframes cpburn{0%,70%{opacity:0;transform:scale(.3)}74%{opacity:1;transform:scale(1)}78%{transform:scale(1.15,.9)}82%{transform:scale(.95,1.1)}86%{transform:scale(1.1,.95)}92%{opacity:1;transform:scale(1)}96%,100%{opacity:0;transform:scale(.3)}}
 .fp .zz{font:700 16px sans-serif;fill:#ffe2b8;opacity:0;animation:zz 3.6s ease-out infinite}
 @keyframes zz{0%{opacity:0;transform:translate(0,0)}30%{opacity:.9}100%{opacity:0;transform:translate(-8px,-26px)}}
 .ttl.has-place{cursor:pointer}
