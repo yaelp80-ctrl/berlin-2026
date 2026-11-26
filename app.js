@@ -196,7 +196,29 @@ addEventListener("resize", seed);
 
 /* ---------- דף מקום ---------- */
 const PL = window.PLACES || {};
+const hasSheet = id => !!PL[id] || (id === "d1-hotel" && !isGuest());
+/* פרטי הזמנת המלון – נשמרים רק בטלפון (לא בקוד ולא בשרת), נקלטים מקישור חד-פעמי #hotel=... */
+function takeHotelLink() {
+  const m = location.hash.match(/^#hotel=(.+)$/); if (!m) return;
+  try { const v = JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g, "+").replace(/_/g, "/"))))); LS.set("berlin.hotelBooking", v);
+    setTimeout(() => toast("🔐 פרטי ההזמנה של המלון נשמרו בטלפון"), 1200); } catch (e) {}
+  history.replaceState(null, "", location.pathname + location.search);
+}
+takeHotelLink(); addEventListener("hashchange", takeHotelLink);
+function hotelSheet(it) {
+  const h = T.hotel, bk = LS.get("berlin.hotelBooking", null), m = mapsLink(it);
+  const row = (label, val) => `<dt>${label}</dt><dd><b style="font-size:20px;letter-spacing:1px;direction:ltr;unicode-bidi:isolate">${esc(val)}</b>
+    <button class="btn" data-copy="${esc(val)}" style="margin-inline-start:8px;padding:4px 10px">📋 העתקה</button></dd>`;
+  sheet(`<h2>🏨 ${esc(h.name)}</h2><div class="muted" style="direction:ltr;text-align:right">${esc(h.address)}</div>
+    ${bk ? `<h3 class="pinfo-h">🔐 פרטי ההזמנה</h3><dl class="kv pinfo">${row("מספר אישור", bk.c)}${row("קוד PIN", bk.p)}</dl>`
+      : `<div class="banner" style="margin-top:12px">פרטי ההזמנה לא שמורים בטלפון הזה</div>`}
+    <div class="acts" style="margin-top:12px">${m ? `<a class="btn gold" href="${m}" target="_blank" rel="noopener">📍 ניווט למלון</a>` : ""}</div>
+    <button class="btn" data-close="1" style="width:100%;margin-top:12px;justify-content:center">✕ סגירה</button>`);
+  $("#sheet").onclick = ev => { const b = ev.target.closest("[data-copy]"); if (!b) return;
+    navigator.clipboard?.writeText(b.dataset.copy).then(() => toast("הועתק ✓"), () => {}); };
+}
 function placeSheet(id) {
+  if (id === "d1-hotel" && !isGuest()) return hotelSheet(byId[id]);
   const it = byId[id], p = PL[id]; if (!it || !p) return;
   const m = mapsLink(it), book = p.book || it.book;
   sheet(`<div class="place">${window.PLACE_ART ? window.PLACE_ART(p.art, p.opts) : ""}
@@ -229,7 +251,7 @@ function itemHTML(it, opts = {}) {
     !opts.worth && it.home !== opts.day ? `<div class="from">הועבר לכאן</div>` : "";
   return `<div class="item ${done ? "done" : ""}" data-id="${it.id}">
     <button class="check" data-done="${it.id}" aria-label="ראינו">✓</button>
-    <div><div class="ttl ${PL[it.id] ? "has-place" : ""}" ${PL[it.id] ? `data-place="${it.id}"` : ""}>${time}<span class="ic">${it.icon || ""}</span>${esc(it.title)}${PL[it.id] ? `<span class="more">ⓘ</span>` : ""}</div>
+    <div><div class="ttl ${hasSheet(it.id) ? "has-place" : ""}" ${hasSheet(it.id) ? `data-place="${it.id}"` : ""}>${time}<span class="ic">${it.icon || ""}</span>${esc(it.title)}${hasSheet(it.id) ? `<span class="more">ⓘ</span>` : ""}</div>
       ${origin}
       ${it.notes ? `<ul class="notes">${it.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
       <div class="acts">${acts}</div></div>
