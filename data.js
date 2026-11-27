@@ -149,6 +149,7 @@ window.TRIP = {
     { id: "x-lego", title: "חנות LEGO", icon: "🧱", notes: ["כ-7 דק' הליכה מהמלון", "ב׳–שבת 10:00–20:00 · סגור בראשון", "2–3.12 בין 15:00 ל-17:00: בונים קופסת מתנה מלגו בחנות"], maps: "LEGO Store Berlin Tauentzienstraße 8" },
     { id: "x-kpop", title: "Seoulstation – חנות קיי-פופ", icon: "💜", notes: ["ב׳–שבת 13:00–19:00 · סגור בראשון", "כ-15 דק' מהמלון באוטובוס M49 / X34", "באותו רחוב: J-Store – אנימה, מנגה וממתקים מיפן"], maps: "Seoulstation Berlin Kantstraße 103" },
     { id: "x-technik", title: "מוזיאון הטכנולוגיה", icon: "✈️", notes: ["סגור בשני", "עד גיל 18 – חינם", "כ-20 דק' מהמלון ב-U1 / U3"], maps: "Deutsches Technikmuseum Trebbiner Straße 9 Berlin" },
+    { id: "x-katzen", title: "Katzentempel – קפה חתולים", icon: "🐈", notes: ["כ-20 דק' מהמלון (S-Bahn עד Friedrichstraße)", "כדאי להזמין מקום מראש"], maps: "Katzentempel Berlin Mitte Friedrichstraße 153" },
     { id: "x-sushi", title: "Secret Garden – סושי טבעוני", icon: "🍣", notes: ["10 דק' הליכה מחומת ברלין (איסט סייד גלרי)", "ליד שוק ימי הביניים ב-RAW"], maps: "Secret Garden Vegan Sushi Warschauer Straße 33 Berlin" }
   ],
   suitcase: [

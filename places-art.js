@@ -242,6 +242,19 @@ const SCENES = {
     <g transform="translate(180 60)"><rect x="-26" y="0" width="52" height="16" fill="#3A2F2B"/>${glow(0, 60, 80, "#FFD36E", .35)}${em("🎨", 0, 70, 34)}${em("🤖", -32, 120, 26)}${em("👾", 34, 116, 22)}</g>
     <rect x="120" y="180" width="120" height="40" fill="#2E2522"/>${bulbs(40, 10, 9, 120, 240)}${person(170, 206, "#140E0C", 1)}${person(196, 208, "#140E0C", .85)}`],
 
+  catcafe: () => ["day", `<rect width="${W}" height="${H}" fill="#F3E6D3"/>
+    <path d="M40 0 Q180 -40 320 0 V60 H40Z" fill="#CFE8FA" opacity=".9"/>${Array.from({ length: 7 }, (_, i) => `<line x1="${40 + i * 46.6}" y1="0" x2="${40 + i * 46.6}" y2="60" stroke="#9AA9B8" stroke-width="3"/>`).join("")}<rect x="30" y="58" width="300" height="6" fill="#B08A5A"/>
+    ${glow(180, 30, 120, "#fff", .5)}
+    <rect x="20" y="70" width="60" height="120" rx="6" fill="#C9A06E"/><rect x="14" y="100" width="72" height="10" rx="4" fill="#8A5233"/><rect x="14" y="140" width="72" height="10" rx="4" fill="#8A5233"/>
+    <g class="pa-bub"><ellipse cx="50" cy="92" rx="18" ry="10" fill="#7A6A60"/><circle cx="64" cy="84" r="9" fill="#7A6A60"/><path d="M58 77 l2 -7 l4 5z M66 76 l4 -6 l1 7z" fill="#7A6A60"/><path d="M33 92 q-12 -2 -10 -12" stroke="#7A6A60" stroke-width="4" fill="none" stroke-linecap="round"/></g>
+    <rect x="120" y="150" width="140" height="10" rx="4" fill="#8A5233"/><rect x="135" y="160" width="8" height="40" fill="#8A5233"/><rect x="238" y="160" width="8" height="40" fill="#8A5233"/>
+    ${em("☕", 150, 146, 22)}${em("🥐", 190, 146, 20)}${em("🍰", 228, 146, 20)}
+    <g transform="translate(290 170)"><ellipse cx="0" cy="10" rx="26" ry="16" fill="#E8A15A"/><circle cx="-18" cy="-6" r="13" fill="#E8A15A"/><path d="M-27 -14 l-2 -12 l9 7z M-13 -17 l4 -11 l3 11z" fill="#E8A15A"/>
+      <path d="M-23 -6 q2 2 4 0 M-15 -6 q2 2 4 0" stroke="#5A3A20" stroke-width="1.5" fill="none"/><path d="M-19 -1 l-2 2 h4z" fill="#D46A6A"/>${[0, 1, 2].map(i => `<path d="M${-6 + i * 10} 0 q4 8 0 18" stroke="#C87F3E" stroke-width="3" fill="none"/>`).join("")}
+      <path class="tail" d="M24 12 q18 -6 14 -26" stroke="#E8A15A" stroke-width="6" fill="none" stroke-linecap="round"/></g>
+    <g transform="translate(110 196)"><ellipse cx="0" cy="0" rx="22" ry="9" fill="#333"/><circle cx="18" cy="-6" r="9" fill="#333"/><path d="M13 -13 l1 -7 l4 5z M20 -14 l4 -6 l0 7z" fill="#333"/><text x="-6" y="-14" font-size="12" class="pa-tw" fill="#8A7A9A">z</text><text x="2" y="-24" font-size="9" class="pa-tw" style="animation-delay:-1s" fill="#8A7A9A">z</text></g>
+    ${em("🐾", 330, 70, 18)}${em("💚", 340, 120, 16)}`],
+
   lego: () => ["day", `${clouds(24, .6)}<g opacity=".6">${skyline(80, "#7B97BB", null, 26, 30)}</g>
     <rect x="30" y="44" width="300" height="146" fill="#F4F4F4"/><rect x="30" y="44" width="300" height="34" fill="#E3000B"/>
     <rect x="150" y="48" width="60" height="26" rx="4" fill="#FFD500" stroke="#000" stroke-width="2"/><text x="180" y="67" font-size="16" font-weight="900" fill="#E3000B" text-anchor="middle" stroke="#000" stroke-width=".6">LEGO</text>
