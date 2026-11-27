@@ -229,7 +229,7 @@ function placeSheet(id) {
     <p class="pabout">${esc(p.about)}</p>
     ${p.hist ? `<div class="phist"><b>📜 למה זה חשוב</b>${esc(p.hist)}</div>` : ""}
     <h3 class="pinfo-h">ℹ️ מידע חשוב</h3>
-    <dl class="kv pinfo"><dt>🕓 ימים ושעות</dt><dd>${esc(p.hours)}</dd><dt>📍 מרחק</dt><dd>${esc(p.dist)}</dd><dt>💶 כניסה</dt><dd>${esc(p.price)}</dd></dl>
+    <dl class="kv pinfo"><dt>🕓 ימים ושעות</dt><dd>${esc(p.hours)}</dd><dt>📍 מרחק</dt><dd>${esc(p.dist)}</dd><dt>💶 כניסה</dt><dd>${esc(p.price)}</dd>${p.bwc ? `<dt>🎫 WelcomeCard</dt><dd>${esc(p.bwc)} – להראות בקופה (רק לבעלת הכרטיס)</dd>` : ""}</dl>
     <div class="acts" style="margin-top:12px">${book ? `<a class="btn gold" href="${book}" target="_blank" rel="noopener">${p.bookLabel || it.bookLabel || "🗓️ להזמנת מקום"}</a>` : ""}${p.book2 ? `<a class="btn gold" href="${p.book2}" target="_blank" rel="noopener">${p.book2Label}</a>` : ""}
       ${m ? `<a class="btn" href="${m}" target="_blank" rel="noopener">📍 ניווט</a>` : ""}</div>
     <button class="btn" data-close="1" style="width:100%;margin-top:12px;justify-content:center">✕ סגירה</button>
@@ -257,6 +257,7 @@ function itemHTML(it, opts = {}) {
     <div><div class="ttl ${hasSheet(it.id) ? "has-place" : ""}" ${hasSheet(it.id) ? `data-place="${it.id}"` : ""}>${time}<span class="ic">${it.icon || ""}</span>${esc(it.title)}${hasSheet(it.id) ? `<span class="more">ⓘ</span>` : ""}</div>
       ${origin}
       ${hoursOf(it) ? `<div class="hrs">🕓 ${esc(hoursOf(it))}</div>` : ""}
+      ${PL[it.id]?.bwc ? `<div class="bwc">🎫 WelcomeCard: ${esc(PL[it.id].bwc)}</div>` : ""}
       ${notesOf(it).length ? `<ul class="notes">${notesOf(it).map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
       <div class="acts">${acts}</div></div>
     <div class="side">${opts.worth ? "" : `<button class="x" data-skip="${it.id}" aria-label="לא נספיק">✕</button>`}</div>
