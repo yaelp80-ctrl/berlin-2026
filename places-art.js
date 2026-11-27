@@ -255,6 +255,21 @@ const SCENES = {
     <g transform="translate(110 196)"><ellipse cx="0" cy="0" rx="22" ry="9" fill="#333"/><circle cx="18" cy="-6" r="9" fill="#333"/><path d="M13 -13 l1 -7 l4 5z M20 -14 l4 -6 l0 7z" fill="#333"/><text x="-6" y="-14" font-size="12" class="pa-tw" fill="#8A7A9A">z</text><text x="2" y="-24" font-size="9" class="pa-tw" style="animation-delay:-1s" fill="#8A7A9A">z</text></g>
     ${em("🐾", 330, 70, 18)}${em("💚", 340, 120, 16)}`],
 
+  cafe2d: () => ["day", `<rect width="${W}" height="${H}" fill="#FAFAFA"/>
+    <g fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="20" y="20" width="90" height="70"/><path d="M28 80 l20 -26 l14 16 l10 -12 l30 22"/><circle cx="90" cy="38" r="7"/>
+      <rect x="236" y="16" width="96" height="90"/><path d="M246 96 h76 M246 30 h76"/><text x="284" y="71" font-size="22" fill="#111" stroke="none" text-anchor="middle" font-weight="900">CAFE</text>
+      <path d="M140 18 q20 -10 40 0 q-20 10 -40 0z"/><line x1="160" y1="22" x2="160" y2="60"/><path d="M140 60 h40 l-6 22 h-28z"/>
+      <path d="M0 150 H${W}"/><path d="M90 150 h140 M100 150 v52 M220 150 v52 M90 142 h140 v8"/>
+      <path d="M40 202 v-46 q0 -12 14 -12 h12 v58 M66 172 h-26"/><path d="M280 202 v-46 q0 -12 -14 -12 h-12 v58 M254 172 h26"/>
+      <path d="M128 142 q-4 -24 8 -26 q14 -2 12 26z"/><path d="M144 122 q10 -14 2 -24"/><path d="M180 142 l-6 -26 h28 l-6 26z"/>
+      <path d="M330 202 v-60 q-20 -10 -10 -40 q14 10 10 40 q16 -20 26 -6 q-14 6 -26 6"/>
+    </g>
+    <g class="pa-steam"><path d="M150 112 q-6 -8 0 -16 q6 -8 0 -16" stroke="#111" stroke-width="2" fill="none"/></g>
+    <circle cx="186" cy="114" r="10" fill="#C77DFF" stroke="#111" stroke-width="3"/><path d="M174 116 h24 l-4 24 h-16z" fill="#B49CF2" stroke="#111" stroke-width="3"/>
+    <path d="M120 142 q14 -30 30 0z" fill="#8FD17A" stroke="#111" stroke-width="3"/>
+    ${[0, 1, 2, 3, 4].map(i => `<line x1="${20 + i * 70}" y1="206" x2="${40 + i * 70}" y2="220" stroke="#111" stroke-width="2"/>`).join("")}`],
+
   lego: () => ["day", `${clouds(24, .6)}<g opacity=".6">${skyline(80, "#7B97BB", null, 26, 30)}</g>
     <rect x="30" y="44" width="300" height="146" fill="#F4F4F4"/><rect x="30" y="44" width="300" height="34" fill="#E3000B"/>
     <rect x="150" y="48" width="60" height="26" rx="4" fill="#FFD500" stroke="#000" stroke-width="2"/><text x="180" y="67" font-size="16" font-weight="900" fill="#E3000B" text-anchor="middle" stroke="#000" stroke-width=".6">LEGO</text>
