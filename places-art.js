@@ -270,6 +270,16 @@ const SCENES = {
     <path d="M120 142 q14 -30 30 0z" fill="#8FD17A" stroke="#111" stroke-width="3"/>
     ${[0, 1, 2, 3, 4].map(i => `<line x1="${20 + i * 70}" y1="206" x2="${40 + i * 70}" y2="220" stroke="#111" stroke-width="2"/>`).join("")}`],
 
+  boardgames: () => ["night", `<rect width="${W}" height="${H}" fill="#2A1E1A"/>${glow(180, 70, 160, "#FFD36E", .35)}
+    <line x1="180" y1="0" x2="180" y2="30" stroke="#555" stroke-width="2"/><path d="M160 30 h40 l-8 16 h-24z" fill="#E8A15A"/>
+    ${[0, 1, 2].map(r => `<rect x="14" y="${40 + r * 46}" width="90" height="6" fill="#6B3A1E"/>` + Array.from({ length: 6 }, (_, i) => `<rect x="${18 + i * 14}" y="${14 + r * 46}" width="12" height="26" fill="${["#E24C4B", "#4CC9F0", "#FFD36E", "#46B174", "#C77DFF", "#FF8C42"][(i + r) % 6]}"/>`).join("")).join("")}
+    ${[0, 1, 2].map(r => `<rect x="256" y="${40 + r * 46}" width="90" height="6" fill="#6B3A1E"/>` + Array.from({ length: 6 }, (_, i) => `<rect x="${260 + i * 14}" y="${18 + r * 46}" width="12" height="22" fill="${["#46B174", "#FFD36E", "#E24C4B", "#C77DFF", "#4CC9F0", "#FF8C42"][(i + r) % 6]}"/>`).join("")).join("")}
+    <ellipse cx="180" cy="176" rx="150" ry="34" fill="#8A5233"/><ellipse cx="180" cy="170" rx="150" ry="34" fill="#A8683C"/>
+    <polygon points="180,138 236,160 180,184 124,160" fill="#F6E7C8" stroke="#6B3A1E" stroke-width="2"/>
+    ${[[160, 152, "#E24C4B"], [196, 156, "#4CC9F0"], [176, 168, "#46B174"]].map(([x, y, c]) => `<path d="M${x} ${y} l-5 10 h10z" fill="${c}"/><circle cx="${x}" cy="${y - 2}" r="4" fill="${c}"/>`).join("")}
+    <g class="pa-bub"><rect x="250" y="150" width="20" height="20" rx="4" fill="#fff" stroke="#333" stroke-width="1.5" transform="rotate(15 260 160)"/><circle cx="255" cy="156" r="2" fill="#333"/><circle cx="265" cy="164" r="2" fill="#333"/><circle cx="260" cy="160" r="2" fill="#333"/></g>
+    ${em("🃏", 96, 172, 24)}${em("☕", 300, 190, 22)}${em("🍪", 70, 200, 20)}`],
+
   lego: () => ["day", `${clouds(24, .6)}<g opacity=".6">${skyline(80, "#7B97BB", null, 26, 30)}</g>
     <rect x="30" y="44" width="300" height="146" fill="#F4F4F4"/><rect x="30" y="44" width="300" height="34" fill="#E3000B"/>
     <rect x="150" y="48" width="60" height="26" rx="4" fill="#FFD500" stroke="#000" stroke-width="2"/><text x="180" y="67" font-size="16" font-weight="900" fill="#E3000B" text-anchor="middle" stroke="#000" stroke-width=".6">LEGO</text>
