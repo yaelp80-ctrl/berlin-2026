@@ -280,6 +280,16 @@ const SCENES = {
     <g class="pa-bub"><rect x="250" y="150" width="20" height="20" rx="4" fill="#fff" stroke="#333" stroke-width="1.5" transform="rotate(15 260 160)"/><circle cx="255" cy="156" r="2" fill="#333"/><circle cx="265" cy="164" r="2" fill="#333"/><circle cx="260" cy="160" r="2" fill="#333"/></g>
     ${em("🃏", 96, 172, 24)}${em("☕", 300, 190, 22)}${em("🍪", 70, 200, 20)}`],
 
+  fantasy: () => ["night", `${stars(16)}${moon(300, 40)}<g opacity=".7">${skyline(80, "#2B2F48", "#FFD36E", 26, 30)}</g>
+    <rect x="30" y="50" width="300" height="140" fill="#1E3A2A"/><rect x="30" y="50" width="300" height="30" fill="#0F2418"/>
+    <text x="180" y="72" font-size="17" fill="#B9F5C8" text-anchor="middle" font-weight="800" letter-spacing="3" class="pa-glow">ELBENWALD</text>
+    <rect x="46" y="88" width="268" height="94" fill="#2C5640"/>${glow(180, 135, 130, "#B9F5C8", .35)}
+    <g transform="translate(70 160)"><rect x="-16" y="-32" width="32" height="32" fill="#7A5230"/><rect x="-16" y="-32" width="32" height="10" fill="#5DAE3A"/><rect x="-10" y="-18" width="6" height="6" fill="#5A3A20"/><rect x="4" y="-12" width="6" height="6" fill="#5A3A20"/></g>
+    <g transform="translate(118 170) rotate(-30)"><rect x="-2" y="-60" width="4" height="52" fill="#C9D6E3"/><rect x="-10" y="-10" width="20" height="5" fill="#8A6A2A"/><rect x="-2" y="-5" width="4" height="14" fill="#5A3A20"/></g>
+    <g class="pa-tw"><line x1="160" y1="170" x2="190" y2="120" stroke="#8A5233" stroke-width="4" stroke-linecap="round"/><circle cx="191" cy="118" r="5" fill="#FFD36E"/></g>
+    ${em("🐉", 240, 150, 34)}${em("⚡", 292, 128, 22)}${em("🧙", 210, 176, 20)}${em("🎮", 288, 172, 20)}
+    <rect x="0" y="190" width="${W}" height="30" fill="#2B2F48"/>${crowd(214, 5, 27, "#141826")}`],
+
   lego: () => ["day", `${clouds(24, .6)}<g opacity=".6">${skyline(80, "#7B97BB", null, 26, 30)}</g>
     <rect x="30" y="44" width="300" height="146" fill="#F4F4F4"/><rect x="30" y="44" width="300" height="34" fill="#E3000B"/>
     <rect x="150" y="48" width="60" height="26" rx="4" fill="#FFD500" stroke="#000" stroke-width="2"/><text x="180" y="67" font-size="16" font-weight="900" fill="#E3000B" text-anchor="middle" stroke="#000" stroke-width=".6">LEGO</text>
