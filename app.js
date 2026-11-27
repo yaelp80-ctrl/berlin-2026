@@ -72,12 +72,12 @@ T.days.forEach((d, i) => d.items.forEach(it => allItems.push({ ...it, home: i })
 T.extras.forEach(it => allItems.push({ ...it, home: null }));
 // שווקי חג המולד – אפשר לשבץ כל שוק ביום שרוצים (מהלשונית של חג המולד)
 if (window.XMAS) [...XMAS.markets, ...XMAS.potsdam].forEach(m => allItems.push({ id: m.id, title: "שוק: " + (m.he || m.name), icon: "🎄", xmas: true, home: null,
-  notes: [m.travel, m.hours].filter(Boolean), maps: m.maps }));
+  notes: [m.travel].filter(Boolean), maps: m.maps }));
 const byId = Object.fromEntries(allItems.map(it => [it.id, it]));
 
 // ימים שבהם המקום סגור (0=ראשון … 6=שבת), או טווח תאריכים שרק בו הוא פתוח – לפי השעות שבדקנו
 const CLOSED = { "d2-anime": [0], "d3-dark": [1, 2], "d3-maclarens": [1], "d3-books": [0], "d4-sanssouci": [1], "d5-museum": [1], "d6-modulor": [0],
-  "x-kadewe": [0], "x-urbannation": [1], "x-lego": [0], "x-kpop": [0], "x-technik": [1],
+  "x-kadewe": [0], "d6-neotokyo": [0], "x-urbannation": [1], "x-lego": [0], "x-kpop": [0], "x-technik": [1],
   "m-raw": [0], "m-gluehwald": [1, 2] };
 const ONLY = { "m-winterquartier": ["2026-12-05", "2026-12-06"], "m-rixdorf": ["2026-12-04", "2026-12-06"], "m-babelsberg": ["2026-12-04", "2026-12-06"] };
 const WD = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
@@ -196,6 +196,9 @@ addEventListener("resize", seed);
 
 /* ---------- דף מקום ---------- */
 const PL = window.PLACES || {};
+// שעות הפתיחה המלאות של כל מקום – מוצגות בכל כרטיס, במקום הערות חלקיות כמו "פתוח עד 20:00"
+const hoursOf = it => PL[it.id]?.hours || (it.xmas ? [...(window.XMAS?.markets || []), ...(window.XMAS?.potsdam || [])].find(m => m.id === it.id)?.hours : "") || "";
+const notesOf = it => { const h = hoursOf(it); return (it.notes || []).filter(n => !h || !(n === h || /^(פתוח|פתוחה)[ \s]|^סגור ב|לבדוק שעות|^[א-ת]׳[–-][א-ת]׳ \d/.test(n) || h.includes(n))); };
 const hasSheet = id => !!PL[id] || (id === "d1-hotel" && !isGuest());
 /* פרטי הזמנת המלון – נשמרים רק בטלפון (לא בקוד ולא בשרת), נקלטים מקישור חד-פעמי #hotel=... */
 function takeHotelLink() {
@@ -253,7 +256,8 @@ function itemHTML(it, opts = {}) {
     <button class="check" data-done="${it.id}" aria-label="ראינו">✓</button>
     <div><div class="ttl ${hasSheet(it.id) ? "has-place" : ""}" ${hasSheet(it.id) ? `data-place="${it.id}"` : ""}>${time}<span class="ic">${it.icon || ""}</span>${esc(it.title)}${hasSheet(it.id) ? `<span class="more">ⓘ</span>` : ""}</div>
       ${origin}
-      ${it.notes ? `<ul class="notes">${it.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
+      ${hoursOf(it) ? `<div class="hrs">🕓 ${esc(hoursOf(it))}</div>` : ""}
+      ${notesOf(it).length ? `<ul class="notes">${notesOf(it).map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
       <div class="acts">${acts}</div></div>
     <div class="side">${opts.worth ? "" : `<button class="x" data-skip="${it.id}" aria-label="לא נספיק">✕</button>`}</div>
   </div>`;
