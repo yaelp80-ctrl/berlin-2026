@@ -65,7 +65,8 @@ window.TRIP = {
         { id: "d3-pride", title: "שוק חג המולד הלהט\"בי Regenbogen", icon: "🏳️‍🌈",
           notes: ["כ-35 דק' נסיעה מהפאב", "בנולנדורפפלאץ, מתחת לרכבת העילית (Christmas Avenue)"], maps: "Christmas Avenue Nollendorfplatz Berlin" },
         { id: "d3-books", title: "חנות הספרים Prinz Eisenherz", icon: "📚", notes: ["פתוחה עד 20:00", "ליד השוק"], maps: "Prinz Eisenherz Buchladen Berlin" },
-        { id: "d3-cafe", title: "בית הקפה רומיאו ורומיאו", icon: "☕", notes: ["פתוח עד 20:00", "ליד השוק"], maps: "Romeo und Romeo Café Berlin" }
+        { id: "d3-cafe", title: "בית הקפה רומיאו ורומיאו", icon: "☕", notes: ["פתוח עד 20:00", "ליד השוק"], maps: "Romeo und Romeo Café Berlin" },
+        { id: "x-boardroom", title: "Boardroom – קפה משחקי קופסה", icon: "🎲", slot: "ערב", notes: ["כמה דק' הליכה מהשוק", "אפשר להזמין שולחן מראש באינטרנט"], maps: "Boardroom Brettspielcafé Hohenstaufenstraße 69 Berlin" }
       ]
     },
     {
@@ -151,7 +152,6 @@ window.TRIP = {
     { id: "x-technik", title: "מוזיאון הטכנולוגיה", icon: "✈️", notes: ["סגור בשני", "עד גיל 18 – חינם", "כ-20 דק' מהמלון ב-U1 / U3"], maps: "Deutsches Technikmuseum Trebbiner Straße 9 Berlin" },
     { id: "x-katzen", title: "Katzentempel – קפה חתולים", icon: "🐈", notes: ["כ-20 דק' מהמלון (S-Bahn עד Friedrichstraße)", "כדאי להזמין מקום מראש"], maps: "Katzentempel Berlin Mitte Friedrichstraße 153" },
     { id: "x-2d", title: "2D Cafe Always Together – קפה קומיקס", icon: "✏️", notes: ["כ-5 דק' הליכה מהמלון"], maps: "2D Cafe Always Together Marburger Str. 17 Berlin" },
-    { id: "x-boardroom", title: "Boardroom – קפה משחקי קופסה", icon: "🎲", notes: ["כמה דק' הליכה מנולנדורפפלאץ", "אפשר להזמין שולחן מראש באינטרנט"], maps: "Boardroom Brettspielcafé Hohenstaufenstraße 69 Berlin" },
     { id: "x-sushi", title: "Secret Garden – סושי טבעוני", icon: "🍣", notes: ["10 דק' הליכה מחומת ברלין (איסט סייד גלרי)", "ליד שוק ימי הביניים ב-RAW"], maps: "Secret Garden Vegan Sushi Warschauer Straße 33 Berlin" }
   ],
   suitcase: [
