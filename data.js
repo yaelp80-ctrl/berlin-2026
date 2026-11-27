@@ -32,7 +32,7 @@ window.TRIP = {
           notes: ["פירות, ירקות, יוגורטים, גרנולה, חלב וקורנפלקס"], maps: "Supermarkt near Augsburger Str. 41 Berlin" },
         { id: "d1-alex", title: "שוק חג המולד באלכסנדרפלאץ + החלקה על הקרח", icon: "⛸️", slot: "אחה\"צ",
           notes: ["25 דק' מהמלון"], maps: "Weihnachtsmarkt Alexanderplatz Berlin" },
-        { id: "d1-gate", title: "שער ברנדנבורג", icon: "🏛️", notes: ["אפשר לעבור בדרך – 10 דק' ברכבת"], maps: "Brandenburger Tor Berlin" }
+        { id: "d1-gate", title: "שער ברנדנבורג", icon: "🏛️", notes: ["🔗 לשלב ביום אחד (הכל על קו U5): שער ברנדנבורג → קפה החתולים → מוזיאון האשליות → Ice Bar (פתוח מ-15:00) → מוזיאון משחקי המחשב (פתוח עד 20:00)", "אפשר לעבור בדרך – 10 דק' ברכבת"], maps: "Brandenburger Tor Berlin" }
       ]
     },
     {
@@ -143,14 +143,14 @@ window.TRIP = {
   extras: [
     { id: "x-spy", title: "מוזיאון הריגול", icon: "🕵️", notes: ["10 דק' הליכה מאנדרטת השואה"], maps: "Deutsches Spionagemuseum Berlin" },
     { id: "x-kadewe", title: "KaDeWe", icon: "🛍️", notes: ["12 דק' הליכה מהמלון"], maps: "KaDeWe Berlin" },
-    { id: "x-icebar", title: "Ice Bar", icon: "🧊", notes: ["6 דק' הליכה מ-Haus Schwarzenberg"], maps: "Icebar Berlin" },
-    { id: "x-illusions", title: "מוזיאון האשליות", icon: "🌀", notes: ["ליד Haus Schwarzenberg"], maps: "Museum of Illusions Berlin" },
+    { id: "x-icebar", title: "Ice Bar", icon: "🧊", notes: ["🔗 לשלב ביום אחד (הכל על קו U5): שער ברנדנבורג → קפה החתולים → מוזיאון האשליות → Ice Bar (פתוח מ-15:00) → מוזיאון משחקי המחשב (פתוח עד 20:00)", "6 דק' הליכה מ-Haus Schwarzenberg"], maps: "Icebar Berlin" },
+    { id: "x-illusions", title: "מוזיאון האשליות", icon: "🌀", notes: ["🔗 לשלב ביום אחד (הכל על קו U5): שער ברנדנבורג → קפה החתולים → מוזיאון האשליות → Ice Bar (פתוח מ-15:00) → מוזיאון משחקי המחשב (פתוח עד 20:00)", "ליד Haus Schwarzenberg"], maps: "Museum of Illusions Berlin" },
     { id: "x-urbannation", title: "מוזיאון Urban Nation – אמנות רחוב", icon: "🎨", notes: ["כניסה חינם", "ה׳–א׳ 12:00–20:00 · ג׳–ד׳ 10:00–18:00 · סגור בשני", "ליד נולנדורפפלאץ והשוק הלהט\"בי", "גם הבניינים ברחוב מצוירים"], maps: "Urban Nation Museum Bülowstraße 7 Berlin" },
-    { id: "x-computer", title: "מוזיאון משחקי המחשב", icon: "🕹️", notes: ["ליד Haus Schwarzenberg"], maps: "Computerspielemuseum Berlin" },
+    { id: "x-computer", title: "מוזיאון משחקי המחשב", icon: "🕹️", notes: ["🔗 לשלב ביום אחד (הכל על קו U5): שער ברנדנבורג → קפה החתולים → מוזיאון האשליות → Ice Bar (פתוח מ-15:00) → מוזיאון משחקי המחשב (פתוח עד 20:00)", "ליד Haus Schwarzenberg"], maps: "Computerspielemuseum Berlin" },
     { id: "x-lego", title: "חנות LEGO", icon: "🧱", notes: ["כ-7 דק' הליכה מהמלון", "ב׳–שבת 10:00–20:00 · סגור בראשון", "2–3.12 בין 15:00 ל-17:00: בונים קופסת מתנה מלגו בחנות"], maps: "LEGO Store Berlin Tauentzienstraße 8" },
     { id: "x-kpop", title: "Seoulstation – חנות קיי-פופ", icon: "💜", notes: ["ב׳–שבת 13:00–19:00 · סגור בראשון", "כ-15 דק' מהמלון באוטובוס M49 / X34", "באותו רחוב: J-Store – אנימה, מנגה וממתקים מיפן"], maps: "Seoulstation Berlin Kantstraße 103" },
     { id: "x-technik", title: "מוזיאון הטכנולוגיה", icon: "✈️", notes: ["סגור בשני", "עד גיל 18 – חינם", "כ-20 דק' מהמלון ב-U1 / U3"], maps: "Deutsches Technikmuseum Trebbiner Straße 9 Berlin" },
-    { id: "x-katzen", title: "Katzentempel – קפה חתולים", icon: "🐈", notes: ["כ-20 דק' מהמלון (S-Bahn עד Friedrichstraße)", "🏛️ לשלב עם שער ברנדנבורג – כ-10 דק' הליכה לאורך Unter den Linden", "כדאי להזמין מקום מראש"], maps: "Katzentempel Berlin Mitte Friedrichstraße 153" },
+    { id: "x-katzen", title: "Katzentempel – קפה חתולים", icon: "🐈", notes: ["🔗 לשלב ביום אחד (הכל על קו U5): שער ברנדנבורג → קפה החתולים → מוזיאון האשליות → Ice Bar (פתוח מ-15:00) → מוזיאון משחקי המחשב (פתוח עד 20:00)", "כ-20 דק' מהמלון (S-Bahn עד Friedrichstraße)", "כדאי להזמין מקום מראש"], maps: "Katzentempel Berlin Mitte Friedrichstraße 153" },
     { id: "x-2d", title: "2D Cafe Always Together – קפה קומיקס", icon: "✏️", notes: ["כ-5 דק' הליכה מהמלון"], maps: "2D Cafe Always Together Marburger Str. 17 Berlin" },
     { id: "x-elbenwald", title: "Elbenwald – מרצ'נדייז של פנטזיה ומשחקים", icon: "🧙", notes: ["🎁 לקנות מתנה לכפיר!", "בקניון Alexa, ליד שוק חג המולד באלכסנדרפלאץ"], maps: "Elbenwald ALEXA Grunerstraße 20 Berlin" },
     { id: "x-teufelsberg", title: "Teufelsberg – תחנת ריגול נטושה עם גרפיטי", icon: "📡", notes: ["כ-45 דק' מהמלון (S-Bahn עד Heerstraße + הליכה ביער)", "בחורף נסגר ב-16:30 – להגיע מוקדם", "פתוח גם בשני"], maps: "Teufelsberg Teufelsseechaussee 10 Berlin" },
