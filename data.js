@@ -153,6 +153,7 @@ window.TRIP = {
     { id: "x-katzen", title: "Katzentempel – קפה חתולים", icon: "🐈", notes: ["כ-20 דק' מהמלון (S-Bahn עד Friedrichstraße)", "כדאי להזמין מקום מראש"], maps: "Katzentempel Berlin Mitte Friedrichstraße 153" },
     { id: "x-2d", title: "2D Cafe Always Together – קפה קומיקס", icon: "✏️", notes: ["כ-5 דק' הליכה מהמלון"], maps: "2D Cafe Always Together Marburger Str. 17 Berlin" },
     { id: "x-elbenwald", title: "Elbenwald – מרצ'נדייז של פנטזיה ומשחקים", icon: "🧙", notes: ["🎁 לקנות מתנה לכפיר!", "בקניון Alexa, ליד שוק חג המולד באלכסנדרפלאץ"], maps: "Elbenwald ALEXA Grunerstraße 20 Berlin" },
+    { id: "x-teufelsberg", title: "Teufelsberg – תחנת ריגול נטושה עם גרפיטי", icon: "📡", notes: ["כ-45 דק' מהמלון (S-Bahn עד Heerstraße + הליכה ביער)", "בחורף נסגר ב-16:30 – להגיע מוקדם", "פתוח גם בשני"], maps: "Teufelsberg Teufelsseechaussee 10 Berlin" },
     { id: "x-sushi", title: "Secret Garden – סושי טבעוני", icon: "🍣", notes: ["10 דק' הליכה מחומת ברלין (איסט סייד גלרי)", "ליד שוק ימי הביניים ב-RAW"], maps: "Secret Garden Vegan Sushi Warschauer Straße 33 Berlin" }
   ],
   suitcase: [

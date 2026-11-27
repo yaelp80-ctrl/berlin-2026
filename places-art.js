@@ -290,6 +290,16 @@ const SCENES = {
     ${em("🐉", 240, 150, 34)}${em("⚡", 292, 128, 22)}${em("🧙", 210, 176, 20)}${em("🎮", 288, 172, 20)}
     <rect x="0" y="190" width="${W}" height="30" fill="#2B2F48"/>${crowd(214, 5, 27, "#141826")}`],
 
+  teufelsberg: () => ["day", `${clouds(20, .7)}
+    <path d="M0 220 V150 Q90 70 180 64 Q270 70 360 150 V220Z" fill="#4E6B45"/>${Array.from({ length: 12 }, (_, i) => `<path d="M${i * 32 + 6} ${170 - Math.abs(i - 6) * 6} l10 -26 l10 26z" fill="#2F4A2C"/>`).join("")}
+    <rect x="110" y="70" width="140" height="40" fill="#9AA0A8"/>${["#E24C4B", "#FFD36E", "#4CC9F0", "#C77DFF", "#46B174"].map((c, i) => `<path d="M${118 + i * 26} 104 q8 -22 18 -4 q6 -12 4 -20" stroke="${c}" stroke-width="4" fill="none"/>`).join("")}
+    <rect x="170" y="30" width="20" height="40" fill="#8A9098"/><circle cx="180" cy="22" r="20" fill="#F2F2F2" stroke="#C9C9C9" stroke-width="2"/>
+    <rect x="124" y="50" width="14" height="22" fill="#8A9098"/><circle cx="131" cy="44" r="13" fill="#F2F2F2" stroke="#C9C9C9" stroke-width="2"/>
+    <rect x="222" y="50" width="14" height="22" fill="#8A9098"/><circle cx="229" cy="44" r="13" fill="#EDEDED" stroke="#C9C9C9" stroke-width="2"/>
+    <path d="M168 14 l6 8 l8 -10 l6 12" stroke="#7AA6C9" stroke-width="1.5" fill="none" opacity=".6"/>
+    <text x="180" y="96" font-size="13" font-weight="900" fill="#111" text-anchor="middle" transform="rotate(-4 180 96)">PEACE</text>
+    ${person(150, 196, "#2A3550", 1, "#E24C4B")}${person(170, 198, "#2A3550", .8, "#4CC9F0")}`],
+
   lego: () => ["day", `${clouds(24, .6)}<g opacity=".6">${skyline(80, "#7B97BB", null, 26, 30)}</g>
     <rect x="30" y="44" width="300" height="146" fill="#F4F4F4"/><rect x="30" y="44" width="300" height="34" fill="#E3000B"/>
     <rect x="150" y="48" width="60" height="26" rx="4" fill="#FFD500" stroke="#000" stroke-width="2"/><text x="180" y="67" font-size="16" font-weight="900" fill="#E3000B" text-anchor="middle" stroke="#000" stroke-width=".6">LEGO</text>
